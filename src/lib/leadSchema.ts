@@ -1,10 +1,12 @@
 /**
  * Esquema del formulario de cotización (05 §2). Compartido: cliente (T06) y /api/lead (T08).
+ * La salida (`Lead`) trae el teléfono ya normalizado.
  * zod viene re-exportado por Astro (`astro/zod`): no suma dependencias.
  */
 import { z } from 'astro/zod';
 import { site } from '../config/site';
 import { copy } from '../config/copy';
+import { normalizePhone } from './phone';
 
 const e = copy.form.errors;
 
@@ -19,11 +21,10 @@ const required = (msg: string = e.required) => z.string({ required_error: msg })
 const choice = <T extends readonly [string, ...string[]]>(values: T) =>
   z.string({ required_error: e.choose }).refine((v): v is T[number] => (values as readonly string[]).includes(v), e.choose);
 
-/** WhatsApp con código de área; se acepta con o sin 0 / 15 / +54 9 (la normalización es T08). */
-const telefono = required().refine((v) => {
-  const digits = v.replace(/\D/g, '').length;
-  return digits >= 10 && digits <= 13;
-}, e.telefono);
+/** WhatsApp con código de área; se acepta con o sin +54 / 9 / 0 / 15. Sale normalizado a 549… */
+const telefono = required()
+  .refine((v) => normalizePhone(v) !== null, e.telefono)
+  .transform((v) => normalizePhone(v)!);
 
 export const leadSchema = z.object({
   nombre: required().pipe(z.string().min(2, e.nombre).max(80, e.nombre)),

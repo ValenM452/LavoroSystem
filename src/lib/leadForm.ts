@@ -1,13 +1,30 @@
 /**
- * Formulario de cotización — validación en cliente con el esquema compartido (05 §2, T06).
- * MOCK: el envío es simulado. T08 reemplaza `sendLead` por el POST real a /api/lead.
+ * Formulario de cotización — validación en cliente con el esquema compartido (05 §2, T06)
+ * y envío JSON a /api/lead (05 §4, T08). Si el envío falla, ofrece WhatsApp como respaldo.
  */
 import { leadSchema, rubroOptions, type LeadInput } from './leadSchema';
 import { copy } from '../config/copy';
 import { site } from '../config/site';
 
-const MOCK_DELAY_MS = 700;
-const sendLead = async (_data: LeadInput) => new Promise<{ ok: boolean }>((r) => setTimeout(() => r({ ok: true }), MOCK_DELAY_MS));
+interface LeadResponse { ok: boolean; error?: string; errors?: Record<string, string> }
+
+/** Manda todos los campos (incluidos antispam y atribución); el servidor decide. */
+const sendLead = async (url: string, fd: FormData): Promise<LeadResponse> => {
+  const body: Record<string, unknown> = {};
+  for (const [k, v] of fd) if (k !== 'productos[]') body[k] = String(v);
+  body.productos = fd.getAll('productos[]').map(String);
+  body.acepta = fd.get('acepta') === 'on';
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(body),
+    });
+    return (await res.json()) as LeadResponse;
+  } catch {
+    return { ok: false };
+  }
+};
 
 const params = new URLSearchParams(location.search);
 
@@ -19,6 +36,8 @@ function init(root: HTMLElement) {
   const success = root.querySelector<HTMLElement>('[data-lead-success]')!;
   const submit = root.querySelector<HTMLButtonElement>('[data-lead-submit]')!;
   const waLink = root.querySelector<HTMLAnchorElement>('[data-lead-wa]')!;
+  const failure = root.querySelector<HTMLElement>('[data-lead-failure]')!;
+  const failureWa = root.querySelector<HTMLAnchorElement>('[data-lead-failure-wa]')!;
   const el = (name: string) => form.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | null;
   const setValue = (name: string, value: string) => { const f = el(name); if (f) f.value = value; };
 
@@ -80,15 +99,7 @@ function init(root: HTMLElement) {
   let submitted = false;
   let sending = false;
 
-  const validate = (announce: boolean) => {
-    const result = leadSchema.safeParse(read());
-    const errors = new Map<string, string>();
-    if (!result.success) {
-      for (const issue of result.error.issues) {
-        const key = String(issue.path[0]);
-        if (!errors.has(key)) errors.set(key, issue.message);
-      }
-    }
+  const showErrors = (errors: Map<string, string>, announce: boolean) => {
     form.querySelectorAll<HTMLElement>('[data-error-for]').forEach((p) => {
       const key = p.dataset.errorFor!;
       p.textContent = errors.get(key) ?? '';
@@ -103,7 +114,32 @@ function init(root: HTMLElement) {
       }) as HTMLElement | undefined;
       first?.focus();
     }
+  };
+
+  const validate = (announce: boolean) => {
+    const result = leadSchema.safeParse(read());
+    const errors = new Map<string, string>();
+    if (!result.success) {
+      for (const issue of result.error.issues) {
+        const key = String(issue.path[0]);
+        if (!errors.has(key)) errors.set(key, issue.message);
+      }
+    }
+    showErrors(errors, announce);
     return result.success ? result.data : null;
+  };
+
+  const setSending = (on: boolean) => {
+    sending = on;
+    if (on) {
+      form.setAttribute('aria-busy', 'true');
+      submit.setAttribute('aria-disabled', 'true');
+      submit.textContent = copy.form.sending;
+    } else {
+      form.removeAttribute('aria-busy');
+      submit.removeAttribute('aria-disabled');
+      submit.textContent = copy.form.submit;
+    }
   };
 
   form.addEventListener('focusout', () => submitted && validate(false));
@@ -116,21 +152,31 @@ function init(root: HTMLElement) {
     const data = validate(true);
     if (!data) return;
 
-    sending = true;
-    form.setAttribute('aria-busy', 'true');
-    submit.setAttribute('aria-disabled', 'true');
-    submit.textContent = copy.form.sending;
+    setSending(true);
+    failure.hidden = true;
+    const res = await sendLead(form.action, new FormData(form));
+    setSending(false);
 
-    const honeypot = el('website')?.value;
-    if (!honeypot) await sendLead(read());
-
+    // El resumen se arma con los datos ya validados: sirve igual si el servidor no respondió
+    // o si respondió con el link genérico (rate limit / spam).
     const rubro = rubroOptions.find((r) => r.value === data.rubro)?.label ?? data.rubro;
     const text = copy.form.waSummary({ nombre: data.nombre, empresa: data.empresa, rubro, productos: data.productos.join(', '), cantidad: data.cantidad });
-    waLink.href = `https://wa.me/${site.contact.whatsappEmpresas.number}?text=${encodeURIComponent(text)}`;
+    const whatsappUrl = `https://wa.me/${site.contact.whatsappEmpresas.number}?text=${encodeURIComponent(text)}`;
 
-    form.hidden = true;
-    success.hidden = false;
-    success.focus();
+    if (res.ok) {
+      waLink.href = whatsappUrl;
+      form.hidden = true;
+      success.hidden = false;
+      success.focus();
+      return;
+    }
+    if (res.error === 'invalid' && res.errors) {
+      showErrors(new Map(Object.entries(res.errors)), true);
+      return;
+    }
+    failureWa.href = whatsappUrl;
+    failure.hidden = false;
+    failure.focus();
   });
 }
 

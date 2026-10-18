@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
 import vercel from '@astrojs/vercel';
 
 /**
@@ -25,4 +25,11 @@ export default defineConfig({
   output: 'static',
   adapter: vercel(),
   integrations: [devTokensPage()],
+  // Secretos de /api/lead: se leen en runtime (Vercel), nunca quedan en el bundle.
+  env: {
+    schema: {
+      LEAD_WEBHOOK_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
+      LEAD_WEBHOOK_SECRET: envField.string({ context: 'server', access: 'secret', optional: true }),
+    },
+  },
 });

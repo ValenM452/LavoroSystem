@@ -1,7 +1,7 @@
 ---
 /**
- * Formulario de cotización (05 §2) — SOLO INTERFAZ (T06). El envío es simulado en src/lib/leadForm.ts;
- * el endpoint real /api/lead llega en T08 (action ya apunta ahí para el modo sin JS).
+ * Formulario de cotización (05 §2). Con JS: validación y envío en src/lib/leadForm.ts.
+ * Sin JS: POST normal a /api/lead, que redirige a /cotizacion/enviada o /cotizacion/no-enviada (T08).
  */
 import { site } from '../config/site';
 import { copy } from '../config/copy';
@@ -54,6 +54,15 @@ const fid = (n: string) => `${idPrefix}-${n}`;
     <input type="hidden" name="pagina" />
     <input type="hidden" name="referrer" />
 
+    <!-- Respaldo si /api/lead no pudo registrar la solicitud (05 §4). -->
+    <div class="lead__failure" data-lead-failure role="alert" tabindex="-1" hidden>
+      <p>{copy.form.failure}</p>
+      <a class="btn btn--primary" href={site.contact.whatsappEmpresas.url} data-lead-failure-wa>
+        <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12.04 2a9.9 9.9 0 0 0-8.46 15.04L2 22l5.1-1.54A9.93 9.93 0 1 0 12.04 2Zm0 1.8a8.13 8.13 0 1 1-4.2 15.1l-.3-.18-3.02.91.92-2.95-.2-.31A8.12 8.12 0 0 1 12.04 3.8Z"/></svg>
+        {copy.form.failureCta}
+      </a>
+    </div>
+
     <div class="lead__actions">
       <button type="submit" class="btn btn--primary" data-lead-submit>{copy.form.submit}</button>
       <a class="small link-u" href={site.contact.whatsappEmpresas.url}>{copy.form.alt}</a>
@@ -83,6 +92,9 @@ const fid = (n: string) => `${idPrefix}-${n}`;
   .lead__actions a { display: inline-flex; align-items: center; min-height: var(--tap); }
   .lead__success { display: grid; gap: var(--sp-5); justify-items: start; padding-block: var(--sp-6); }
   .lead__success:focus { outline: none; }
+  .lead__failure { display: grid; gap: var(--sp-4); justify-items: start; padding: var(--sp-4); border-left: var(--accent-bar) solid var(--accent); border-radius: var(--radius); background: var(--bordo-050); }
+  .lead__failure p { margin: 0; font-weight: 500; }
+  .lead__failure:focus { outline: none; }
   .lead :global([aria-busy='true']) [data-lead-submit] { opacity: .7; cursor: progress; }
 
   /* Campos (Field / ChoiceGroup) */

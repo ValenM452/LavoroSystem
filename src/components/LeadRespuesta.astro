@@ -1,0 +1,33 @@
+---
+/** Página de respuesta del formulario cuando se envía sin JS (05 §2). Usada por /cotizacion/*. */
+import Base from '../layouts/Base.astro';
+import SectionHeading from './SectionHeading.astro';
+import Button from './Button.astro';
+import { site } from '../config/site';
+import { copy } from '../config/copy';
+
+interface Props { variant: 'ok' | 'error' }
+const { variant } = Astro.props;
+const r = copy.leadRespuesta;
+const t = r[variant];
+---
+<Base title={t.seoTitle} noindex>
+  <section class="section" aria-labelledby="respuesta-title">
+    <div class="container respuesta">
+      <SectionHeading as="h1" id="respuesta-title" eyebrow={t.eyebrow} title={t.title} lead={t.lead} />
+      <div class="respuesta__actions">
+        <Button href={site.contact.whatsappEmpresas.url} variant="whatsapp" track="click_whatsapp">{r.whatsapp}</Button>
+        {variant === 'error'
+          ? <Button href={site.paths.cotizar} variant="secondary">{r.volver}</Button>
+          : <Button href={site.paths.home} variant="secondary">{r.inicio}</Button>}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .respuesta { display: grid; gap: var(--sp-6); justify-items: start; }
+  .respuesta :global(.sh__title) { max-width: 16em; }
+  .respuesta :global(.sh__lead) { max-width: 52ch; }
+  .respuesta__actions { display: flex; flex-wrap: wrap; gap: var(--sp-4); }
+</style>

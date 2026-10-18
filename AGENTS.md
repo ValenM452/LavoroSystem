@@ -75,6 +75,7 @@ npm run dev        # http://localhost:4321
 npm run build      # debe pasar sin warnings
 npm run preview
 npm run check      # astro check (tipos)
+npm test           # vitest (schema, teléfono, /api/lead)
 ```
 
 ## 6. Definición de "terminado" para cada ticket

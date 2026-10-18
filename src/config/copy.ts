@@ -223,6 +223,9 @@ export const copy = {
     alt: 'Si preferís, escribinos por WhatsApp',
     success: 'Recibimos tu solicitud. Te vamos a contactar por WhatsApp o mail.',
     successCta: 'Seguir por WhatsApp',
+    /** Respaldo si /api/lead no pudo registrar la solicitud (05 §4). */
+    failure: 'No pudimos enviar tu solicitud. Mandala por WhatsApp y seguimos por ahí.',
+    failureCta: 'Enviar por WhatsApp',
     optional: '(opcional)',
     choose: 'Elegí una opción',
     labels: {
@@ -254,6 +257,25 @@ export const copy = {
     /** 05 §4 — resumen prellenado para WhatsApp */
     waSummary: (d: { nombre: string; empresa: string; rubro: string; productos: string; cantidad: string }) =>
       `Hola LAVORO, soy ${d.nombre} de ${d.empresa} (${d.rubro}). Necesito cotizar ${d.productos} para ${d.cantidad} personas.`,
+  },
+
+  /** Páginas de respuesta del formulario sin JS (05 §2). Microcopy de interfaz. */
+  leadRespuesta: {
+    ok: {
+      seoTitle: 'Solicitud enviada | LAVORO',
+      eyebrow: 'Cotización',
+      title: 'Recibimos tu *solicitud*.',
+      lead: 'Te vamos a contactar por WhatsApp o mail. Si querés adelantar algo, escribinos.',
+    },
+    error: {
+      seoTitle: 'No pudimos enviar tu solicitud | LAVORO',
+      eyebrow: 'Cotización',
+      title: 'No pudimos enviar tu *solicitud*.',
+      lead: 'Puede faltar un dato o haber un problema de nuestro lado. Volvé al formulario para revisarlo o escribinos por WhatsApp.',
+    },
+    volver: 'Volver al formulario',
+    inicio: 'Volver al inicio',
+    whatsapp: 'Escribir por WhatsApp',
   },
 
   /** 04 §10 — sin texto para el botón que carga el mapa interactivo (ver mapa). */

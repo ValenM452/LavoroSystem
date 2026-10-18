@@ -97,6 +97,9 @@ export const site = {
     terminos: '/legales/terminos',
     privacidad: '/legales/privacidad',
     cambios: '/legales/cambios-y-devoluciones',
+    /** Respuesta del formulario cuando se envía sin JS (05 §2). */
+    leadOk: '/cotizacion/enviada',
+    leadError: '/cotizacion/no-enviada',
   },
 } as const;
 

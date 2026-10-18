@@ -59,6 +59,7 @@
 - `src/pages/api/lead.ts` según `05` §4 (validación servidor, honeypot, tiempo, rate limit, normalización de teléfono, respaldo WhatsApp).
 - `docs/apps-script/lead.gs` listo para pegar + `docs/apps-script/README.md` con pasos para crear la Sheet, columnas, validación de `estado`, publicar como Web App y copiar la URL a Vercel.
 - Tests unitarios del schema y del normalizador de teléfono (`vitest`): casos `03825 15-529781`, `3825529781`, `+54 9 3825 529781`.
+- Nota: el secreto viaja en el cuerpo, no en el header `X-Lavoro-Secret` (Apps Script no lee headers). Ver `05` §4.
 **Acepta si:** con `LEAD_WEBHOOK_URL` vacío, el form muestra el respaldo de WhatsApp y no rompe.
 
 ### T09 — Medición

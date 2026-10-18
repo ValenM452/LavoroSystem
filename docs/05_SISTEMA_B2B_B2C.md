@@ -49,7 +49,7 @@ UX:
 - Validación en cliente y en servidor (mismo esquema, `zod`).
 - Errores debajo de cada campo, en texto. Foco al primer error.
 - Botón con estado "Enviando…" y deshabilitado durante el envío.
-- Funciona sin JS (POST normal + página de respuesta) — mejora progresiva.
+- Funciona sin JS (POST normal + página de respuesta) — mejora progresiva. El endpoint redirige (303) a `/cotizacion/enviada` o `/cotizacion/no-enviada` (ambas `noindex`). Sin JS el campo `t` llega vacío y el control de tiempo no se aplica; quedan honeypot y rate limit.
 
 ## 3. Google Sheet "LAVORO — Leads"
 
@@ -65,11 +65,27 @@ Este es el "sistema B2B" del lanzamiento: simple, legible por tu papá desde el 
 
 ## 4. Endpoint `/api/lead`
 
-- `POST`, `Content-Type: application/json` o `application/x-www-form-urlencoded`.
-- Pasos: parsear → honeypot y tiempo → validar con `zod` → normalizar teléfono → `fetch` al Apps Script con header `X-Lavoro-Secret: ${LEAD_WEBHOOK_SECRET}` → responder `{ ok: true, whatsappUrl }`.
+Código: `src/pages/api/lead.ts` (entrada HTTP) + `src/lib/leadServer.ts` (lógica, testeada) + `src/lib/phone.ts` (normalizador).
+
+- `POST`, `Content-Type: application/json` (con JS) o `application/x-www-form-urlencoded` / `multipart` (sin JS).
+- Pasos: parsear → honeypot y tiempo → rate limit → validar con `zod` → normalizar teléfono → `fetch` al Apps Script → responder.
+- **El secreto va en el cuerpo** (`{ "secret": "…", "lead": { … } }`), no en un header: Apps Script no expone los headers de la request a `doPost`. Contrato completo y códigos de respuesta del script en `docs/apps-script/README.md`.
+- Cada lead lleva un `id` (`L-AAAAMMDD-xxxxxxxx`). Si el script responde `busy` o hay error de red, se reintenta **una vez** con el mismo `id` (el script no duplica filas).
 - `whatsappUrl`: `https://wa.me/5493825529781?text=` + resumen: `Hola LAVORO, soy {nombre} de {empresa} ({rubro}). Necesito cotizar {productos} para {cantidad} personas.`
-- Si el Apps Script falla: responder `{ ok: false }` y mostrar en el front el botón de WhatsApp como respaldo. El lead **nunca** se pierde en silencio: loguear el payload (sin datos sensibles extra) en los logs de Vercel.
-- Rate limit simple por IP (memoria de la función, 5 por 10 min) — suficiente para el lanzamiento.
+- Respuestas JSON:
+
+  | Caso | HTTP | Cuerpo |
+  |---|---|---|
+  | Registrado | 200 | `{ ok: true, whatsappUrl }` |
+  | Spam (honeypot / < 3 s) | 200 | `{ ok: true, whatsappUrl }` (se descarta en silencio) |
+  | Datos inválidos | 400 | `{ ok: false, error: "invalid", errors: { campo: mensaje } }` |
+  | Rate limit | 429 | `{ ok: false, error: "rate_limited", whatsappUrl }` |
+  | Webhook sin configurar | 502 | `{ ok: false, error: "not_configured", whatsappUrl }` |
+  | Apps Script falló / rechazó | 502 | `{ ok: false, error: "webhook", whatsappUrl }` |
+
+- Si el Apps Script falla: el front muestra el botón de WhatsApp con el resumen prellenado. El lead **nunca** se pierde en silencio: el payload (sin el secreto) queda en los logs de Vercel con el prefijo `[lead]`.
+- Rate limit simple por IP (memoria de la función, 5 por 10 min) — suficiente para el lanzamiento. Se reinicia con cada instancia nueva.
+- Las variables `LEAD_WEBHOOK_*` se declaran en `astro.config.mjs` (`env.schema`, `access: secret`) y se leen en runtime.
 
 Variables de entorno (`.env.example`):
 
@@ -81,7 +97,7 @@ PUBLIC_META_PIXEL_ID=
 PUBLIC_SITE_URL=
 ```
 
-Apps Script (`docs/apps-script/lead.gs`, lo pega a mano el dueño de la cuenta Google): `doPost(e)` → valida secreto → `appendRow` en `Leads` con `estado = "Nuevo"` → `MailApp.sendEmail` a lavorouniformes@gmail.com con asunto `Nuevo lead B2B — {empresa} ({rubro})` → `ContentService` JSON.
+Apps Script (`docs/apps-script/lead.gs`, lo pega a mano el dueño de la cuenta Google; pasos en `docs/apps-script/README.md`): `doPost(e)` → valida secreto (del cuerpo) → `appendRow` en `Leads` con `estado = "Nuevo"` → `MailApp.sendEmail` a lavorouniformes@gmail.com con asunto `Nuevo lead B2B — {empresa} ({rubro})` → `ContentService` JSON.
 
 ## 5. Medición
 
