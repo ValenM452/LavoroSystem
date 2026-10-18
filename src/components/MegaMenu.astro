@@ -8,7 +8,7 @@ import ResponsiveImage from './ResponsiveImage.astro';
 import Button from './Button.astro';
 ---
 <div class="mega" data-mega>
-  <button type="button" class="mega__trigger link-u" aria-expanded="false" aria-controls="mega-rubros" data-mega-trigger>
+  <button type="button" class="mega__trigger" aria-expanded="false" aria-controls="mega-rubros" data-mega-trigger>
     {copy.nav.rubros}
     <svg class="mega__chevron" viewBox="0 0 12 8" width="12" height="8" aria-hidden="true" focusable="false"><path d="M1 1.5 6 6.5l5-5" fill="none" stroke="currentColor" stroke-width="1.5" /></svg>
   </button>
@@ -42,8 +42,11 @@ import Button from './Button.astro';
     padding: 0;
     border: 0;
     background-color: transparent;
+    font-size: var(--fs-small);
     font-weight: 500;
+    color: inherit;
   }
+  .mega__trigger:hover, .mega__trigger[aria-expanded='true'] { color: var(--bordo-700); }
   .mega__chevron { transition: transform var(--dur-fast) var(--ease); }
   .mega__trigger[aria-expanded='true'] .mega__chevron { transform: rotate(180deg); }
 
@@ -51,9 +54,10 @@ import Button from './Button.astro';
     position: absolute;
     inset-inline: 0;
     top: 100%;
-    background: var(--paper);
-    color: var(--fg);
-    border-bottom: var(--hairline) solid var(--line);
+    background: var(--white);
+    color: var(--ink);
+    border-top: var(--hairline) solid var(--line);
+    box-shadow: var(--shadow);
     padding-block: var(--sp-6);
     max-height: calc(100dvh - var(--header-h));
     overflow-y: auto;
@@ -70,9 +74,9 @@ import Button from './Button.astro';
     font-weight: 300;
     letter-spacing: var(--tracking-head);
   }
-  .mega__item.is-active { color: var(--accent); }
+  .mega__item.is-active { color: var(--bordo-700); font-style: italic; }
   .mega__previews { grid-column: 6 / -1; }
   .mega__preview { display: grid; gap: var(--sp-4); justify-items: start; }
-  .mega__preview :global(.rimg) { width: 100%; max-height: 50vh; }
+  .mega__preview :global(.rimg) { width: 100%; max-height: 50vh; border-radius: var(--radius-lg); }
   .mega__phrase { margin: 0; }
 </style>

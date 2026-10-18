@@ -90,6 +90,7 @@ export const site = {
     empresas: '/empresas',
     cotizar: '/empresas#cotizar',
     contacto: '/#contacto',
+    catalogo: '/#catalogo',
     personalizacion: '/#personalizacion',
     marcas: '/#marcas',
     rubrosEmpresas: '/empresas#rubros',

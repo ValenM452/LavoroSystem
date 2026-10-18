@@ -1,19 +1,25 @@
 /**
  * Textos de la landing. Fuente: docs/04_LANDING_ESPECIFICACION.md (la sección se indica en cada bloque).
  * Si 04 no define un texto, va un [[PENDIENTE: …]]. Datos de negocio: src/config/site.ts.
+ * Rediseño: los textos marcados "redactado" son nuevos (sin precios, plazos, mínimos, stock ni números).
  * `*palabra*` = única itálica del titular (ver lib/emphasis.ts).
  */
 import { site, type RubroSlug } from './site';
 
 export const copy = {
-  /** 04 §1 — barra superior (opcional) */
-  topbar: `${site.sinceLabel} en Chilecito, La Rioja · WhatsApp empresas ${site.contact.whatsappEmpresas.label}`,
+  /** 04 §1 — barra superior */
+  topbar: {
+    left: `${site.sinceLabel} en Chilecito, La Rioja`,
+    empresas: 'WhatsApp empresas',
+    local: 'Local',
+  },
 
   /** 04 §1 — navegación */
   nav: {
     tienda: 'Tienda',
     empresas: 'Empresas',
     rubros: 'Rubros',
+    catalogo: 'Catálogo',
     personalizacion: 'Personalización',
     marcas: 'Marcas',
     contacto: 'Contacto',
@@ -107,13 +113,25 @@ export const copy = {
     copyright: '© 2026 LAVORO',
   },
 
-  /** 04 §2 */
+  /** 04 §2 + rediseño: dos caminos de compra (B2C / B2B). Textos de las tarjetas: redactado. */
   hero: {
     eyebrow: `Chilecito · La Rioja · ${site.sinceLabel}`,
     title: 'Ropa de trabajo y uniformes para equipos que *no paran*.',
     lead: 'Indumentaria, calzado de seguridad y uniformes para personas y empresas. Bordado y estampado con tu marca.',
     ctaTienda: 'Ver tienda',
     ctaEmpresas: 'Cotizar para empresas',
+    b2c: { label: 'Para vos', title: 'Comprá en la tienda', text: 'Ropa de trabajo, calzado de seguridad y uniformes.' },
+    b2b: { label: 'Para empresas', title: 'Pedí una cotización', text: 'Equipamos a todo tu personal, con tu marca.' },
+  },
+
+  /** Rediseño: franja de confianza. Solo hechos de 01 y de "Por qué LAVORO" (04 /empresas). */
+  confianza: {
+    items: [
+      { title: site.sinceLabel, text: 'En Chilecito, La Rioja.' },
+      { title: 'Local físico', text: 'Para ver y probar las prendas.' },
+      { title: 'Personalización', text: 'Bordado y estampado con tu marca.' },
+      { title: 'Atención por WhatsApp', text: 'Para personas y empresas.' },
+    ],
   },
 
   /** 04 §3 */
@@ -122,21 +140,46 @@ export const copy = {
     text: 'Asesoramos a quien trabaja por su cuenta y a empresas que necesitan equipar a todo su personal: qué prenda conviene para cada tarea, qué talle pedir y cómo identificarla con tu marca.',
   },
 
-  /** 04 §4 */
+  /** 04 §4 — Catálogo. Descripciones tomadas de 01 §1 ("Qué vende"). Sin stock ni precios: eso vive en la tienda. */
   categorias: {
-    eyebrow: 'Tienda',
+    eyebrow: 'Catálogo',
     title: 'Encontrá lo que tu trabajo *pide*.',
+    lead: 'Elegí una categoría y seguí la compra en la tienda online.',
     verTienda: 'Ver toda la tienda',
+    verCategoria: 'Ver en la tienda',
+    ilustrativa: 'Imagen ilustrativa',
+    descripciones: {
+      pantalones: 'Pantalones cargo y de grafa.',
+      camisas: 'Camisas de trabajo y de grafa.',
+      calzadoDeSeguridad: 'Botines, borcegos y zapatos de seguridad.',
+      overoles: 'Overoles para taller, campo y planta.',
+      elementosDeSeguridad: 'Elementos e indumentaria de seguridad.',
+      salud: 'Uniformes hospitalarios y para consultorios.',
+      gastronomia: 'Uniformes gastronómicos.',
+      colegios: 'Uniformes escolares.',
+    },
   },
 
   /** 04 §5 */
   marcas: {
+    eyebrow: 'Marcas',
     title: 'Marcas que *trabajamos*.',
     pending: 'más marcas',
   },
 
+  /** Rediseño: bloque B2B en la home (titular de 04 /empresas; texto de 04 §3). */
+  empresasHome: {
+    eyebrow: 'Empresas e instituciones',
+    title: 'Indumentaria de trabajo para *todo tu equipo*.',
+    text: 'Asesoramos a empresas que necesitan equipar a todo su personal: qué prenda conviene para cada tarea, qué talle pedir y cómo identificarla con tu marca.',
+    listTitle: 'Qué podemos cotizar',
+    cta: 'Solicitar cotización',
+    more: 'Ver la página para empresas',
+  },
+
   /** 04 §6 — las oraciones de cada columna no están escritas en 04. */
   personalizacion: {
+    eyebrow: 'Personalización',
     title: 'Tu marca en cada *prenda*.',
     // Oraciones redactadas (04 pide una por columna, sin plazos ni mínimos).
     items: [
@@ -215,7 +258,9 @@ export const copy = {
 
   /** 04 §10 — sin texto para el botón que carga el mapa interactivo (ver mapa). */
   local: {
+    eyebrow: 'Visitanos',
     title: 'Local en *Chilecito*.',
+    horarios: 'Horarios',
     waLabel: 'WhatsApp local',
     comoLlegar: 'Cómo llegar',
     escribir: 'Escribir al local',
@@ -224,6 +269,7 @@ export const copy = {
 
   /** 04 §11 */
   cierre: {
+    eyebrow: 'Hablemos',
     title: 'Una respuesta *cercana y clara*.',
     lead: 'Equipá a tu equipo o encontrá tu ropa de trabajo con quien conoce el oficio.',
     cta: 'Hablar con LAVORO',

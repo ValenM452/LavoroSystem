@@ -3,25 +3,27 @@ import Base from '../layouts/Base.astro';
 import { site } from '../config/site';
 import { copy } from '../config/copy';
 import Hero from '../sections/Hero.astro';
-import Declaracion from '../sections/Declaracion.astro';
-import Categorias from '../sections/Categorias.astro';
+import Confianza from '../sections/Confianza.astro';
+import Catalogo from '../sections/Catalogo.astro';
 import Marcas from '../sections/Marcas.astro';
-import Personalizacion from '../sections/Personalizacion.astro';
+import EmpresasHome from '../sections/EmpresasHome.astro';
 import Proceso from '../sections/Proceso.astro';
-import Rubros from '../sections/Rubros.astro';
+import RubrosGrid from '../sections/RubrosGrid.astro';
+import Personalizacion from '../sections/Personalizacion.astro';
 import Cotizar from '../sections/Cotizar.astro';
 import Local from '../sections/Local.astro';
 import Cierre from '../sections/Cierre.astro';
 ---
 
-<Base title={copy.seo.home.title} description={copy.seo.home.description} overlay>
+<Base title={copy.seo.home.title} description={copy.seo.home.description}>
   <Hero />
-  <Declaracion />
-  <Categorias />
+  <Confianza />
+  <Catalogo />
   <Marcas />
-  <Personalizacion />
+  <EmpresasHome />
   <Proceso ctaHref={site.paths.cotizar} />
-  <Rubros />
+  <RubrosGrid />
+  <Personalizacion />
   <Cotizar id="contacto" />
   <Local />
   <Cierre />

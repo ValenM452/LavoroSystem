@@ -1,65 +1,77 @@
-/* Tokens LAVORO — docs/03_SISTEMA_DE_DISENO.md §2–4.
-   Hex provisionales hasta tener el logo en vector. Ajustar --bordo-700 al bordó exacto del logo. */
+/* Tokens LAVORO — rediseño (pedido del dueño): bordó como color principal, blanco de base y dorado ocre de acento.
+   Reemplaza la paleta crema/piedra de docs/03 §2. Hex provisionales hasta tener el logo en vector:
+   ajustar --bordo-700 al bordó exacto del logo y el resto de la escala lo acompaña.
+   Contrastes (AA): blanco sobre bordo-700 ≈ 10.6:1 · gold-300 sobre bordo-700 ≈ 6.7:1 ·
+   gold-700 sobre blanco ≈ 6.2:1 · steel sobre blanco ≈ 6.5:1. El dorado claro NUNCA va como texto sobre blanco. */
 
 :root {
-  /* Marca */
-  --bordo-900: #3E1119;   /* fondos profundos, footer */
-  --bordo-700: #6B1C2A;   /* paneles, CTA primario */
-  --bordo-500: #8E2A3B;   /* hover, acentos */
-  --ink:       #121212;   /* texto principal, negro */
-  --graphite:  #2C2C2C;   /* gris oscuro de marca */
-  --steel:     #5E5E5E;   /* texto secundario sobre claro */
+  /* Marca: bordó */
+  --bordo-950: #2A0B11;   /* footer */
+  --bordo-900: #3E1119;   /* bloques profundos, barra superior */
+  --bordo-700: #6B1C2A;   /* color principal: CTA, paneles */
+  --bordo-500: #8E2A3B;   /* hover */
+  --bordo-100: #EBD9DC;   /* texto secundario sobre bordó */
+  --bordo-050: #FBF6F7;   /* superficie de tarjetas sobre blanco */
 
-  /* Superficies */
-  --paper:     #F4F1EB;   /* fondo base cálido */
-  --paper-2:   #EAE5DC;   /* alternancia de secciones */
-  --stone:     #D9D7D2;   /* reemplazo del celeste de la referencia */
-  --white:     #FFFFFF;
-  --line:      rgba(18,18,18,.14);
-  --line-inv:  rgba(255,255,255,.22);
+  /* Acento: dorado ocre */
+  --gold-300: #E2C27A;    /* acento sobre bordó (texto, números, líneas) */
+  --gold-500: #C9A24A;    /* líneas y detalles decorativos */
+  --gold-700: #7A5C17;    /* acento como texto sobre blanco (eyebrows) */
+
+  /* Neutros */
+  --white:    #FFFFFF;
+  --ink:      #1C1416;    /* texto principal (casi negro cálido) */
+  --steel:    #5E5E5E;    /* texto secundario sobre blanco */
+  --graphite: #2C2C2C;    /* fondo de rellenos de imagen pendientes */
+  --line:     rgba(42, 11, 17, .12);
+  --line-inv: rgba(255, 255, 255, .2);
 
   /* Semánticos */
-  --bg: var(--paper);
+  --bg: var(--white);
   --fg: var(--ink);
   --muted: var(--steel);
   --accent: var(--bordo-700);
   --accent-hover: var(--bordo-500);
-  --on-accent: #FFFFFF;
-  --focus: #C9A227;       /* anillo de foco visible sobre claro y oscuro */
+  --on-accent: var(--white);
+  --eyebrow: var(--gold-700);
+  --focus: #C9A227;       /* anillo de foco (doble, ver --focus-outer) */
 
   /* Overlay para texto sobre foto (AA) */
-  --overlay-photo: linear-gradient(to top, rgba(0,0,0,.6), rgba(0,0,0,0) 60%);
+  --overlay-photo: linear-gradient(to top, rgba(28, 8, 12, .78), rgba(28, 8, 12, .1) 65%);
 
   /* Tipografía */
   --font-display: 'Source Serif 4 Variable', 'Source Serif 4', Georgia, 'Times New Roman', serif;
   --font-sans: 'Geist Variable', 'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
-  --fs-display: clamp(2.6rem, 1.6rem + 4.6vw, 5.6rem);  /* hero */
-  --fs-h2:      clamp(2rem, 1.4rem + 2.6vw, 3.6rem);
-  --fs-h3:      clamp(1.35rem, 1.1rem + 1vw, 1.9rem);
-  --fs-body:    clamp(1rem, .96rem + .2vw, 1.125rem);
+  --fs-display: clamp(2.4rem, 1.5rem + 3.6vw, 4.6rem);
+  --fs-h2:      clamp(1.9rem, 1.4rem + 2vw, 3.1rem);
+  --fs-h3:      clamp(1.25rem, 1.1rem + .6vw, 1.6rem);
+  --fs-body:    clamp(1rem, .96rem + .2vw, 1.0625rem);
+  --fs-lead:    clamp(1.0625rem, 1rem + .3vw, 1.25rem);
   --fs-small:   .875rem;
-  --fs-eyebrow: .8125rem;
-  --lh-tight: 1.04;
-  --lh-head:  1.12;
+  --fs-eyebrow: .78rem;
+  --lh-tight: 1.06;
+  --lh-head:  1.14;
   --lh-body:  1.6;
-  --tracking-head: -0.02em;
-  --tracking-eyebrow: .14em;
+  --tracking-head: -0.015em;
+  --tracking-eyebrow: .16em;
 
   /* Espaciado y grilla */
-  --container: 1320px;
-  --gutter: clamp(16px, 4vw, 48px);
-  --section-y: clamp(56px, 7vw, 112px);   /* compactado (03 decía clamp(72px, 10vw, 160px)) */
+  --container: 1280px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --section-y: clamp(56px, 7vw, 104px);
   --measure: 60ch;
   --cols: 4;              /* mobile */
 
-  /* Radios (sin sombras: la separación es con color y líneas) */
-  --radius: 2px;
+  /* Radios y sombra (una sola, suave, para tarjetas y header al hacer scroll) */
+  --radius: 4px;
+  --radius-lg: 10px;
   --radius-pill: 999px;
+  --shadow: 0 1px 2px rgba(42, 11, 17, .06), 0 10px 28px rgba(42, 11, 17, .08);
 
   /* Componentes */
   --tap: 44px;
-  --header-h: 60px;
+  --header-h: 64px;
 
   /* Movimiento */
   --ease: cubic-bezier(.2,.7,.2,1);
@@ -67,7 +79,7 @@
   --dur-image: 1200ms;
 }
 
-/* ===== Derivados de componentes (no figuran en 03; los breakpoints 768/1024 van literales en @media) ===== */
+/* ===== Derivados de componentes (los breakpoints 768/1024 van literales en @media) ===== */
 :root {
   --hairline: 1px;
   --ring: 2px;
@@ -83,8 +95,9 @@
   --sp-7: 48px;
   --sp-8: 64px;
 
-  --topbar-h: 32px;
+  --topbar-h: var(--tap);
   --eyebrow-line: 24px;
+  --accent-bar: 3px;               /* barra dorada de tarjetas y títulos */
   --fs-btn: .9375rem;
   --fs-tag: .6875rem;
   --btn-pad-y: 12px;
@@ -106,12 +119,12 @@
   --mega-close-delay: 300ms;
   --reveal-shift: 16px;
 
-  --hero-h: min(88svh, 760px);
-  --band-h: min(56vh, 520px);
-  --map-h: 480px;
+  --hero-media-h: clamp(280px, 62vw, 640px);
+  --local-h: 640px;
+  --hero-media-min: 560px;
   --thumb: 64px;
   --check: 1.25rem;
-  --panel-w: 34rem;
+  --panel-w: 30rem;
   --form-col-gap: var(--sp-5);
   --image-zoom-from: 1.06;
 }
@@ -123,6 +136,6 @@
 @media (min-width: 1024px) {
   :root {
     --cols: 12;
-    --header-h: 72px;
+    --header-h: 76px;
   }
 }

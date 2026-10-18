@@ -21,3 +21,16 @@
 | Municipios | `rubros/municipios.jpg` | mardoqueo sagastume | CC BY 3.0 | https://commons.wikimedia.org/wiki/File:Unnamed_Road,_Guatemala_-_panoramio_(19).jpg |
 
 Descartadas en la revisión: una de petroleras (marca "nps" visible en la bomba) y una de municipios (logo "arena" en la mochila).
+
+## Rediseño (hero, personalización, local)
+
+| Uso | Archivo | Autor | Licencia | Origen |
+|---|---|---|---|---|
+| Hero home (misma foto que Construcción) | `src/assets/img/hero/home.jpg` | Daniel Mekis (Boudoirphotographyguide) | CC BY 4.0 | ver Construcción |
+| Hero /empresas (misma foto que Minería) | `hero/empresas.jpg` | Peabody Energy, Inc. | CC BY 3.0 | ver Minería |
+| Personalización (recorte: solo máquinas) | `personalizacion/bordado.jpg` | USAID Pakistan | Dominio público | https://commons.wikimedia.org/wiki/File:Industrial_embroidery_machine.jpg |
+| Local (paisaje de la zona, no es el local) | `local/chilecito.jpg` | Elvis Boaventura | CC BY 3.0 | https://commons.wikimedia.org/wiki/File:Cuesta_Miranda_(Ruta_40_-_La_Rioja)_-_panoramio.jpg |
+
+Descartadas en el rediseño: hero con logos del metro de Moscú en chalecos y banderas; fotos de producto
+de Commons (logos de DeWalt, Caterpillar, Keen y baja calidad). El catálogo usa tarjetas tipográficas
+hasta tener fotos propias de producto (05 §6).

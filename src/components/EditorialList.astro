@@ -17,8 +17,9 @@ const { items, columns = 1 } = Astro.props;
 
 <style>
   .elist { display: grid; column-gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
-  .elist__item { padding-block: var(--sp-5); border-top: var(--hairline) solid var(--line); }
-  .elist__title { margin-bottom: var(--sp-2); }
+  .elist__item { padding: var(--sp-5); margin-bottom: var(--sp-3); border-radius: var(--radius-lg); background: var(--bordo-050); border-left: var(--accent-bar) solid var(--gold-500); }
+  .elist__title { color: var(--bordo-700); }
+  .elist__title + .elist__text { margin-top: var(--sp-2); }
   .elist__text { margin: 0; }
   @media (min-width: 768px) {
     .elist--2, .elist--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }

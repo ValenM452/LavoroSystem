@@ -1,0 +1,42 @@
+---
+/** 04 §4 — Catálogo ("sector de stock" del pedido): 8 categorías que llevan a la tienda. Sin stock ni precios. */
+import { site, type CategoryKey } from '../config/site';
+import { copy } from '../config/copy';
+import { images } from '../config/images';
+import { tiendaTarget } from '../lib/links';
+import SectionHeading from '../components/SectionHeading.astro';
+import CatalogCard from '../components/CatalogCard.astro';
+import Button from '../components/Button.astro';
+
+const keys = ['pantalones', 'camisas', 'calzadoDeSeguridad', 'overoles', 'elementosDeSeguridad', 'salud', 'gastronomia', 'colegios'] as const satisfies readonly CategoryKey[];
+const all = tiendaTarget('catalogo');
+const c = copy.categorias;
+---
+<section class="section section--rule" id="catalogo" aria-labelledby="cat-title">
+  <div class="container cats">
+    <div class="cats__head">
+      <SectionHeading id="cat-title" eyebrow={c.eyebrow} title={c.title} lead={c.lead} />
+      <Button href={all.href} pending={all.pending} variant="secondary" arrow track="click_tienda">{c.verTienda}</Button>
+    </div>
+    <ul role="list" class="cats__grid">
+      {keys.map((k, i) => {
+        const t = tiendaTarget('catalogo', k);
+        return (
+          <li data-reveal>
+            <CatalogCard index={i + 1} label={site.tiendanube.categories[k].label} text={c.descripciones[k]} cta={c.verCategoria} href={t.href} pending={t.pending} img={images.categorias[k]} />
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cats { display: grid; gap: var(--sp-7); }
+  .cats__head { display: grid; gap: var(--sp-5); align-items: end; }
+  .cats__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-3); margin: 0; padding: 0; list-style: none; }
+  @media (min-width: 1024px) {
+    .cats__head { grid-template-columns: 1fr auto; }
+    .cats__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-4); }
+  }
+</style>

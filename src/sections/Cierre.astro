@@ -1,20 +1,20 @@
 ---
-/** 04 §11 — frase serif centrada y un solo botón. Se reutiliza en /empresas. */
+/** 04 §11 — cierre centrado sobre bordó con un solo botón. Se reutiliza en /empresas. */
 import { site } from '../config/site';
 import { copy } from '../config/copy';
 import SectionHeading from '../components/SectionHeading.astro';
 import Button from '../components/Button.astro';
 ---
-<section class="section section--rule" aria-labelledby="cierre-title">
+<section class="section section--bordo" aria-labelledby="cierre-title">
   <div class="container cierre" data-reveal>
-    <SectionHeading id="cierre-title" title={copy.cierre.title} lead={copy.cierre.lead} />
-    <Button href={site.contact.whatsappEmpresas.url} arrow track="click_whatsapp">{copy.cierre.cta}</Button>
+    <SectionHeading id="cierre-title" eyebrow={copy.cierre.eyebrow} title={copy.cierre.title} lead={copy.cierre.lead} />
+    <Button href={site.contact.whatsappEmpresas.url} tone="bordo" arrow track="click_whatsapp">{copy.cierre.cta}</Button>
   </div>
 </section>
 
 <style>
   .cierre { display: grid; justify-items: center; gap: var(--sp-6); text-align: center; }
   .cierre :global(.sh) { justify-items: center; }
-  .cierre :global(.sh__title) { max-width: 14em; }
-  .cierre :global(.sh__lead) { max-width: 44ch; }
+  .cierre :global(.sh__title) { max-width: 16em; }
+  .cierre :global(.sh__lead) { max-width: 44ch; color: var(--bordo-100); }
 </style>

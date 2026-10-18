@@ -18,11 +18,9 @@ interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
-  /** Header transparente sobre el hero. */
-  overlay?: boolean;
 }
 
-const { title = site.name, description = '', noindex = false, overlay = false } = Astro.props;
+const { title = site.name, description = '', noindex = false } = Astro.props;
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 ---
 
@@ -46,7 +44,7 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : un
   </head>
   <body>
     <a class="skip-link" href="#contenido">{copy.a11y.skip}</a>
-    <Header overlay={overlay} />
+    <Header />
     <main id="contenido">
       <slot />
     </main>

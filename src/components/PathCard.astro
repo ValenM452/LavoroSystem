@@ -1,0 +1,56 @@
+---
+/** Tarjeta de camino de compra en el hero: B2C (tienda) o B2B (cotización). Toda la tarjeta es el link. */
+import Pending from './Pending.astro';
+
+interface Props {
+  href: string;
+  pending?: string | null;
+  tone: 'light' | 'bordo';
+  label: string;
+  title: string;
+  text: string;
+  cta: string;
+  track?: string;
+}
+const { href, pending = null, tone, label, title, text, cta, track } = Astro.props;
+const Tag = pending ? 'div' : 'a';
+---
+<Tag class:list={['path', `path--${tone}`]} href={pending ? undefined : href} data-track={track}>
+  <span class="path__label">{label}</span>
+  <span class="path__title">{title}</span>
+  <span class="path__text">{text}</span>
+  <span class="path__cta">{cta} <span aria-hidden="true">→</span></span>
+  {pending && <Pending text={pending} />}
+</Tag>
+
+<style>
+  .path {
+    position: relative;
+    display: grid;
+    align-content: start;
+    gap: var(--sp-2);
+    padding: var(--sp-5);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    border-top: var(--accent-bar) solid var(--gold-500);
+    transition: transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease), background-color var(--dur-fast) var(--ease);
+  }
+  .path--light { background: var(--bordo-050); color: var(--ink); border-inline: var(--hairline) solid var(--line); border-bottom: var(--hairline) solid var(--line); }
+  .path--bordo { background: var(--bordo-700); color: var(--white); --focus-outer: var(--white); }
+  a.path:hover { transform: translateY(calc(-1 * var(--sp-1))); box-shadow: var(--shadow); }
+  a.path--bordo:hover { background: var(--bordo-500); }
+  .path__label {
+    font-size: var(--fs-eyebrow);
+    font-weight: 600;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--gold-700);
+  }
+  .path--bordo .path__label { color: var(--gold-300); }
+  .path__title { font-family: var(--font-display); font-size: var(--fs-h3); line-height: var(--lh-head); }
+  .path__text { font-size: var(--fs-small); color: var(--steel); }
+  .path--bordo .path__text { color: var(--bordo-100); }
+  .path__cta { margin-top: var(--sp-2); font-weight: 600; font-size: var(--fs-small); color: var(--bordo-700); }
+  .path--bordo .path__cta { color: var(--gold-300); }
+  @media (prefers-reduced-motion: reduce) { a.path:hover { transform: none; } }
+</style>

@@ -79,9 +79,9 @@ const pendingText = (v: string) => v.replace(/^\[\[PENDIENTE:\s*/, '').replace(/
 </footer>
 
 <style>
-  .footer { background: var(--bordo-900); color: var(--white); padding-block: var(--sp-8) var(--sp-5); }
+  .footer { background: var(--bordo-950); color: var(--white); padding-block: var(--sp-8) var(--sp-5); border-top: var(--accent-bar) solid var(--gold-500); }
   .footer__grid { display: grid; gap: var(--sp-7) var(--gutter); }
-  .footer__brand p { margin-top: var(--sp-3); color: var(--stone); }
+  .footer__brand p { margin-top: var(--sp-3); color: var(--bordo-100); }
   .footer__logo { text-decoration: none; display: inline-flex; align-items: center; min-height: var(--tap); }
   .footer__title {
     margin-bottom: var(--sp-4);
@@ -90,12 +90,12 @@ const pendingText = (v: string) => v.replace(/^\[\[PENDIENTE:\s*/, '').replace(/
     font-weight: 500;
     letter-spacing: var(--tracking-eyebrow);
     text-transform: uppercase;
-    color: var(--stone);
+    color: var(--gold-300);
   }
   .footer ul { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--sp-1); }
   .footer li { color: var(--white); }
   .footer li a, .footer li > span { display: inline-flex; align-items: center; flex-wrap: wrap; gap: var(--sp-2); min-height: var(--tap); }
-  .footer__legal { margin-top: var(--sp-8); color: var(--stone); font-size: var(--fs-small); }
+  .footer__legal { margin-top: var(--sp-8); color: var(--bordo-100); font-size: var(--fs-small); }
   .footer__legal p { max-width: none; padding-top: var(--sp-5); border-top: var(--hairline) solid var(--line-inv); }
 
   @media (min-width: 768px) {

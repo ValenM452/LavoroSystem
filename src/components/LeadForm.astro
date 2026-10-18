@@ -76,7 +76,7 @@ const fid = (n: string) => `${idPrefix}-${n}`;
 <style>
   .lead__form { display: grid; gap: var(--sp-6); }
   .lead__summary:empty { display: none; }
-  .lead__summary { margin: 0; padding: var(--sp-3) var(--sp-4); border-left: var(--ring) solid var(--accent); background: var(--white); font-weight: 500; }
+  .lead__summary { margin: 0; padding: var(--sp-3) var(--sp-4); border-left: var(--accent-bar) solid var(--accent); border-radius: var(--radius); background: var(--bordo-050); font-weight: 500; }
   .lead__grid { display: grid; gap: var(--sp-6) var(--form-col-gap); }
   .lead__privacy { display: inline-flex; align-items: center; min-height: var(--tap); font-size: var(--fs-small); text-decoration: underline; }
   .lead__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-4); }
@@ -92,20 +92,20 @@ const fid = (n: string) => `${idPrefix}-${n}`;
   .lead :global(.field__control) {
     width: 100%;
     min-height: var(--tap);
-    padding: var(--sp-2) 0;
-    border: 0;
-    border-bottom: var(--hairline) solid var(--ink);
-    border-radius: var(--radius) var(--radius) 0 0;
-    background: transparent;
+    padding: var(--sp-2) var(--sp-3);
+    border: var(--hairline) solid var(--line);
+    border-radius: var(--radius);
+    background: var(--white);
+    transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
   }
+  .lead :global(.field__control:hover) { border-color: var(--steel); }
   .lead :global(.field__control--area) { resize: vertical; }
   .lead :global(.field__control:focus-visible) {
     outline: none;
-    box-shadow: none;
-    border-bottom: var(--ring) solid var(--accent);
-    background: var(--white);
+    border-color: var(--bordo-700);
+    box-shadow: 0 0 0 var(--ring) var(--bordo-700);
   }
-  .lead :global([aria-invalid='true']) { border-bottom-color: var(--accent); }
+  .lead :global([aria-invalid='true']) { border-color: var(--accent); }
   .lead :global(.field__error) { margin: 0; color: var(--accent); font-size: var(--fs-small); font-weight: 500; }
   .lead :global(.field__error:empty) { display: none; }
   .lead :global(.choices) { margin: 0; padding: 0; border: 0; display: grid; gap: var(--sp-2); }

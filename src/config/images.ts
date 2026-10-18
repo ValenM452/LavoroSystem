@@ -72,20 +72,25 @@ const rubros = Object.fromEntries(
 ) as Record<RubroSlug, ImageSlot>;
 
 export const images = {
+  /** Hero: stock ambiental (mismas fuentes que construcción y minería). Reemplazar por fotos propias cuando existan. */
   hero: {
-    home: {
-      desktop: slot('hero/home-desktop', 'foto hero'),
-      mobile: slot('hero/home-mobile', 'foto hero'),
-    },
-    empresas: {
-      desktop: slot('hero/empresas-desktop', 'foto hero empresas'),
-      mobile: slot('hero/empresas-mobile', 'foto hero empresas'),
-    },
+    home: slot('hero/home', null, rubroFotos.construccion.alt, '72% 55%', rubroFotos.construccion.credit),
+    empresas: slot('hero/empresas', null, rubroFotos.mineria.alt, '62% 50%', rubroFotos.mineria.credit),
   },
   categorias,
   rubros,
-  /** Split de Rubros en la home: reutiliza la foto de construcción. */
-  rubrosSplit: rubros.construccion,
-  personalizacion: slot('personalizacion/banda', 'foto personalización'),
-  mapa: slot('local/mapa', 'imagen de mapa'),
+  /** Bloque Empresas de la home. */
+  empresas: rubros.talleres,
+  /** Máquinas bordadoras industriales (recorte sin marcas ni personas). No son del taller de LAVORO. */
+  personalizacion: slot('personalizacion/bordado', null, 'Máquinas bordadoras industriales con hilos de colores', '40% 50%', {
+    author: 'USAID Pakistan',
+    license: 'Dominio público',
+    source: 'https://commons.wikimedia.org/wiki/File:Industrial_embroidery_machine.jpg',
+  }),
+  /** Paisaje de la zona (Cuesta de Miranda, Ruta 40). No es el local: el mapa real queda pendiente de la dirección. */
+  local: slot('local/chilecito', null, 'Cuesta de Miranda, en la Ruta 40, cerca de Chilecito', '50% 60%', {
+    author: 'Elvis Boaventura',
+    license: 'CC BY 3.0',
+    source: 'https://commons.wikimedia.org/wiki/File:Cuesta_Miranda_(Ruta_40_-_La_Rioja)_-_panoramio.jpg',
+  }),
 } as const;

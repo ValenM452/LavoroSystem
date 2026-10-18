@@ -6,8 +6,8 @@
 import Base from '../layouts/Base.astro';
 
 const colors = [
-  'bordo-900', 'bordo-700', 'bordo-500', 'ink', 'graphite', 'steel',
-  'paper', 'paper-2', 'stone', 'white', 'focus',
+  'bordo-950', 'bordo-900', 'bordo-700', 'bordo-500', 'bordo-100', 'bordo-050',
+  'gold-300', 'gold-500', 'gold-700', 'white', 'ink', 'steel', 'focus',
 ];
 const sizes = [
   { token: 'fs-display', cls: 'display', sample: 'Ropa de trabajo para trabajar <em>en serio</em>' },
@@ -16,10 +16,7 @@ const sizes = [
 ];
 ---
 
-<Base title="Tokens — LAVORO (dev)" noindex overlay>
-  <div class="demo-hero">
-    <p class="eyebrow">Demo del header transparente → sólido (hacé scroll)</p>
-  </div>
+<Base title="Tokens — LAVORO (dev)" noindex>
   <div class="container tokens">
     <section class="section">
       <span class="eyebrow">Solo desarrollo</span>
@@ -68,8 +65,8 @@ const sizes = [
         <a class="btn btn--secondary" href="#">Ver tienda</a>
       </div>
       <div class="row on-dark">
-        <a class="btn btn--primary" href="#">Cotizar →</a>
-        <a class="btn btn--secondary" href="#">WhatsApp</a>
+        <a class="btn btn--primary btn--on-bordo" href="#">Cotizar →</a>
+        <a class="btn btn--secondary btn--on-bordo" href="#">WhatsApp</a>
       </div>
     </section>
 
@@ -83,7 +80,6 @@ const sizes = [
 </Base>
 
 <style>
-  .demo-hero { display: flex; align-items: end; min-height: 70vh; padding: var(--sp-8) var(--gutter); background: var(--graphite); color: var(--white); --focus-outer: var(--white); }
   .tokens { padding-bottom: var(--section-y); }
   .block { padding-block: 48px; border-top: 1px solid var(--line); }
   .block > h2 { margin-bottom: 24px; }
@@ -97,12 +93,12 @@ const sizes = [
   .type-row { display: grid; gap: 8px; padding-block: 16px; border-bottom: 1px solid var(--line); }
   .type-row code { font-size: var(--fs-small); color: var(--muted); }
   .row { display: flex; flex-wrap: wrap; gap: 12px; padding: 24px 0; }
-  .on-dark { background: var(--bordo-900); color: var(--white); padding: 24px; }
+  .on-dark { background: var(--bordo-700); padding: var(--sp-5); }
   .demo-grid span {
     display: grid;
     place-items: center;
     min-height: 48px;
-    background: var(--stone);
+    background: var(--bordo-050);
     font-size: var(--fs-small);
   }
   .demo-grid span:nth-child(n + 5) { display: none; }

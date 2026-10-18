@@ -1,26 +1,65 @@
 ---
-/** Hero (04 §2 home · 04 /empresas §1). Foto a sangre con recorte mobile propio; LCP con fetchpriority. */
+/**
+ * Hero partido: texto + caminos de compra a la izquierda, foto a la derecha (04 §2 + rediseño).
+ * Home: dos tarjetas (B2C → tienda, B2B → cotización). /empresas: CTA cotizar + WhatsApp.
+ */
 import { site } from '../config/site';
 import { copy } from '../config/copy';
 import { images } from '../config/images';
 import { tiendaTarget } from '../lib/links';
-import ImageBand from '../components/ImageBand.astro';
+import { emphasis } from '../lib/emphasis';
+import ResponsiveImage from '../components/ResponsiveImage.astro';
+import PathCard from '../components/PathCard.astro';
 import Button from '../components/Button.astro';
+import Eyebrow from '../components/Eyebrow.astro';
 
 interface Props { variant?: 'home' | 'empresas' }
 const { variant = 'home' } = Astro.props;
 const tienda = tiendaTarget('hero');
-const img = images.hero[variant];
+const h = variant === 'home' ? copy.hero : copy.empresas.hero;
+const lead = variant === 'home' ? copy.hero.lead : copy.empresasHome.text;
 ---
-{variant === 'home' && (
-  <ImageBand img={img.desktop} imgMobile={img.mobile} size="hero" as="h1" priority eyebrow={copy.hero.eyebrow} title={copy.hero.title} lead={copy.hero.lead}>
-    <Button href={tienda.href} pending={tienda.pending} track="click_tienda">{copy.hero.ctaTienda}</Button>
-    <Button href={site.paths.cotizar} variant="secondary" tone="dark" arrow>{copy.hero.ctaEmpresas}</Button>
-  </ImageBand>
-)}
-{variant === 'empresas' && (
-  <ImageBand img={img.desktop} imgMobile={img.mobile} size="hero" as="h1" priority eyebrow={copy.empresas.hero.eyebrow} title={copy.empresas.hero.title}>
-    <Button href="#cotizar" arrow>{copy.empresas.hero.cta}</Button>
-    <Button href={site.contact.whatsappEmpresas.url} variant="whatsapp" tone="dark" track="click_whatsapp">{copy.empresas.hero.wa}</Button>
-  </ImageBand>
-)}
+<section class="hero" aria-labelledby="hero-title">
+  <div class="container hero__grid">
+    <div class="hero__copy">
+      <Eyebrow text={h.eyebrow} />
+      <h1 id="hero-title" set:html={emphasis(h.title)} />
+      <p class="lead hero__lead">{lead}</p>
+      {variant === 'home' ? (
+        <div class="hero__paths">
+          <PathCard tone="light" href={tienda.href} pending={tienda.pending} track="click_tienda"
+            label={copy.hero.b2c.label} title={copy.hero.b2c.title} text={copy.hero.b2c.text} cta={copy.hero.ctaTienda} />
+          <PathCard tone="bordo" href={site.paths.cotizar}
+            label={copy.hero.b2b.label} title={copy.hero.b2b.title} text={copy.hero.b2b.text} cta={copy.hero.ctaEmpresas} />
+        </div>
+      ) : (
+        <div class="hero__ctas">
+          <Button href="#cotizar" arrow>{copy.empresas.hero.cta}</Button>
+          <Button href={site.contact.whatsappEmpresas.url} variant="whatsapp" track="click_whatsapp">{copy.empresas.hero.wa}</Button>
+        </div>
+      )}
+    </div>
+    <div class="hero__media">
+      <ResponsiveImage img={images.hero[variant]} sizes="(min-width: 1024px) 45vw, 100vw" widths={[640, 960, 1280, 1600, 2000]} priority />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { padding-block: var(--sp-7) var(--section-y); }
+  .hero__grid { display: grid; gap: var(--sp-7); align-items: stretch; }
+  .hero__copy { display: grid; gap: var(--sp-5); align-content: center; }
+  .hero__copy h1 { max-width: 13em; }
+  .hero__lead { margin: 0; color: var(--steel); max-width: 46ch; }
+  .hero__paths { display: grid; gap: var(--sp-4); margin-top: var(--sp-2); }
+  .hero__ctas { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+  .hero__media { height: var(--hero-media-h); border-radius: var(--radius-lg); overflow: hidden; }
+  @media (min-width: 640px) {
+    .hero__paths { grid-template-columns: 1fr 1fr; }
+  }
+  @media (min-width: 1024px) {
+    .hero { padding-top: var(--sp-8); }
+    .hero__grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--sp-8); }
+    .hero__media { height: auto; min-height: var(--hero-media-min); }
+  }
+</style>

@@ -32,12 +32,11 @@ a { color: inherit; text-underline-offset: .2em; }
   outline-offset: var(--ring-offset);
   box-shadow: 0 0 0 calc(var(--ring-offset) + var(--ring) + var(--ring)) var(--focus-outer);
 }
-.section--ink, .section--bordo, .on-dark { --focus-outer: var(--white); }
 
 /* Tipografía */
 h1, h2, h3, .display, .h2, .h3 {
   font-family: var(--font-display);
-  font-weight: 300;
+  font-weight: 400;
   letter-spacing: var(--tracking-head);
   font-optical-sizing: auto;
   text-wrap: balance;
@@ -45,10 +44,12 @@ h1, h2, h3, .display, .h2, .h3 {
 h1, .display { font-size: var(--fs-display); line-height: var(--lh-tight); }
 h2, .h2 { font-size: var(--fs-h2); line-height: var(--lh-head); }
 h3, .h3 { font-size: var(--fs-h3); line-height: var(--lh-head); }
-h1 em, h2 em, h3 em, .display em, .h2 em, .h3 em { font-style: italic; color: inherit; }
+/* La palabra destacada va en itálica y en bordó (dorado sobre fondos bordó). */
+h1 em, h2 em, h3 em, .display em, .h2 em, .h3 em { font-style: italic; color: var(--em, var(--bordo-700)); }
 p { max-width: var(--measure); text-wrap: pretty; }
 small, .small { font-size: var(--fs-small); }
 .muted { color: var(--muted); }
+.lead { font-size: var(--fs-lead); }
 
 .eyebrow {
   display: inline-flex;
@@ -56,15 +57,16 @@ small, .small { font-size: var(--fs-small); }
   gap: var(--sp-3);
   font-family: var(--font-sans);
   font-size: var(--fs-eyebrow);
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: var(--tracking-eyebrow);
+  color: var(--eyebrow);
 }
 .eyebrow::before {
   content: "";
   width: var(--eyebrow-line);
-  height: var(--hairline);
-  background: currentColor;
+  height: var(--ring);
+  background: var(--gold-500);
 }
 
 /* Contenedor y grilla */
@@ -79,11 +81,21 @@ small, .small { font-size: var(--fs-small); }
   grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
   column-gap: var(--gutter);
 }
+
+/* Secciones: fondos blanco / bordó / bordó profundo. Dos blancas seguidas se separan con una línea. */
 .section { padding-block: var(--section-y); }
-/* Paleta de fondos reducida a paper / bordó / ink. Dos secciones paper seguidas se separan con una línea. */
 .section--rule { border-top: var(--hairline) solid var(--line); }
-.section--ink { background: var(--ink); color: var(--white); }
-.section--bordo { background: var(--bordo-700); color: var(--on-accent); }
+.section--bordo, .section--deep, .on-dark {
+  color: var(--white);
+  --fg: var(--white);
+  --muted: var(--bordo-100);
+  --eyebrow: var(--gold-300);
+  --em: var(--gold-300);
+  --line: var(--line-inv);
+  --focus-outer: var(--white);
+}
+.section--bordo { background: var(--bordo-700); }
+.section--deep { background: var(--bordo-900); }
 
 /* Botones (píldora, mínimo táctil 44 px) */
 .btn {
@@ -97,22 +109,21 @@ small, .small { font-size: var(--fs-small); }
   border: var(--hairline) solid transparent;
   font-family: var(--font-sans);
   font-size: var(--fs-btn);
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.2;
   text-decoration: none;
   transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
 }
 .btn--primary { background: var(--accent); color: var(--on-accent); }
 .btn--primary:hover { background: var(--accent-hover); }
-.btn--secondary { background: transparent; color: inherit; border-color: currentColor; }
-.btn--secondary:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.btn--secondary { background: transparent; color: var(--accent); border-color: var(--accent); }
+.btn--secondary:hover { background: var(--accent); color: var(--on-accent); }
 
-/* Sobre fondos oscuros (ink / foto): el secundario se invierte al hover. */
-.btn--on-dark.btn--secondary:hover,
-.btn--on-bordo.btn--secondary:hover { background: var(--white); color: var(--ink); border-color: var(--white); }
-/* Sobre bordó: el primario bordó no contrasta, se invierte a blanco. */
-.btn--on-bordo.btn--primary { background: var(--white); color: var(--ink); }
-.btn--on-bordo.btn--primary:hover { background: var(--paper-2); }
+/* Sobre bordó o foto: primario dorado, secundario contorno blanco. */
+.btn--on-dark.btn--primary, .btn--on-bordo.btn--primary { background: var(--gold-300); color: var(--bordo-950); }
+.btn--on-dark.btn--primary:hover, .btn--on-bordo.btn--primary:hover { background: var(--white); }
+.btn--on-dark.btn--secondary, .btn--on-bordo.btn--secondary { color: var(--white); border-color: var(--white); }
+.btn--on-dark.btn--secondary:hover, .btn--on-bordo.btn--secondary:hover { background: var(--white); color: var(--bordo-900); }
 .btn__icon { width: 1.125em; height: 1.125em; flex: none; fill: currentColor; }
 
 /* Subrayado que crece de izquierda a derecha (03 §6) */
@@ -130,7 +141,7 @@ small, .small { font-size: var(--fs-small); }
   transition: opacity var(--dur-reveal) var(--ease), transform var(--dur-reveal) var(--ease);
 }
 .js [data-reveal].is-visible { opacity: 1; transform: none; }
-/* Imágenes de ImageBand: escala 1.06 → 1 al entrar (03 §6). */
+/* Imágenes grandes: escala 1.06 → 1 al entrar (03 §6). */
 .js [data-reveal-zoom] img { transform: scale(var(--image-zoom-from)); transition: transform var(--dur-image) var(--ease); }
 .js [data-reveal-zoom].is-visible img { transform: none; }
 

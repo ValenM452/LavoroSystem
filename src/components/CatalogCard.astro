@@ -1,0 +1,56 @@
+---
+/**
+ * Tarjeta de categoría del catálogo. Sin foto propia de producto (05 §6) se muestra tipográfica;
+ * cuando el registro de imágenes tenga la foto real (`pending: null`), la muestra arriba.
+ */
+import type { ImageSlot } from '../config/images';
+import ResponsiveImage from './ResponsiveImage.astro';
+import Pending from './Pending.astro';
+
+interface Props {
+  index: number;
+  label: string;
+  text: string;
+  cta: string;
+  href: string;
+  pending?: string | null;
+  img: ImageSlot;
+}
+const { index, label, text, cta, href, pending = null, img } = Astro.props;
+const Tag = pending ? 'div' : 'a';
+const withPhoto = !img.pending;
+---
+<Tag class:list={['cat', withPhoto && 'cat--photo']} href={pending ? undefined : href} data-track="click_tienda">
+  {withPhoto && <ResponsiveImage img={img} ratio="photo" sizes="(min-width: 1024px) 25vw, 50vw" />}
+  <span class="cat__num" aria-hidden="true">{String(index).padStart(2, '0')}</span>
+  <span class="cat__name">{label}</span>
+  <span class="cat__text">{text}</span>
+  <span class="cat__cta">{cta} <span aria-hidden="true">→</span></span>
+  {pending && <Pending text={pending} />}
+</Tag>
+
+<style>
+  .cat {
+    display: grid;
+    align-content: start;
+    gap: var(--sp-2);
+    height: 100%;
+    padding: var(--sp-4);
+    border: var(--hairline) solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    color: var(--ink);
+    text-decoration: none;
+    transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+  }
+  .cat :global(.pending) { font-size: var(--fs-tag); padding: var(--hairline) var(--sp-1); }
+  .cat :global(.rimg) { margin: calc(-1 * var(--sp-4)) calc(-1 * var(--sp-4)) var(--sp-3); border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+  .cat__num { font-family: var(--font-display); font-style: italic; font-size: var(--fs-h3); color: var(--gold-700); line-height: 1; }
+  .cat__name { font-family: var(--font-display); font-size: var(--fs-h3); line-height: var(--lh-head); margin-top: var(--sp-4); }
+  .cat__text { font-size: var(--fs-small); color: var(--steel); }
+  .cat__cta { margin-top: auto; padding-top: var(--sp-4); font-size: var(--fs-small); font-weight: 600; color: var(--bordo-700); white-space: nowrap; }
+  @media (min-width: 1024px) { .cat { padding: var(--sp-5); } .cat :global(.rimg) { margin: calc(-1 * var(--sp-5)) calc(-1 * var(--sp-5)) var(--sp-3); } }
+  a.cat:hover { background: var(--bordo-700); border-color: var(--bordo-700); color: var(--white); box-shadow: var(--shadow); --focus-outer: var(--white); }
+  a.cat:hover .cat__num, a.cat:hover .cat__cta { color: var(--gold-300); }
+  a.cat:hover .cat__text { color: var(--bordo-100); }
+</style>

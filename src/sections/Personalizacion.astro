@@ -1,26 +1,53 @@
 ---
-/** 04 §6 — banda de foto + 3 columnas de texto (sin íconos) + CTA. */
+/** 04 §6 — Personalización sobre bordó: foto + bordado / estampado / asesoramiento + CTA. */
 import { copy } from '../config/copy';
 import { images } from '../config/images';
 import { personalizacionHref } from '../lib/links';
-import ImageBand from '../components/ImageBand.astro';
-import EditorialList from '../components/EditorialList.astro';
+import { emphasis } from '../lib/emphasis';
+import ResponsiveImage from '../components/ResponsiveImage.astro';
+import Eyebrow from '../components/Eyebrow.astro';
 import Button from '../components/Button.astro';
 import Pending from '../components/Pending.astro';
+
+const p = copy.personalizacion;
 ---
-<div id="personalizacion">
-  <ImageBand img={images.personalizacion} title={copy.personalizacion.title} id="pers" />
-  <div class="section pers">
-    <div class="container pers__body">
-      <EditorialList items={copy.personalizacion.items} columns={3} />
-      <p class="pers__minimos"><Pending text={copy.personalizacion.minimos} /></p>
-      <div><Button href={personalizacionHref} arrow>{copy.personalizacion.cta}</Button></div>
+<section class="section section--bordo" id="personalizacion" aria-labelledby="pers-title">
+  <div class="container grid pers">
+    <div class="pers__media" data-reveal-zoom>
+      <ResponsiveImage img={images.personalizacion} sizes="(min-width: 1024px) 45vw, 100vw" />
+    </div>
+    <div class="pers__copy">
+      <Eyebrow text={p.eyebrow} />
+      <h2 id="pers-title" set:html={emphasis(p.title)} />
+      <ol role="list" class="pers__items">
+        {p.items.map((it, i) => (
+          <li data-reveal>
+            <span class="pers__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <h3 class="pers__title">{it.title}</h3>
+              <p>{it.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <Pending text={p.minimos} />
+      <div><Button href={personalizacionHref} tone="bordo" arrow>{p.cta}</Button></div>
     </div>
   </div>
-</div>
+</section>
 
 <style>
-  .pers { padding-top: var(--sp-7); }
-  .pers__body { display: grid; gap: var(--sp-6); }
-  .pers__minimos { margin: 0; }
+  .pers { row-gap: var(--sp-7); align-items: center; }
+  .pers__media, .pers__copy { grid-column: 1 / -1; }
+  .pers__media { aspect-ratio: var(--ratio-photo); border-radius: var(--radius-lg); overflow: hidden; }
+  .pers__copy { display: grid; gap: var(--sp-5); justify-items: start; }
+  .pers__items { display: grid; gap: var(--sp-4); width: 100%; margin: 0; padding: 0; list-style: none; }
+  .pers__items li { display: grid; grid-template-columns: var(--sp-7) 1fr; gap: var(--sp-3); padding-top: var(--sp-4); border-top: var(--hairline) solid var(--line-inv); }
+  .pers__num { font-family: var(--font-display); font-style: italic; font-size: var(--fs-h3); color: var(--gold-300); }
+  .pers__title { margin-bottom: var(--sp-1); }
+  .pers__items p { margin: 0; color: var(--bordo-100); }
+  @media (min-width: 1024px) {
+    .pers__media { grid-column: 1 / span 6; aspect-ratio: var(--ratio-tile); }
+    .pers__copy { grid-column: 8 / -1; }
+  }
 </style>

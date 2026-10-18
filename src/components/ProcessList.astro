@@ -1,5 +1,5 @@
 ---
-/** Pasos numerados 01–04, número en serif itálica, separadores --line (03 §5). */
+/** Pasos numerados 01–04: número en serif itálica dorada, en fila desde 1024 px (03 §5, rediseño). */
 import Pending from './Pending.astro';
 
 interface Step { title: string; text: string; pending?: string }
@@ -10,34 +10,18 @@ const { steps } = Astro.props;
   {steps.map((s, i) => (
     <li class="process__step" data-reveal>
       <span class="process__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-      <div>
-        <h3 class="process__title">{s.title}</h3>
-        <p class="process__text">{s.text} {s.pending && <Pending text={s.pending} />}</p>
-      </div>
+      <h3 class="process__title">{s.title}</h3>
+      <p class="process__text">{s.text} {s.pending && <Pending text={s.pending} />}</p>
     </li>
   ))}
 </ol>
 
 <style>
-  .process { margin: 0; padding: 0; list-style: none; }
-  .process__step {
-    display: grid;
-    grid-template-columns: var(--sp-8) 1fr;
-    gap: var(--sp-4);
-    padding-block: var(--sp-5);
-    border-top: var(--hairline) solid var(--line);
-  }
-  .process__step:last-child { border-bottom: var(--hairline) solid var(--line); }
-  .process__num {
-    font-family: var(--font-display);
-    font-style: italic;
-    font-weight: 300;
-    font-size: var(--fs-h3);
-    line-height: var(--lh-head);
-  }
-  .process__title { margin-bottom: var(--sp-2); }
-  .process__text { margin: 0; }
-  @media (min-width: 768px) {
-    .process__step { grid-template-columns: calc(var(--sp-8) + var(--sp-6)) 1fr; }
-  }
+  .process { display: grid; gap: var(--sp-4); margin: 0; padding: 0; list-style: none; counter-reset: step; }
+  .process__step { display: grid; align-content: start; gap: var(--sp-2); padding-top: var(--sp-5); border-top: var(--ring) solid var(--gold-500); }
+  .process__num { font-family: var(--font-display); font-style: italic; font-size: var(--fs-h2); line-height: 1; color: var(--gold-300); }
+  .process__title { margin-top: var(--sp-2); }
+  .process__text { margin: 0; color: var(--muted); }
+  @media (min-width: 640px) { .process { grid-template-columns: 1fr 1fr; column-gap: var(--gutter); row-gap: var(--sp-7); } }
+  @media (min-width: 1024px) { .process { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 </style>

@@ -1,7 +1,7 @@
 ---
 /**
- * 04 §10 — panel ink superpuesto sobre mapa ancho. Mapa = imagen estática;
- * el iframe de Google Maps se carga solo al hacer click (cuando exista la dirección).
+ * 04 §10 — tarjeta del local sobre una foto de la zona (Cuesta de Miranda). La foto NO es el local.
+ * El iframe de Google Maps se carga solo al hacer click (cuando exista la dirección).
  */
 import { site } from '../config/site';
 import { copy } from '../config/copy';
@@ -17,24 +17,21 @@ const maps = externalTarget(c.mapsUrl);
 const embedReady = !isPending(c.mapsEmbedUrl);
 ---
 <section class="local" aria-labelledby="local-title">
-  <div class="local__map" data-map>
-    <ResponsiveImage img={images.mapa} sizes="100vw" widths={[480, 800, 1200, 1600]} hideTag />
-    {images.mapa.pending && <Pending text={images.mapa.pending} class="local__tag" />}
-    {embedReady && (
-      <button type="button" class="btn btn--secondary local__load" data-map-load={c.mapsEmbedUrl}>{copy.local.cargarMapa}</button>
-    )}
+  <div class="local__media" data-map data-reveal-zoom>
+    <ResponsiveImage img={images.local} sizes="100vw" widths={[640, 960, 1440, 2000]} />
   </div>
   <div class="container local__wrap">
-    <div class="local__panel section--ink" data-reveal>
-      <SectionHeading id="local-title" title={copy.local.title} />
+    <div class="local__card" data-reveal>
+      <SectionHeading id="local-title" eyebrow={copy.local.eyebrow} title={copy.local.title} />
       <ul role="list" class="local__data">
-        <li>{isPending(c.address) ? <Pending text={pendingLabel(c.address)} /> : c.address}</li>
-        <li>{isPending(c.hours) ? <Pending text={pendingLabel(c.hours)} /> : c.hours}</li>
-        <li>{copy.local.waLabel}: <a class="link-u" href={c.whatsappLocal.url}>{c.whatsappLocal.label}</a></li>
+        <li><span class="local__k">{copy.form.datosDireccion}</span>{isPending(c.address) ? <Pending text={pendingLabel(c.address)} /> : c.address}</li>
+        <li><span class="local__k">{copy.local.horarios}</span>{isPending(c.hours) ? <Pending text={pendingLabel(c.hours)} /> : c.hours}</li>
+        <li><span class="local__k">{copy.local.waLabel}</span><a class="link-u" href={c.whatsappLocal.url}>{c.whatsappLocal.label}</a></li>
       </ul>
       <div class="local__ctas">
-        <Button href={maps.href} pending={maps.pending} tone="dark" variant="secondary" external>{copy.local.comoLlegar}</Button>
-        <Button href={c.whatsappLocal.url} variant="whatsapp" tone="dark">{copy.local.escribir}</Button>
+        <Button href={c.whatsappLocal.url} variant="whatsapp" track="click_whatsapp">{copy.local.escribir}</Button>
+        <Button href={maps.href} pending={maps.pending} variant="secondary" external>{copy.local.comoLlegar}</Button>
+        {embedReady && <button type="button" class="btn btn--secondary" data-map-load={c.mapsEmbedUrl}>{copy.local.cargarMapa}</button>}
       </div>
     </div>
   </div>
@@ -48,32 +45,26 @@ const embedReady = !isPending(c.mapsEmbedUrl);
       frame.title = document.getElementById('local-title')?.textContent ?? '';
       frame.loading = 'lazy';
       frame.className = 'local__iframe';
-      btn.closest('[data-map]')?.replaceChildren(frame);
+      document.querySelector('[data-map]')?.replaceChildren(frame);
       frame.focus();
     });
   });
 </script>
 
 <style>
-  .local { background: var(--ink); color: var(--white); }
-  .local__map { position: relative; aspect-ratio: var(--ratio-photo); }
-  .local__map :global(.local__iframe) { width: 100%; height: 100%; border: 0; }
-  .local :global(.local__tag) { position: absolute; top: var(--sp-3); right: var(--gutter); }
-  .local__load { position: absolute; right: var(--gutter); bottom: var(--sp-4); background: var(--white); }
-  .local__wrap { padding-bottom: var(--section-y); }
-  .local__panel { display: grid; gap: var(--sp-5); padding-block: var(--sp-7) 0; }
+  .local { position: relative; }
+  .local__media { aspect-ratio: var(--ratio-wide); overflow: hidden; }
+  .local__media :global(.local__iframe) { width: 100%; height: 100%; border: 0; }
+  .local__wrap { position: relative; margin-top: calc(-1 * var(--sp-8)); padding-bottom: var(--section-y); }
+  .local__card { display: grid; gap: var(--sp-4); padding: var(--sp-5); border-radius: var(--radius-lg); background: var(--white); box-shadow: var(--shadow); border-top: var(--accent-bar) solid var(--gold-500); }
   .local__data { display: grid; gap: var(--sp-3); margin: 0; padding: 0; list-style: none; }
+  .local__data li { display: grid; gap: var(--sp-1); justify-items: start; }
+  .local__k { font-size: var(--fs-eyebrow); font-weight: 600; letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: var(--gold-700); }
   .local__data a { display: inline-flex; align-items: center; min-height: var(--tap); }
   .local__ctas { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
-
-  @media (min-width: 768px) {
-    .local__map { aspect-ratio: var(--ratio-wide); }
-    .local__panel { position: relative; margin-top: calc(-1 * var(--sp-8)); padding: var(--sp-7); max-width: var(--panel-w); }
-  }
   @media (min-width: 1024px) {
-    .local { position: relative; display: grid; }
-    .local__map { aspect-ratio: auto; height: var(--map-h); }
-    .local__wrap { position: absolute; inset: 0; display: flex; align-items: center; padding-bottom: 0; pointer-events: none; }
-    .local__panel { margin-top: 0; width: calc(4 * (100% - 11 * var(--gutter)) / 12 + 3 * var(--gutter)); max-width: none; pointer-events: auto; }
+    .local__media { aspect-ratio: auto; height: var(--local-h); }
+    .local__wrap { position: absolute; inset: 0; display: flex; align-items: center; margin: 0 auto; padding-bottom: 0; pointer-events: none; }
+    .local__card { width: var(--panel-w); max-width: 100%; pointer-events: auto; }
   }
 </style>

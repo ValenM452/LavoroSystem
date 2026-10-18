@@ -1,32 +1,46 @@
 ---
-/** 04 §5 — reemplaza "Clientes que confían": wordmarks en texto, sin logos. */
+/** 04 §5 — reemplaza "Clientes que confían": wordmarks en texto (sin logos hasta tenerlos autorizados). */
 import { site } from '../config/site';
 import { copy } from '../config/copy';
-import { emphasis } from '../lib/emphasis';
+import SectionHeading from '../components/SectionHeading.astro';
 import Pending from '../components/Pending.astro';
 ---
-<section class="section section--rule" id="marcas" aria-labelledby="marcas-title">
+<section class="section section--bordo" id="marcas" aria-labelledby="marcas-title">
   <div class="container grid marcas">
-    <h2 id="marcas-title" class="marcas__title" data-reveal set:html={emphasis(copy.marcas.title)} />
-    <ul role="list" class="marcas__list" data-reveal>
-      {site.brands.map((b) => <li class="marcas__brand">{b}</li>)}
-      <li class="marcas__pending"><Pending text={copy.marcas.pending} /></li>
-    </ul>
+    <SectionHeading id="marcas-title" class="marcas__head" eyebrow={copy.marcas.eyebrow} title={copy.marcas.title} />
+    <div class="marcas__body" data-reveal>
+      <ul role="list" class="marcas__list">
+        {site.brands.map((b) => <li class="marcas__brand">{b}</li>)}
+      </ul>
+      <Pending text={copy.marcas.pending} />
+    </div>
   </div>
 </section>
 
 <style>
   .marcas { row-gap: var(--sp-6); align-items: center; }
-  .marcas__title, .marcas__list { grid-column: 1 / -1; }
-  .marcas__list { display: grid; margin: 0; padding: 0; list-style: none; }
-  .marcas__list li { display: flex; align-items: center; min-height: var(--tap); padding-block: var(--sp-3); border-top: var(--hairline) solid var(--line); }
-  .marcas__brand { font-weight: 600; text-transform: uppercase; letter-spacing: var(--tracking-eyebrow); color: var(--steel); }
-  @media (min-width: 768px) {
-    .marcas__list { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); }
+  .marcas :global(.marcas__head), .marcas__body { grid-column: 1 / -1; }
+  .marcas__body { display: grid; gap: var(--sp-4); justify-items: start; }
+  .marcas__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; margin: 0; padding: 0; list-style: none; border-top: var(--hairline) solid var(--line-inv); border-left: var(--hairline) solid var(--line-inv); }
+  .marcas__brand {
+    display: grid;
+    place-items: center;
+    min-height: calc(var(--sp-8) + var(--sp-6));
+    padding: var(--sp-4);
+    border-right: var(--hairline) solid var(--line-inv);
+    border-bottom: var(--hairline) solid var(--line-inv);
+    font-weight: 700;
+    font-size: var(--fs-h3);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    text-align: center;
+    line-height: var(--lh-head);
   }
   @media (min-width: 1024px) {
-    .marcas__title { grid-column: 1 / span 4; }
-    .marcas__list { grid-column: 5 / -1; display: flex; flex-wrap: wrap; }
-    .marcas__list li { border-top: 0; padding: 0 var(--sp-5); border-left: var(--hairline) solid var(--line); }
+    .marcas :global(.marcas__head) { grid-column: 1 / span 4; }
+    .marcas__body { grid-column: 6 / -1; }
+  }
+  @media (min-width: 1280px) {
+    .marcas__list { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   }
 </style>
