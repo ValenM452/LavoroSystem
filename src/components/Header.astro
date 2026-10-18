@@ -1,0 +1,107 @@
+---
+import { site } from '../config/site';
+import { copy } from '../config/copy';
+import { tiendaTarget } from '../lib/links';
+import Logo from './Logo.astro';
+import Button from './Button.astro';
+import MegaMenu from './MegaMenu.astro';
+import MobileMenu from './MobileMenu.astro';
+
+interface Props {
+  /** Transparente sobre la foto del hero hasta salir del tope (04 §1). */
+  overlay?: boolean;
+}
+const { overlay = false } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const tienda = tiendaTarget('nav');
+---
+<div class="topbar on-dark">
+  <div class="container topbar__inner">{copy.topbar}</div>
+</div>
+<div class="sentinel" data-header-sentinel aria-hidden="true"></div>
+<header class="header" data-header data-overlay={overlay ? '' : undefined}>
+  <div class="container header__bar">
+    <a class="header__logo" href={site.paths.home} aria-label={copy.a11y.logoLabel}><Logo /></a>
+
+    <nav class="header__nav" aria-label={copy.a11y.principal}>
+      <ul role="list">
+        <li>
+          <a class:list={['link-u', tienda.pending && 'is-pending']} href={tienda.href} aria-disabled={tienda.pending ? 'true' : undefined} data-pending={tienda.pending ?? undefined} title={tienda.pending ? `[[PENDIENTE: ${tienda.pending}]]` : undefined}>{copy.nav.tienda} ↗</a>
+        </li>
+        <li><a class="link-u" href={site.paths.empresas} aria-current={path === site.paths.empresas ? 'page' : undefined}>{copy.nav.empresas}</a></li>
+        <li><MegaMenu /></li>
+        <li><a class="link-u" href={site.paths.personalizacion}>{copy.nav.personalizacion}</a></li>
+        <li><a class="link-u" href={site.paths.marcas}>{copy.nav.marcas}</a></li>
+        <li><a class="link-u" href={site.paths.contacto}>{copy.nav.contacto}</a></li>
+      </ul>
+    </nav>
+
+    <div class="header__actions">
+      <Button class="header__cta" href={site.paths.cotizar}>{copy.nav.cotizar}</Button>
+      <button type="button" class="header__burger" aria-expanded="false" aria-haspopup="dialog" data-mobile-open aria-label={copy.nav.abrirMenu}>
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M3 7h18M3 12h18M3 17h18" stroke="currentColor" stroke-width="1.5" fill="none" /></svg>
+      </button>
+    </div>
+  </div>
+</header>
+<MobileMenu />
+
+<script>
+  import '../lib/header';
+  import '../lib/nav';
+</script>
+
+<style>
+  .topbar { display: none; background: var(--ink); color: var(--white); font-size: var(--fs-small); }
+  .topbar__inner { display: flex; align-items: center; min-height: var(--topbar-h); }
+  @media (min-width: 768px) { .topbar { display: block; } }
+
+  .sentinel { position: absolute; top: 0; left: 0; width: var(--hairline); height: var(--sp-7); pointer-events: none; }
+
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    height: var(--header-h);
+    background: var(--paper);
+    color: var(--fg);
+    border-bottom: var(--hairline) solid var(--line);
+    transition: background-color var(--dur-menu) var(--ease), color var(--dur-menu) var(--ease), border-color var(--dur-menu) var(--ease);
+  }
+  /* Sin JS el header queda sólido. Con JS y `overlay`, queda sobre la foto hasta hacer scroll. */
+  :global(.js) .header[data-overlay] { margin-bottom: calc(-1 * var(--header-h)); }
+  :global(.js) .header[data-overlay]:not(.is-solid):not(.has-mega) {
+    background: transparent;
+    color: var(--white);
+    border-bottom-color: transparent;
+    --focus-outer: var(--white);
+  }
+  /* 01 §5: un solo CTA primario por viewport. Sobre el hero lo cubre el CTA del hero. */
+  :global(.js) .header[data-overlay]:not(.is-solid):not(.has-mega) :global(.header__cta) { visibility: hidden; }
+
+  .header__bar { display: flex; align-items: center; gap: var(--sp-5); height: 100%; }
+  .header__logo { text-decoration: none; display: inline-flex; align-items: center; min-height: var(--tap); }
+  .header__actions { display: flex; align-items: center; gap: var(--sp-2); margin-left: auto; }
+  .header__burger {
+    display: grid;
+    place-items: center;
+    width: var(--tap);
+    height: var(--tap);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+  }
+
+  .header__nav { display: none; }
+  .header__nav ul { display: flex; align-items: center; gap: var(--sp-5); margin: 0; padding: 0; list-style: none; }
+  .header__nav a { display: inline-flex; align-items: center; min-height: var(--tap); font-weight: 500; }
+  .header__nav a[aria-current='page'] { background-size: 100% var(--hairline); }
+  .header__nav a.is-pending { text-decoration: underline dashed; text-underline-offset: var(--sp-1); }
+
+  @media (min-width: 1024px) {
+    .header__nav { display: block; margin-inline: auto; }
+    .header__actions { margin-left: 0; }
+    .header__burger { display: none; }
+  }
+</style>

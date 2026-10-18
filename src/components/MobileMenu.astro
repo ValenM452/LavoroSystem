@@ -1,0 +1,117 @@
+---
+/** Menú de celular a pantalla completa: <dialog> modal. Lógica en src/lib/nav.ts. */
+import { site } from '../config/site';
+import { copy } from '../config/copy';
+import { rubroHref, tiendaTarget } from '../lib/links';
+import Logo from './Logo.astro';
+import Button from './Button.astro';
+import Pending from './Pending.astro';
+
+const tienda = tiendaTarget('menu_celular');
+const link = (href: string, label: string) => ({ href, label });
+const simple = [
+  link(site.paths.empresas, copy.nav.empresas),
+];
+const after = [
+  link(site.paths.personalizacion, copy.nav.personalizacion),
+  link(site.paths.marcas, copy.nav.marcas),
+  link(site.paths.contacto, copy.nav.contacto),
+];
+---
+<dialog class="mm on-dark" data-mobile-menu aria-label="Menú">
+  <div class="mm__top">
+    <a class="mm__logo" href="/" aria-label={copy.a11y.logoLabel}><Logo /></a>
+    <button type="button" class="mm__close" data-mobile-close aria-label={copy.nav.cerrarMenu}>
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M5 5l14 14M19 5 5 19" stroke="currentColor" stroke-width="1.5" fill="none" /></svg>
+    </button>
+  </div>
+
+  <nav class="mm__nav" aria-label={copy.a11y.principal}>
+    <ul role="list">
+      <li>
+        {tienda.pending ? (
+          <span class="mm__link is-pending">{copy.nav.tienda} ↗ <Pending text={tienda.pending} /></span>
+        ) : (
+          <a class="mm__link" href={tienda.href}>{copy.nav.tienda} ↗</a>
+        )}
+      </li>
+      {simple.map((l) => <li><a class="mm__link" href={l.href}>{l.label}</a></li>)}
+      <li>
+        <details class="mm__details">
+          <summary class="mm__link">{copy.nav.rubros}</summary>
+          <ul role="list" class="mm__sub">
+            {site.rubros.map((r) => <li><a href={rubroHref(r.slug)}>{r.label}</a></li>)}
+          </ul>
+        </details>
+      </li>
+      {after.map((l) => <li><a class="mm__link" href={l.href}>{l.label}</a></li>)}
+    </ul>
+  </nav>
+
+  <div class="mm__ctas">
+    <Button href={site.paths.cotizar} tone="dark" arrow>{copy.nav.cotizar}</Button>
+    <Button href={site.contact.whatsappEmpresas.url} variant="whatsapp" tone="dark">{copy.nav.whatsapp}</Button>
+  </div>
+</dialog>
+
+<style>
+  .mm {
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0 var(--gutter) var(--sp-6);
+    border: 0;
+    background: var(--bordo-900);
+    color: var(--white);
+    overflow-y: auto;
+    z-index: var(--z-menu);
+  }
+  .mm[open] { display: flex; flex-direction: column; }
+  .mm__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: var(--header-h);
+    border-bottom: var(--hairline) solid var(--line-inv);
+  }
+  .mm__logo { text-decoration: none; display: inline-flex; align-items: center; min-height: var(--tap); }
+  .mm__close {
+    display: grid;
+    place-items: center;
+    width: var(--tap);
+    height: var(--tap);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+  }
+  .mm__nav { flex: 1; padding-block: var(--sp-5); }
+  .mm__nav ul { margin: 0; padding: 0; list-style: none; }
+  .mm__nav > ul > li { border-bottom: var(--hairline) solid var(--line-inv); }
+  .mm__link {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+    min-height: var(--tap);
+    padding-block: var(--sp-3);
+    font-family: var(--font-display);
+    font-size: var(--fs-h2);
+    font-weight: 300;
+    line-height: var(--lh-head);
+    letter-spacing: var(--tracking-head);
+    text-decoration: none;
+    list-style: none;
+    cursor: pointer;
+  }
+  .mm__link::-webkit-details-marker { display: none; }
+  .mm__details summary::after { content: '+'; margin-left: auto; font-family: var(--font-sans); }
+  .mm__details[open] summary::after { content: '–'; }
+  .mm__sub { padding: 0 0 var(--sp-4); display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--gutter); }
+  .mm__sub a { display: flex; align-items: center; min-height: var(--tap); text-decoration: none; }
+  .mm__ctas { display: grid; gap: var(--sp-3); justify-items: start; padding-top: var(--sp-5); }
+  .mm::backdrop { background: var(--bordo-900); }
+</style>

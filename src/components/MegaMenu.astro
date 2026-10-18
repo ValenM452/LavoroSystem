@@ -1,0 +1,79 @@
+---
+/** Mega menú "Rubros" (solo desktop ≥ 1024 px). Lógica en src/lib/nav.ts. */
+import { site } from '../config/site';
+import { copy } from '../config/copy';
+import { images } from '../config/images';
+import { rubroHref } from '../lib/links';
+import ResponsiveImage from './ResponsiveImage.astro';
+import Pending from './Pending.astro';
+import Button from './Button.astro';
+---
+<div class="mega" data-mega>
+  <button type="button" class="mega__trigger link-u" aria-expanded="false" aria-controls="mega-rubros" data-mega-trigger>
+    {copy.nav.rubros}
+    <svg class="mega__chevron" viewBox="0 0 12 8" width="12" height="8" aria-hidden="true" focusable="false"><path d="M1 1.5 6 6.5l5-5" fill="none" stroke="currentColor" stroke-width="1.5" /></svg>
+  </button>
+
+  <div class="mega__panel" id="mega-rubros" data-mega-panel hidden>
+    <div class="container grid mega__inner">
+      <ul role="list" class="mega__list">
+        {site.rubros.map((r) => (
+          <li><a class="mega__item link-u" href={rubroHref(r.slug)} data-mega-item={r.slug}>{r.label}</a></li>
+        ))}
+      </ul>
+      <div class="mega__previews">
+        {site.rubros.map((r) => (
+          <div class="mega__preview" data-mega-preview={r.slug} hidden>
+            <ResponsiveImage img={images.rubros[r.slug]} ratio="photo" sizes="(min-width: 1024px) 50vw, 0px" widths={[480, 800, 1200]} />
+            <p class="mega__phrase"><Pending text={copy.mega.frase(r.label)} /></p>
+            <Button href={rubroHref(r.slug)} variant="secondary" arrow>{copy.mega.cotizarPara(r.label)}</Button>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .mega__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    min-height: var(--tap);
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+    font-weight: 500;
+  }
+  .mega__chevron { transition: transform var(--dur-fast) var(--ease); }
+  .mega__trigger[aria-expanded='true'] .mega__chevron { transform: rotate(180deg); }
+
+  .mega__panel {
+    position: absolute;
+    inset-inline: 0;
+    top: 100%;
+    background: var(--paper);
+    color: var(--fg);
+    border-bottom: var(--hairline) solid var(--line);
+    padding-block: var(--sp-6);
+    max-height: calc(100dvh - var(--header-h));
+    overflow-y: auto;
+  }
+  .mega__inner { align-items: start; row-gap: var(--sp-5); }
+  .mega__list { grid-column: 1 / span 4; margin: 0; padding: 0; list-style: none; }
+  .mega__list li + li { border-top: var(--hairline) solid var(--line); }
+  .mega__item {
+    display: inline-block;
+    padding-block: var(--sp-2);
+    min-height: var(--tap);
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    font-weight: 300;
+    letter-spacing: var(--tracking-head);
+  }
+  .mega__item.is-active { color: var(--accent); }
+  .mega__previews { grid-column: 6 / -1; }
+  .mega__preview { display: grid; gap: var(--sp-4); justify-items: start; }
+  .mega__preview :global(.rimg) { width: 100%; max-height: 50vh; }
+  .mega__phrase { margin: 0; }
+</style>

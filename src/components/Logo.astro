@@ -1,0 +1,16 @@
+---
+/** Wordmark tipográfico temporal (01 §3: no hay logo vectorial todavía). */
+import { site } from '../config/site';
+---
+<span class="logo">{site.name}</span>
+
+<style>
+  .logo {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: var(--fs-h3);
+    letter-spacing: var(--tracking-eyebrow);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+</style>

@@ -67,6 +67,46 @@
   --dur-image: 1200ms;
 }
 
+/* ===== Derivados de componentes (no figuran en 03; los breakpoints 768/1024 van literales en @media) ===== */
+:root {
+  --hairline: 1px;
+  --ring: 2px;
+  --ring-offset: 2px;
+  --focus-outer: var(--ink);       /* anillo doble: dorado + borde oscuro (claro) o blanco (oscuro) */
+
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+
+  --topbar-h: 32px;
+  --eyebrow-line: 24px;
+  --fs-btn: .9375rem;
+  --btn-pad-y: 12px;
+  --btn-pad-x: 22px;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --ratio-tile: 4 / 5;
+  --ratio-photo: 4 / 3;
+  --ratio-wide: 16 / 9;
+  --ratio-square: 1 / 1;
+
+  --z-header: 50;
+  --z-menu: 60;
+  --z-skip: 70;
+
+  --dur-fast: 200ms;
+  --dur-menu: 250ms;
+  --mega-open-delay: 150ms;
+  --mega-close-delay: 300ms;
+  --reveal-shift: 16px;
+  --image-zoom-from: 1.06;
+}
+
 @media (min-width: 768px) {
   :root { --cols: 6; }
 }

@@ -1,7 +1,7 @@
 ---
 /**
- * Layout base mínimo (T01): fuentes, tokens y estilos base.
- * SEO completo (canonical, OG), header y footer llegan en T02.
+ * Layout base: fuentes, tokens, SEO (title, description, canonical, OG), header y footer.
+ * Tracking (GA4 / Pixel) llega en T09.
  */
 import '@fontsource-variable/source-serif-4/opsz.css';
 import '@fontsource-variable/source-serif-4/opsz-italic.css';
@@ -10,14 +10,20 @@ import serifLatin from '@fontsource-variable/source-serif-4/files/source-serif-4
 import '../styles/tokens.css';
 import '../styles/base.css';
 import { site } from '../config/site';
+import { copy } from '../config/copy';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
+  /** Header transparente sobre el hero. */
+  overlay?: boolean;
 }
 
-const { title = site.name, description = '', noindex = false } = Astro.props;
+const { title = site.name, description = '', noindex = false, overlay = false } = Astro.props;
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 ---
 
 <!doctype html>
@@ -28,9 +34,25 @@ const { title = site.name, description = '', noindex = false } = Astro.props;
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     {noindex && <meta name="robots" content="noindex" />}
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    {canonical && <meta property="og:url" content={canonical} />}
     <link rel="preload" href={serifLatin} as="font" type="font/woff2" crossorigin />
+    <script is:inline>document.documentElement.classList.add('js');</script>
   </head>
   <body>
-    <slot />
+    <a class="skip-link" href="#contenido">{copy.a11y.skip}</a>
+    <Header overlay={overlay} />
+    <main id="contenido">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      import '../lib/reveal';
+    </script>
   </body>
 </html>

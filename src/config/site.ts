@@ -64,7 +64,38 @@ export const site = {
   },
 
   dataFiscal: '[[PENDIENTE: QR Data Fiscal]]',
+  defensaConsumidorUrl: '[[PENDIENTE: URL Defensa del Consumidor]]',
+
+  /** Rubros B2B (01 §6). `label` = corto (menús, grillas); `longLabel` = completo (select del formulario). */
+  rubros: [
+    { slug: 'mineria',       label: 'Minería',         longLabel: 'Minería' },
+    { slug: 'petroleras',    label: 'Petroleras',      longLabel: 'Petroleras' },
+    { slug: 'campos-fincas', label: 'Campos y fincas', longLabel: 'Campos y fincas' },
+    { slug: 'bodegas',       label: 'Bodegas',         longLabel: 'Bodegas' },
+    { slug: 'construccion',  label: 'Construcción',    longLabel: 'Construcción y corralones' },
+    { slug: 'talleres',      label: 'Talleres',        longLabel: 'Talleres mecánicos' },
+    { slug: 'salud',         label: 'Salud',           longLabel: 'Salud (hospitales, clínicas, consultorios)' },
+    { slug: 'gastronomia',   label: 'Gastronomía',     longLabel: 'Gastronomía' },
+    { slug: 'colegios',      label: 'Colegios',        longLabel: 'Colegios' },
+    { slug: 'municipios',    label: 'Municipios',      longLabel: 'Municipios e instituciones' },
+  ],
+  rubroOtro: { slug: 'otro', label: 'Otro', longLabel: 'Otras empresas' },
+
+  /** Rutas internas. */
+  paths: {
+    home: '/',
+    empresas: '/empresas',
+    cotizar: '/empresas#cotizar',
+    contacto: '/#contacto',
+    personalizacion: '/#personalizacion',
+    marcas: '/#marcas',
+    rubrosEmpresas: '/empresas#rubros',
+    terminos: '/legales/terminos',
+    privacidad: '/legales/privacidad',
+    cambios: '/legales/cambios-y-devoluciones',
+  },
 } as const;
 
 export type Site = typeof site;
 export type CategoryKey = keyof typeof site.tiendanube.categories;
+export type RubroSlug = (typeof site.rubros)[number]['slug'];

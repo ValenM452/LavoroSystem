@@ -1,0 +1,48 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageSlot } from '../config/images';
+import Pending from './Pending.astro';
+
+interface Props {
+  img: ImageSlot;
+  sizes: string;
+  /** Proporción del recorte; `fill` = ocupa el alto del contenedor. */
+  ratio?: 'tile' | 'photo' | 'wide' | 'square' | 'fill';
+  widths?: number[];
+  priority?: boolean;
+}
+const { img, sizes, ratio = 'fill', widths = [480, 800, 1200, 1600], priority = false } = Astro.props;
+const usable = widths.filter((w) => w <= img.src.width);
+// Mientras la imagen es un relleno se renderiza decorativa (alt vacío).
+const alt = img.pending ? '' : img.alt;
+---
+<div class:list={['rimg', `rimg--${ratio}`]}>
+  <Picture
+    src={img.src}
+    alt={alt}
+    formats={['avif', 'webp']}
+    widths={usable}
+    sizes={sizes}
+    priority={priority}
+    loading={priority ? 'eager' : 'lazy'}
+    decoding="async"
+    style={img.position ? `object-position: ${img.position}` : undefined}
+  />
+  {img.pending && <Pending text={img.pending} class="rimg__tag" />}
+</div>
+
+<style>
+  .rimg { position: relative; overflow: hidden; background: var(--graphite); }
+  .rimg--tile { aspect-ratio: var(--ratio-tile); }
+  .rimg--photo { aspect-ratio: var(--ratio-photo); }
+  .rimg--wide { aspect-ratio: var(--ratio-wide); }
+  .rimg--square { aspect-ratio: var(--ratio-square); }
+  .rimg--fill { width: 100%; height: 100%; }
+  .rimg :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .rimg :global(.rimg__tag) {
+    position: absolute;
+    top: var(--sp-3);
+    left: var(--sp-3);
+    max-width: calc(100% - 2 * var(--sp-3));
+  }
+</style>

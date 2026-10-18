@@ -1,0 +1,109 @@
+---
+import { site } from '../config/site';
+import { copy } from '../config/copy';
+import { externalTarget, isPending, tiendaTarget } from '../lib/links';
+import Logo from './Logo.astro';
+import Pending from './Pending.astro';
+
+const f = copy.footer;
+const tiendaRoot = tiendaTarget('footer');
+const categorias = (['pantalones', 'camisas', 'calzadoDeSeguridad', 'overoles', 'elementosDeSeguridad', 'salud', 'gastronomia', 'colegios'] as const).map(
+  (key) => ({ label: site.tiendanube.categories[key].label, target: tiendaTarget('footer', key) }),
+);
+const legales = [
+  { label: f.terminos, href: site.paths.terminos, pending: null },
+  { label: f.privacidad, href: site.paths.privacidad, pending: null },
+  { label: f.cambios, href: site.paths.cambios, pending: null },
+  { label: f.arrepentimiento, ...externalTarget(site.tiendanube.arrepentimientoUrl) },
+  { label: f.defensa, ...externalTarget(site.defensaConsumidorUrl) },
+];
+const pendingText = (v: string) => v.replace(/^\[\[PENDIENTE:\s*/, '').replace(/\]\]$/, '');
+---
+<footer class="footer on-dark">
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <a href={site.paths.home} class="footer__logo" aria-label={copy.a11y.logoLabel}><Logo /></a>
+      <p>{site.sinceLabel}</p>
+    </div>
+
+    <section aria-labelledby="f-tienda">
+      <h2 id="f-tienda" class="footer__title">{f.tienda}</h2>
+      <ul role="list">
+        {categorias.map((c) => (
+          <li>{c.target.pending
+            ? <span class="is-pending" data-pending={c.target.pending}>{c.label}</span>
+            : <a class="link-u" href={c.target.href}>{c.label}</a>}</li>
+        ))}
+        <li>{tiendaRoot.pending
+          ? <span class="is-pending" data-pending={tiendaRoot.pending}>{f.verTienda}</span>
+          : <a class="link-u" href={tiendaRoot.href}>{f.verTienda} →</a>}</li>
+        {tiendaRoot.pending && <li><Pending text={tiendaRoot.pending} /></li>}
+      </ul>
+    </section>
+
+    <section aria-labelledby="f-empresas">
+      <h2 id="f-empresas" class="footer__title">{f.empresas}</h2>
+      <ul role="list">
+        <li><a class="link-u" href={site.paths.cotizar}>{f.cotizar}</a></li>
+        <li><a class="link-u" href={site.paths.rubrosEmpresas}>{f.rubros}</a></li>
+        <li><a class="link-u" href={site.paths.personalizacion}>{f.personalizacion}</a></li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="f-contacto">
+      <h2 id="f-contacto" class="footer__title">{f.contacto}</h2>
+      <ul role="list">
+        <li><a class="link-u" href={site.contact.whatsappEmpresas.url}>{f.empresasWa}: {site.contact.whatsappEmpresas.label}</a></li>
+        <li><a class="link-u" href={site.contact.whatsappLocal.url}>{f.localWa}: {site.contact.whatsappLocal.label}</a></li>
+        <li><a class="link-u" href={`mailto:${site.contact.email}`}>{site.contact.email}</a></li>
+        <li>{isPending(site.contact.address) ? <Pending text={pendingText(site.contact.address)} /> : site.contact.address}</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="f-legales">
+      <h2 id="f-legales" class="footer__title">{f.legales}</h2>
+      <ul role="list">
+        {legales.map((l) => (
+          <li>{l.pending
+            ? <span class="is-pending">{l.label} <Pending text={l.pending} /></span>
+            : <a class="link-u" href={l.href}>{l.label}</a>}</li>
+        ))}
+        <li>{f.dataFiscal} <Pending text={pendingText(site.dataFiscal)} /></li>
+      </ul>
+    </section>
+  </div>
+
+  <div class="container footer__legal">
+    <p>{f.copyright} · <Pending text={pendingText(site.legal.businessName)} /></p>
+  </div>
+</footer>
+
+<style>
+  .footer { background: var(--bordo-900); color: var(--white); padding-block: var(--sp-8) var(--sp-5); }
+  .footer__grid { display: grid; gap: var(--sp-7) var(--gutter); }
+  .footer__brand p { margin-top: var(--sp-3); color: var(--stone); }
+  .footer__logo { text-decoration: none; display: inline-flex; align-items: center; min-height: var(--tap); }
+  .footer__title {
+    margin-bottom: var(--sp-4);
+    font-family: var(--font-sans);
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--stone);
+  }
+  .footer ul { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--sp-1); }
+  .footer li { color: var(--white); }
+  .footer li a, .footer li > span { display: inline-flex; align-items: center; flex-wrap: wrap; gap: var(--sp-2); min-height: var(--tap); }
+  .footer__legal { margin-top: var(--sp-8); color: var(--stone); font-size: var(--fs-small); }
+  .footer__legal p { max-width: none; padding-top: var(--sp-5); border-top: var(--hairline) solid var(--line-inv); }
+
+  @media (min-width: 768px) {
+    .footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .footer__brand { grid-column: 1 / -1; }
+  }
+  @media (min-width: 1024px) {
+    .footer__grid { grid-template-columns: 1.2fr repeat(4, minmax(0, 1fr)); }
+    .footer__brand { grid-column: auto; }
+  }
+</style>

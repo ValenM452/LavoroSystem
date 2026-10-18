@@ -1,7 +1,15 @@
 ---
 import Base from '../layouts/Base.astro';
+import Pending from '../components/Pending.astro';
+import { copy } from '../config/copy';
 ---
 
-<Base title="LAVORO">
-  <main id="contenido"></main>
+<Base title={copy.seo.home.title} description={copy.seo.home.description}>
+  <div class="container empty">
+    <Pending text="secciones de la home (llegan en la Tanda 2)" />
+  </div>
 </Base>
+
+<style>
+  .empty { min-height: 60vh; padding-block: var(--sp-8); }
+</style>

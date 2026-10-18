@@ -16,8 +16,11 @@ const sizes = [
 ];
 ---
 
-<Base title="Tokens — LAVORO (dev)" noindex>
-  <main class="container tokens">
+<Base title="Tokens — LAVORO (dev)" noindex overlay>
+  <div class="demo-hero">
+    <p class="eyebrow">Demo del header transparente → sólido (hacé scroll)</p>
+  </div>
+  <div class="container tokens">
     <section class="section">
       <span class="eyebrow">Solo desarrollo</span>
       <h1 class="h2">Tokens <em>LAVORO</em></h1>
@@ -76,10 +79,11 @@ const sizes = [
         {Array.from({ length: 12 }, (_, i) => <span>{i + 1}</span>)}
       </div>
     </section>
-  </main>
+  </div>
 </Base>
 
 <style>
+  .demo-hero { display: flex; align-items: end; min-height: 70vh; padding: var(--sp-8) var(--gutter); background: var(--graphite); color: var(--white); --focus-outer: var(--white); }
   .tokens { padding-bottom: var(--section-y); }
   .block { padding-block: 48px; border-top: 1px solid var(--line); }
   .block > h2 { margin-bottom: 24px; }

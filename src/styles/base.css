@@ -26,11 +26,13 @@ p, h1, h2, h3, h4, li { overflow-wrap: break-word; }
 ul[role="list"], ol[role="list"] { list-style: none; padding: 0; }
 a { color: inherit; text-underline-offset: .2em; }
 
-/* Foco visible */
+/* Foco visible: anillo doble (dorado + borde) para contraste >= 3:1 en fondo claro y oscuro */
 :focus-visible {
-  outline: 2px solid var(--focus);
-  outline-offset: 3px;
+  outline: var(--ring) solid var(--focus);
+  outline-offset: var(--ring-offset);
+  box-shadow: 0 0 0 calc(var(--ring-offset) + var(--ring) + var(--ring)) var(--focus-outer);
 }
+.section--ink, .section--bordo, .on-dark { --focus-outer: var(--white); }
 
 /* Tipografía */
 h1, h2, h3, .display, .h2, .h3 {
@@ -51,7 +53,7 @@ small, .small { font-size: var(--fs-small); }
 .eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--sp-3);
   font-family: var(--font-sans);
   font-size: var(--fs-eyebrow);
   font-weight: 500;
@@ -60,8 +62,8 @@ small, .small { font-size: var(--fs-small); }
 }
 .eyebrow::before {
   content: "";
-  width: 24px;
-  height: 1px;
+  width: var(--eyebrow-line);
+  height: var(--hairline);
   background: currentColor;
 }
 
@@ -88,22 +90,56 @@ small, .small { font-size: var(--fs-small); }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--sp-2);
   min-height: var(--tap);
-  padding: 12px 22px;
+  padding: var(--btn-pad-y) var(--btn-pad-x);
   border-radius: var(--radius-pill);
-  border: 1px solid transparent;
+  border: var(--hairline) solid transparent;
   font-family: var(--font-sans);
-  font-size: .9375rem;
+  font-size: var(--fs-btn);
   font-weight: 500;
   line-height: 1.2;
   text-decoration: none;
-  transition: background-color 200ms var(--ease), color 200ms var(--ease), border-color 200ms var(--ease);
+  transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
 }
 .btn--primary { background: var(--accent); color: var(--on-accent); }
 .btn--primary:hover { background: var(--accent-hover); }
 .btn--secondary { background: transparent; color: inherit; border-color: currentColor; }
 .btn--secondary:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+
+/* Sobre fondos oscuros (bordó / ink): el primario se invierte para mantener contraste */
+.btn--dark.btn--primary { background: var(--white); color: var(--ink); }
+.btn--dark.btn--primary:hover { background: var(--paper-2); }
+.btn--dark.btn--secondary:hover { background: var(--white); color: var(--ink); border-color: var(--white); }
+.btn__icon { width: 1.125em; height: 1.125em; flex: none; fill: currentColor; }
+
+/* Subrayado que crece de izquierda a derecha (03 §6) */
+.link-u {
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 var(--hairline) no-repeat;
+  transition: background-size var(--dur-fast) var(--ease);
+}
+.link-u:hover, .link-u:focus-visible { background-size: 100% var(--hairline); }
+
+/* Aparición al entrar en viewport (03 §6). Solo si hay JS: sin JS todo queda visible. */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(var(--reveal-shift));
+  transition: opacity var(--dur-reveal) var(--ease), transform var(--dur-reveal) var(--ease);
+}
+.js [data-reveal].is-visible { opacity: 1; transform: none; }
+
+.skip-link {
+  position: absolute;
+  left: var(--sp-4);
+  top: var(--sp-4);
+  z-index: var(--z-skip);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--white);
+  color: var(--ink);
+  transform: translateY(-200%);
+}
+.skip-link:focus { transform: none; }
 
 /* Accesibilidad */
 .sr-only {
@@ -126,3 +162,26 @@ small, .small { font-size: var(--fs-small); }
     scroll-behavior: auto !important;
   }
 }
+
+/* Placeholders visibles: todo [[PENDIENTE: …]] usa este estilo para poder auditarlos (T11). */
+.pending {
+  display: inline-block;
+  padding: var(--sp-1) var(--sp-2);
+  border: var(--hairline) dashed var(--bordo-700);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  line-height: 1.3;
+  letter-spacing: 0;
+  text-transform: none;
+  font-style: normal;
+  font-weight: 400;
+}
+.is-pending { cursor: not-allowed; }
+
+[hidden] { display: none !important; }
+
+/* Bloqueo de scroll del body con el menú de celular abierto (T02) */
+html:has(dialog[open]) { overflow: hidden; }
