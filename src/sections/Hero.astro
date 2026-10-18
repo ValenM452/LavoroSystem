@@ -18,3 +18,9 @@ const img = images.hero[variant];
     <Button href={site.paths.cotizar} variant="secondary" tone="dark" arrow>{copy.hero.ctaEmpresas}</Button>
   </ImageBand>
 )}
+{variant === 'empresas' && (
+  <ImageBand img={img.desktop} imgMobile={img.mobile} size="hero" as="h1" priority eyebrow={copy.empresas.hero.eyebrow} title={copy.empresas.hero.title}>
+    <Button href="#cotizar" arrow>{copy.empresas.hero.cta}</Button>
+    <Button href={site.contact.whatsappEmpresas.url} variant="whatsapp" tone="dark" track="click_whatsapp">{copy.empresas.hero.wa}</Button>
+  </ImageBand>
+)}

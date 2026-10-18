@@ -52,6 +52,7 @@ if (mega && header) {
 
   items.forEach((a, i) => {
     const slug = a.dataset.megaItem ?? '';
+    a.addEventListener('click', () => close());
     a.addEventListener('mouseenter', () => setPreview(slug));
     a.addEventListener('focus', () => setPreview(slug));
     a.addEventListener('keydown', (e) => {

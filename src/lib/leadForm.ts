@@ -40,13 +40,19 @@ function init(root: HTMLElement) {
     }
   };
   preload(params);
-  // Links a /empresas?rubro=… dentro de la misma página: precargan sin recargar.
+  // Links a esta misma página con ?rubro=…#cotizar (grilla de rubros, mega menú):
+  // precargan el formulario, bajan hasta él y llevan el foco al primer campo, sin recargar.
   document.addEventListener('click', (e) => {
     const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href*="#cotizar"], a[href*="#contacto"]');
-    if (!a) return;
+    if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey) return;
     const url = new URL(a.href, location.href);
-    if (url.pathname !== location.pathname || !root.closest(`[id="${url.hash.slice(1)}"]`)) return;
+    const section = document.getElementById(url.hash.slice(1));
+    if (url.pathname !== location.pathname || !section?.contains(root)) return;
+    e.preventDefault();
     preload(url.searchParams);
+    history.pushState(null, '', url);
+    section.scrollIntoView();
+    el('nombre')?.focus({ preventScroll: true });
   });
 
   const read = (): LeadInput => {

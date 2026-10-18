@@ -1,7 +1,8 @@
 ---
 /**
- * Foto con nombre en serif. `tile` = nombre sobre la foto (Categorías, grilla de rubros);
- * `row` = miniatura + nombre (lista de rubros en mobile). Área clicable completa.
+ * Foto con nombre en serif. Área clicable completa.
+ * `tile` = nombre sobre la foto (Categorías) · `row` = miniatura + nombre ·
+ * `auto` = `row` en mobile/tablet y `tile` desde 1024 px (rubros en /empresas).
  */
 import type { ImageSlot } from '../config/images';
 import ResponsiveImage from './ResponsiveImage.astro';
@@ -13,18 +14,20 @@ interface Props {
   href: string;
   /** Destino pendiente: el tile se muestra sin link y con el [[PENDIENTE]]. */
   pending?: string | null;
-  variant?: 'tile' | 'row';
+  variant?: 'tile' | 'row' | 'auto';
   ratio?: 'tile' | 'photo';
   sizes: string;
-  /** Atributos extra para el link (precarga de rubro en /empresas). */
-  rubro?: string;
 }
-const { img, label, href, pending = null, variant = 'tile', ratio = 'tile', sizes, rubro } = Astro.props;
+const { img, label, href, pending = null, variant = 'tile', ratio = 'tile', sizes } = Astro.props;
 const Tag = pending ? 'div' : 'a';
+const imgRatio = variant === 'tile' ? ratio : 'fill';
+const widths = variant === 'row' ? [128] : variant === 'auto' ? [128, 400, 600] : [400, 600, 900, 1200];
 ---
-<Tag class:list={['ptile', `ptile--${variant}`]} href={pending ? undefined : href} data-rubro-link={rubro}>
-  <ResponsiveImage img={img} ratio={variant === 'row' ? 'square' : ratio} sizes={variant === 'row' ? '64px' : sizes} widths={variant === 'row' ? [128] : [400, 600, 900, 1200]} hideTag />
-  {variant === 'tile' && <span class="ptile__overlay" aria-hidden="true"></span>}
+<Tag class:list={['ptile', `ptile--${variant}`]} href={pending ? undefined : href}>
+  <div class="ptile__media">
+    <ResponsiveImage img={img} ratio={imgRatio} sizes={sizes} widths={widths} hideTag />
+  </div>
+  <span class="ptile__overlay" aria-hidden="true"></span>
   <span class="ptile__caption">
     {img.pending && <Pending text={img.pending} />}
     {pending && <Pending text={pending} />}
@@ -33,20 +36,9 @@ const Tag = pending ? 'div' : 'a';
 </Tag>
 
 <style>
-  .ptile { position: relative; display: block; color: var(--white); text-decoration: none; }
-  .ptile--tile { overflow: hidden; }
-  .ptile__overlay { position: absolute; inset: 0; background: var(--overlay-photo); }
-  .ptile--tile .ptile__caption {
-    position: absolute;
-    left: var(--sp-4);
-    right: var(--sp-4);
-    bottom: var(--sp-4);
-    display: grid;
-    justify-items: start;
-    gap: var(--sp-2);
-  }
+  .ptile { position: relative; display: block; text-decoration: none; }
   .ptile :global(.pending) { font-size: var(--fs-tag); padding: var(--hairline) var(--sp-1); }
-  .ptile--tile .ptile__label {
+  .ptile__label {
     font-family: var(--font-display);
     font-weight: 300;
     font-size: var(--fs-h3);
@@ -55,9 +47,16 @@ const Tag = pending ? 'div' : 'a';
     background: linear-gradient(currentColor, currentColor) 0 100% / 0 var(--hairline) no-repeat;
     transition: background-size var(--dur-fast) var(--ease);
   }
-  a.ptile--tile:hover .ptile__label, a.ptile--tile:focus-visible .ptile__label { background-size: 100% var(--hairline); }
+  a.ptile:hover .ptile__label, a.ptile:focus-visible .ptile__label { background-size: 100% var(--hairline); }
+  .ptile__caption { display: grid; justify-items: start; gap: var(--sp-2); }
 
-  .ptile--row {
+  /* Tile: nombre blanco sobre la foto */
+  .ptile--tile { overflow: hidden; color: var(--white); }
+  .ptile--tile .ptile__overlay { position: absolute; inset: 0; background: var(--overlay-photo); }
+  .ptile--tile .ptile__caption { position: absolute; left: var(--sp-4); right: var(--sp-4); bottom: var(--sp-4); }
+
+  /* Row: miniatura cuadrada + nombre */
+  .ptile--row, .ptile--auto {
     display: grid;
     grid-template-columns: var(--thumb) 1fr;
     align-items: center;
@@ -65,6 +64,14 @@ const Tag = pending ? 'div' : 'a';
     min-height: var(--thumb);
     color: inherit;
   }
-  .ptile--row .ptile__label { font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 300; }
-  .ptile--row .ptile__caption { display: grid; justify-items: start; gap: var(--sp-1); }
+  .ptile--row .ptile__media, .ptile--auto .ptile__media { aspect-ratio: var(--ratio-square); }
+  .ptile--row .ptile__overlay, .ptile--auto .ptile__overlay { display: none; }
+  .ptile--row .ptile__caption, .ptile--auto .ptile__caption { gap: var(--sp-1); }
+
+  @media (min-width: 1024px) {
+    .ptile--auto { display: block; overflow: hidden; color: var(--white); }
+    .ptile--auto .ptile__media { aspect-ratio: var(--ratio-photo); }
+    .ptile--auto .ptile__overlay { display: block; position: absolute; inset: 0; background: var(--overlay-photo); }
+    .ptile--auto .ptile__caption { position: absolute; left: var(--sp-4); right: var(--sp-4); bottom: var(--sp-4); gap: var(--sp-2); }
+  }
 </style>

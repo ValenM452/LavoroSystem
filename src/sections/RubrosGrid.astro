@@ -1,0 +1,34 @@
+---
+/** /empresas: 10 rubros — lista con miniaturas (mobile/tablet), grilla de fotos 5×2 (desktop). Click → precarga el rubro. */
+import { site } from '../config/site';
+import { copy } from '../config/copy';
+import { images } from '../config/images';
+import { rubroHref } from '../lib/links';
+import SectionHeading from '../components/SectionHeading.astro';
+import PhotoTile from '../components/PhotoTile.astro';
+---
+<section class="section section--alt" id="rubros" aria-labelledby="rubros-title">
+  <div class="container rg">
+    <SectionHeading id="rubros-title" eyebrow={copy.rubros.eyebrow} title={copy.rubros.title} />
+    <ul role="list" class="rg__list">
+      {site.rubros.map((r) => (
+        <li data-reveal>
+          <PhotoTile img={images.rubros[r.slug]} label={r.label} href={rubroHref(r.slug)} variant="auto" sizes="(min-width: 1024px) 20vw, 64px" />
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .rg { display: grid; gap: var(--sp-7); }
+  .rg__list { display: grid; margin: 0; padding: 0; list-style: none; column-gap: var(--gutter); }
+  .rg__list li { border-top: var(--hairline) solid var(--line); padding-block: var(--sp-3); }
+  @media (min-width: 768px) {
+    .rg__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 1024px) {
+    .rg__list { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--sp-4); }
+    .rg__list li { border-top: 0; padding: 0; }
+  }
+</style>

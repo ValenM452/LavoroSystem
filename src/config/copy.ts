@@ -38,6 +38,43 @@ export const copy = {
     },
   },
 
+  /** 04 "/empresas" — reutiliza componentes de la home. */
+  empresas: {
+    seo: {
+      title: 'Ropa de trabajo y uniformes para empresas | LAVORO Chilecito',
+      // Armada con textos de 04 (§2 bajada + eyebrow de /empresas), sin claims nuevos.
+      description:
+        'Indumentaria de trabajo, calzado de seguridad y uniformes para empresas e instituciones. Bordado y estampado con tu marca.',
+    },
+    hero: {
+      eyebrow: 'Empresas e instituciones',
+      title: 'Indumentaria de trabajo para *todo tu equipo*.',
+      cta: 'Solicitar cotización',
+      wa: 'WhatsApp empresas',
+    },
+    cotizamos: {
+      title: 'Qué podemos cotizar',
+      items: [
+        { title: 'Ropa de trabajo' },
+        { title: 'Calzado de seguridad' },
+        { title: 'Elementos de seguridad' },
+        { title: 'Uniformes (salud, gastronomía, colegios)' },
+        { title: 'Bordado y estampado' },
+        { title: 'Equipamiento por temporada' },
+      ],
+    },
+    porque: {
+      title: 'Por qué LAVORO',
+      items: [
+        { title: `${site.sinceLabel} en Chilecito` },
+        { title: 'Local físico donde ver y probar' },
+        { title: 'Marcas reconocidas del rubro' },
+        { title: 'Personalización' },
+        { title: 'Atención por WhatsApp' },
+      ],
+    },
+  },
+
   /** 04 §12 — footer */
   footer: {
     tienda: 'Tienda',

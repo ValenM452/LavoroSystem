@@ -1,0 +1,28 @@
+---
+/** /empresas: "Qué podemos cotizar" y "Por qué LAVORO" — titular a la izquierda, lista editorial sin íconos. */
+import SectionHeading from '../components/SectionHeading.astro';
+import EditorialList from '../components/EditorialList.astro';
+
+interface Props {
+  id: string;
+  title: string;
+  items: readonly { title: string; text?: string }[];
+  tone?: 'paper' | 'alt';
+}
+const { id, title, items, tone = 'paper' } = Astro.props;
+---
+<section class:list={['section', tone === 'alt' && 'section--alt']} aria-labelledby={`${id}-title`}>
+  <div class="container grid lista">
+    <SectionHeading id={`${id}-title`} title={title} class="lista__head" />
+    <div class="lista__body"><EditorialList items={items} columns={2} /></div>
+  </div>
+</section>
+
+<style>
+  .lista { row-gap: var(--sp-6); }
+  .lista :global(.lista__head), .lista__body { grid-column: 1 / -1; }
+  @media (min-width: 1024px) {
+    .lista :global(.lista__head) { grid-column: 1 / span 4; align-self: start; }
+    .lista__body { grid-column: 5 / -1; }
+  }
+</style>
