@@ -1,0 +1,70 @@
+/**
+ * Datos de negocio de LAVORO. Única fuente: docs/01_NEGOCIO_Y_DATOS.md.
+ * Nunca hardcodear estos datos en componentes.
+ * Todo valor `[[PENDIENTE: ...]]` debe reemplazarse antes de publicar (T11).
+ */
+
+const PENDIENTE_URL_TIENDA = '[[PENDIENTE: URL tienda]]';
+
+const waLink = (number: string, text: string) =>
+  `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
+
+export const site = {
+  name: 'LAVORO',
+  altName: 'Lavoro Uniformes',
+  since: 2011,
+  sinceLabel: 'Desde 2011',
+  domain: '[[PENDIENTE: dominio]]', // propuesto: lavoro.com.ar
+  locality: 'Chilecito, La Rioja, Argentina',
+
+  contact: {
+    email: 'lavorouniformes@gmail.com',
+    whatsappEmpresas: {
+      label: '3825 529781',
+      number: '5493825529781',
+      url: waLink('5493825529781', 'Hola LAVORO, quiero pedir una cotización para mi empresa.'),
+    },
+    whatsappLocal: {
+      label: '3825 666774',
+      number: '5493825666774',
+      url: waLink('5493825666774', 'Hola LAVORO, quiero hacer una consulta sobre un producto.'),
+    },
+    address: '[[PENDIENTE: dirección del local]]',
+    hours: '[[PENDIENTE: horarios]]',
+  },
+
+  social: {
+    instagram: '[[PENDIENTE: redes]]',
+    facebook: '[[PENDIENTE: redes]]',
+  },
+
+  legal: {
+    businessName: '[[PENDIENTE: CUIT / razón social]]',
+    cuit: '[[PENDIENTE: CUIT / razón social]]',
+  },
+
+  brands: ['Pampero', 'Ombú', 'Gaucho', '21 de Septiembre'],
+  brandsPending: '[[PENDIENTE: lista completa]]',
+
+  /** Tienda en Tiendanube. Slugs según data/tiendanube/categorias.md. */
+  tiendanube: {
+    baseUrl: PENDIENTE_URL_TIENDA,
+    categories: {
+      pantalones:           { label: 'Pantalones',             slug: 'pantalones',             url: PENDIENTE_URL_TIENDA },
+      camisas:              { label: 'Camisas',                slug: 'camisas',                url: PENDIENTE_URL_TIENDA },
+      calzadoDeSeguridad:   { label: 'Calzado de seguridad',   slug: 'calzado-de-seguridad',   url: PENDIENTE_URL_TIENDA },
+      overoles:             { label: 'Overoles',               slug: 'overoles',               url: PENDIENTE_URL_TIENDA },
+      elementosDeSeguridad: { label: 'Elementos de seguridad', slug: 'elementos-de-seguridad', url: PENDIENTE_URL_TIENDA },
+      salud:                { label: 'Salud',                  slug: 'salud',                  url: PENDIENTE_URL_TIENDA },
+      gastronomia:          { label: 'Gastronomía',            slug: 'gastronomia',            url: PENDIENTE_URL_TIENDA },
+      colegios:             { label: 'Colegios',               slug: 'colegios',               url: PENDIENTE_URL_TIENDA },
+      promociones:          { label: 'Promociones',            slug: 'promociones',            url: PENDIENTE_URL_TIENDA },
+    },
+    arrepentimientoUrl: '[[PENDIENTE: URL botón de arrepentimiento]]',
+  },
+
+  dataFiscal: '[[PENDIENTE: QR Data Fiscal]]',
+} as const;
+
+export type Site = typeof site;
+export type CategoryKey = keyof typeof site.tiendanube.categories;

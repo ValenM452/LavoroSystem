@@ -1,0 +1,71 @@
+/*
+ * LAVORO — CSS personalizado para Tiendanube
+ * USAR SOLO SI EL PLAN PERMITE CSS PERSONALIZADO. [[VERIFICAR EN PANEL]]
+ *
+ * Los selectores son GENÉRICOS (placeholders): cada tema de Tiendanube usa clases
+ * distintas. Inspeccionar el tema elegido con el navegador y reemplazar los
+ * selectores antes de pegar. Probar primero en un tema duplicado.
+ * Tokens de docs/03_SISTEMA_DE_DISENO.md. Bordó provisional [[PENDIENTE: bordó exacto del logo]].
+ */
+
+:root {
+  --bordo-900: #3E1119;
+  --bordo-700: #6B1C2A;
+  --bordo-500: #8E2A3B;
+  --ink: #121212;
+  --steel: #5E5E5E;
+  --paper: #F4F1EB;
+  --paper-2: #EAE5DC;
+  --stone: #D9D7D2;
+  --focus: #C9A227;
+}
+
+/* Foco visible */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* Botón primario: píldora, mínimo 44 px táctil. Ajustar selector al tema. */
+.btn-primary,
+button[type="submit"].btn {
+  background: var(--bordo-700);
+  color: #fff;
+  border: 0;
+  border-radius: 999px;
+  min-height: 44px;
+  padding: 12px 22px;
+  font-weight: 500;
+  box-shadow: none;
+  background-image: none;
+}
+.btn-primary:hover { background: var(--bordo-500); }
+
+/* Sin sombras ni degradados en tarjetas de producto. Ajustar selector al tema. */
+.item-product,
+.card {
+  box-shadow: none;
+  border-radius: 2px;
+}
+
+/* Inputs: radio 2 px */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+select,
+textarea {
+  border-radius: 2px;
+}
+
+/* Movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,19 @@
+# build
+dist/
+.astro/
+.vercel/
+node_modules/
+
+# env (secretos fuera del repo)
+.env
+.env.*
+!.env.example
+
+# fotos de productos de Tiendanube (no se versionan)
+data/tiendanube/fotos/*
+!data/tiendanube/fotos/.gitkeep
+data/tiendanube/out/
+
+# sistema
+.DS_Store
+npm-debug.log*

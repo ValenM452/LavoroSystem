@@ -1,0 +1,107 @@
+---
+/**
+ * Página de tokens — SOLO DESARROLLO (/_tokens).
+ * Se inyecta desde astro.config.mjs únicamente con `astro dev`.
+ */
+import Base from '../layouts/Base.astro';
+
+const colors = [
+  'bordo-900', 'bordo-700', 'bordo-500', 'ink', 'graphite', 'steel',
+  'paper', 'paper-2', 'stone', 'white', 'focus',
+];
+const sizes = [
+  { token: 'fs-display', cls: 'display', sample: 'Ropa de trabajo para trabajar <em>en serio</em>' },
+  { token: 'fs-h2', cls: 'h2', sample: 'Equipamos a tu <em>equipo</em>' },
+  { token: 'fs-h3', cls: 'h3', sample: 'Calzado de seguridad' },
+];
+---
+
+<Base title="Tokens — LAVORO (dev)" noindex>
+  <main class="container tokens">
+    <section class="section">
+      <span class="eyebrow">Solo desarrollo</span>
+      <h1 class="h2">Tokens <em>LAVORO</em></h1>
+      <p class="muted">Fuente: docs/03_SISTEMA_DE_DISENO.md. Esta página no existe en el build de producción.</p>
+    </section>
+
+    <section class="block">
+      <h2 class="h3">Colores</h2>
+      <ul role="list" class="swatches">
+        {colors.map((c) => (
+          <li>
+            <span class="swatch" style={`background: var(--${c})`}></span>
+            <code>--{c}</code>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="block">
+      <h2 class="h3">Tipografía</h2>
+      {sizes.map((s) => (
+        <div class="type-row">
+          <code>--{s.token}</code>
+          <p class={s.cls} set:html={s.sample} />
+        </div>
+      ))}
+      <div class="type-row">
+        <code>--fs-body</code>
+        <p>Texto de cuerpo en Geist. Indumentaria de trabajo, calzado de seguridad y uniformes. Máximo 60 caracteres por línea.</p>
+      </div>
+      <div class="type-row">
+        <code>--fs-small</code>
+        <p class="small muted">Texto secundario chico.</p>
+      </div>
+      <div class="type-row">
+        <code>.eyebrow</code>
+        <span class="eyebrow">Para empresas</span>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2 class="h3">Botones</h2>
+      <div class="row">
+        <a class="btn btn--primary" href="#">Cotizar para empresas →</a>
+        <a class="btn btn--secondary" href="#">Ver tienda</a>
+      </div>
+      <div class="row on-dark">
+        <a class="btn btn--primary" href="#">Cotizar →</a>
+        <a class="btn btn--secondary" href="#">WhatsApp</a>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2 class="h3">Grilla (<code>--cols</code>: 4 / 6 / 12)</h2>
+      <div class="grid demo-grid">
+        {Array.from({ length: 12 }, (_, i) => <span>{i + 1}</span>)}
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .tokens { padding-bottom: var(--section-y); }
+  .block { padding-block: 48px; border-top: 1px solid var(--line); }
+  .block > h2 { margin-bottom: 24px; }
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 16px;
+  }
+  .swatches li { display: grid; gap: 8px; font-size: var(--fs-small); }
+  .swatch { display: block; height: 72px; border: 1px solid var(--line); border-radius: var(--radius); }
+  .type-row { display: grid; gap: 8px; padding-block: 16px; border-bottom: 1px solid var(--line); }
+  .type-row code { font-size: var(--fs-small); color: var(--muted); }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; padding: 24px 0; }
+  .on-dark { background: var(--bordo-900); color: var(--white); padding: 24px; }
+  .demo-grid span {
+    display: grid;
+    place-items: center;
+    min-height: 48px;
+    background: var(--stone);
+    font-size: var(--fs-small);
+  }
+  .demo-grid span:nth-child(n + 5) { display: none; }
+  @media (min-width: 768px) { .demo-grid span:nth-child(n + 5) { display: grid; } .demo-grid span:nth-child(n + 7) { display: none; } }
+  @media (min-width: 1024px) { .demo-grid span:nth-child(n + 7) { display: grid; } }
+</style>

@@ -1,0 +1,79 @@
+/* Tokens LAVORO — docs/03_SISTEMA_DE_DISENO.md §2–4.
+   Hex provisionales hasta tener el logo en vector. Ajustar --bordo-700 al bordó exacto del logo. */
+
+:root {
+  /* Marca */
+  --bordo-900: #3E1119;   /* fondos profundos, footer */
+  --bordo-700: #6B1C2A;   /* paneles, CTA primario */
+  --bordo-500: #8E2A3B;   /* hover, acentos */
+  --ink:       #121212;   /* texto principal, negro */
+  --graphite:  #2C2C2C;   /* gris oscuro de marca */
+  --steel:     #5E5E5E;   /* texto secundario sobre claro */
+
+  /* Superficies */
+  --paper:     #F4F1EB;   /* fondo base cálido */
+  --paper-2:   #EAE5DC;   /* alternancia de secciones */
+  --stone:     #D9D7D2;   /* reemplazo del celeste de la referencia */
+  --white:     #FFFFFF;
+  --line:      rgba(18,18,18,.14);
+  --line-inv:  rgba(255,255,255,.22);
+
+  /* Semánticos */
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --muted: var(--steel);
+  --accent: var(--bordo-700);
+  --accent-hover: var(--bordo-500);
+  --on-accent: #FFFFFF;
+  --focus: #C9A227;       /* anillo de foco visible sobre claro y oscuro */
+
+  /* Overlay para texto sobre foto (AA) */
+  --overlay-photo: linear-gradient(to top, rgba(0,0,0,.6), rgba(0,0,0,0) 60%);
+
+  /* Tipografía */
+  --font-display: 'Source Serif 4 Variable', 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Geist Variable', 'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --fs-display: clamp(2.6rem, 1.6rem + 4.6vw, 5.6rem);  /* hero */
+  --fs-h2:      clamp(2rem, 1.4rem + 2.6vw, 3.6rem);
+  --fs-h3:      clamp(1.35rem, 1.1rem + 1vw, 1.9rem);
+  --fs-body:    clamp(1rem, .96rem + .2vw, 1.125rem);
+  --fs-small:   .875rem;
+  --fs-eyebrow: .8125rem;
+  --lh-tight: 1.04;
+  --lh-head:  1.12;
+  --lh-body:  1.6;
+  --tracking-head: -0.02em;
+  --tracking-eyebrow: .14em;
+
+  /* Espaciado y grilla */
+  --container: 1320px;
+  --gutter: clamp(16px, 4vw, 48px);
+  --section-y: clamp(72px, 10vw, 160px);
+  --measure: 60ch;
+  --cols: 4;              /* mobile */
+
+  /* Radios (sin sombras: la separación es con color y líneas) */
+  --radius: 2px;
+  --radius-pill: 999px;
+
+  /* Componentes */
+  --tap: 44px;
+  --header-h: 60px;
+
+  /* Movimiento */
+  --ease: cubic-bezier(.2,.7,.2,1);
+  --dur-reveal: 500ms;
+  --dur-image: 1200ms;
+}
+
+@media (min-width: 768px) {
+  :root { --cols: 6; }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --cols: 12;
+    --header-h: 72px;
+  }
+}
