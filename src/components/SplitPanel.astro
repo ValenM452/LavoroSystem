@@ -30,7 +30,8 @@ const { img, tone = 'bordo', reverse = false, id, labelledby } = Astro.props;
   }
   @media (min-width: 1024px) {
     .split { grid-template-columns: 1fr 1fr; }
-    .split__media { aspect-ratio: auto; min-height: 100%; }
+    .split__media { position: relative; aspect-ratio: auto; min-height: 100%; }
+    .split__media :global(.rimg) { position: absolute; inset: 0; }
     .split--reverse .split__media { order: 2; }
     .split__panel { padding-inline: var(--sp-8); max-width: calc(var(--container) / 2 + var(--gutter)); }
   }

@@ -12,7 +12,7 @@ const keys = ['pantalones', 'camisas', 'calzadoDeSeguridad', 'overoles', 'elemen
 const tiles = keys.map((k) => ({ key: k, label: site.tiendanube.categories[k].label, target: tiendaTarget('categorias', k) }));
 const all = tiendaTarget('categorias');
 ---
-<section class="section section--alt" aria-labelledby="cat-title">
+<section class="section section--rule" aria-labelledby="cat-title">
   <div class="container cats">
     <SectionHeading id="cat-title" eyebrow={copy.categorias.eyebrow} title={copy.categorias.title} />
     <ul role="list" class="cats__grid">

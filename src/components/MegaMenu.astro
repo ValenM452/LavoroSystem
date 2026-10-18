@@ -5,7 +5,6 @@ import { copy } from '../config/copy';
 import { images } from '../config/images';
 import { rubroHref } from '../lib/links';
 import ResponsiveImage from './ResponsiveImage.astro';
-import Pending from './Pending.astro';
 import Button from './Button.astro';
 ---
 <div class="mega" data-mega>
@@ -25,7 +24,7 @@ import Button from './Button.astro';
         {site.rubros.map((r) => (
           <div class="mega__preview" data-mega-preview={r.slug} hidden>
             <ResponsiveImage img={images.rubros[r.slug]} ratio="photo" sizes="(min-width: 1024px) 50vw, 0px" widths={[480, 800, 1200]} />
-            <p class="mega__phrase"><Pending text={copy.mega.frase(r.label)} /></p>
+            <p class="mega__phrase">{copy.mega.frases[r.slug]}</p>
             <Button href={rubroHref(r.slug)} variant="secondary" arrow>{copy.mega.cotizarPara(r.label)}</Button>
           </div>
         ))}

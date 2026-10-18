@@ -18,9 +18,10 @@ const embedReady = !isPending(c.mapsEmbedUrl);
 ---
 <section class="local" aria-labelledby="local-title">
   <div class="local__map" data-map>
-    <ResponsiveImage img={images.mapa} sizes="100vw" widths={[480, 800, 1200, 1600]} />
+    <ResponsiveImage img={images.mapa} sizes="100vw" widths={[480, 800, 1200, 1600]} hideTag />
+    {images.mapa.pending && <Pending text={images.mapa.pending} class="local__tag" />}
     {embedReady && (
-      <button type="button" class="btn btn--secondary local__load" data-map-load={c.mapsEmbedUrl}><Pending text={copy.local.cargarMapa} /></button>
+      <button type="button" class="btn btn--secondary local__load" data-map-load={c.mapsEmbedUrl}>{copy.local.cargarMapa}</button>
     )}
   </div>
   <div class="container local__wrap">
@@ -57,6 +58,7 @@ const embedReady = !isPending(c.mapsEmbedUrl);
   .local { background: var(--ink); color: var(--white); }
   .local__map { position: relative; aspect-ratio: var(--ratio-photo); }
   .local__map :global(.local__iframe) { width: 100%; height: 100%; border: 0; }
+  .local :global(.local__tag) { position: absolute; top: var(--sp-3); right: var(--gutter); }
   .local__load { position: absolute; right: var(--gutter); bottom: var(--sp-4); background: var(--white); }
   .local__wrap { padding-bottom: var(--section-y); }
   .local__panel { display: grid; gap: var(--sp-5); padding-block: var(--sp-7) 0; }

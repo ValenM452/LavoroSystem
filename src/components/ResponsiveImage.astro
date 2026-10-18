@@ -40,6 +40,7 @@ const alt = img.pending ? '' : img.alt;
   .rimg--wide { aspect-ratio: var(--ratio-wide); }
   .rimg--square { aspect-ratio: var(--ratio-square); }
   .rimg--fill { width: 100%; height: 100%; }
+  .rimg :global(picture) { display: block; width: 100%; height: 100%; }
   .rimg :global(img) { width: 100%; height: 100%; object-fit: cover; }
   .rimg :global(.rimg__tag) {
     position: absolute;

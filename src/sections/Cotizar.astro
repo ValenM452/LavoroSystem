@@ -11,7 +11,7 @@ interface Props { id: 'contacto' | 'cotizar' }
 const { id } = Astro.props;
 const c = site.contact;
 ---
-<section class="section" id={id} aria-labelledby={`${id}-title`}>
+<section class="section section--rule" id={id} aria-labelledby={`${id}-title`}>
   <div class="container grid cot">
     <div class="cot__aside">
       <SectionHeading id={`${id}-title`} title={copy.form.title} />

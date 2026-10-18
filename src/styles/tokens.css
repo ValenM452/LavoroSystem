@@ -49,7 +49,7 @@
   /* Espaciado y grilla */
   --container: 1320px;
   --gutter: clamp(16px, 4vw, 48px);
-  --section-y: clamp(72px, 10vw, 160px);
+  --section-y: clamp(56px, 7vw, 112px);   /* compactado (03 decía clamp(72px, 10vw, 160px)) */
   --measure: 60ch;
   --cols: 4;              /* mobile */
 
@@ -106,9 +106,9 @@
   --mega-close-delay: 300ms;
   --reveal-shift: 16px;
 
-  --hero-h: min(100svh, 900px);
-  --band-h: min(78vh, 760px);
-  --map-h: 640px;
+  --hero-h: min(88svh, 760px);
+  --band-h: min(56vh, 520px);
+  --map-h: 480px;
   --thumb: 64px;
   --check: 1.25rem;
   --panel-w: 34rem;

@@ -80,8 +80,8 @@ small, .small { font-size: var(--fs-small); }
   column-gap: var(--gutter);
 }
 .section { padding-block: var(--section-y); }
-.section--alt { background: var(--paper-2); }
-.section--stone { background: var(--stone); }
+/* Paleta de fondos reducida a paper / bordó / ink. Dos secciones paper seguidas se separan con una línea. */
+.section--rule { border-top: var(--hairline) solid var(--line); }
 .section--ink { background: var(--ink); color: var(--white); }
 .section--bordo { background: var(--bordo-700); color: var(--on-accent); }
 

@@ -3,7 +3,7 @@
  * Si 04 no define un texto, va un [[PENDIENTE: …]]. Datos de negocio: src/config/site.ts.
  * `*palabra*` = única itálica del titular (ver lib/emphasis.ts).
  */
-import { site } from './site';
+import { site, type RubroSlug } from './site';
 
 export const copy = {
   /** 04 §1 — barra superior (opcional) */
@@ -23,10 +23,21 @@ export const copy = {
     whatsapp: 'WhatsApp empresas',
   },
 
-  /** 04 §1 — mega menú. La frase corta por rubro no está definida en 04. */
+  /** 04 §1 — mega menú. Frase corta por rubro (redactada; 04 no la define). */
   mega: {
     cotizarPara: (rubro: string) => `Cotizar para ${rubro}`,
-    frase: (rubro: string) => `frase rubro: ${rubro}`,
+    frases: {
+      mineria: 'Indumentaria y calzado de seguridad para el trabajo en mina y planta.',
+      petroleras: 'Ropa de trabajo y elementos de seguridad para equipos en yacimiento.',
+      'campos-fincas': 'Ropa de trabajo y calzado para tareas rurales y de cosecha.',
+      bodegas: 'Uniformes y ropa de trabajo para viñedo, bodega y atención al público.',
+      construccion: 'Ropa de grafa, calzado de seguridad y elementos de protección para obra.',
+      talleres: 'Overoles, ropa de trabajo y calzado para talleres mecánicos.',
+      salud: 'Ambos y uniformes para hospitales, clínicas y consultorios.',
+      gastronomia: 'Uniformes para cocina, salón y atención al público.',
+      colegios: 'Uniformes escolares e indumentaria identificada con el escudo de la institución.',
+      municipios: 'Ropa de trabajo identificada para personal municipal e instituciones.',
+    } satisfies Record<RubroSlug, string>,
   },
 
   /** 04 §2 y §"/empresas" — meta de cada página (derivados del H1 y la bajada del hero) */
@@ -127,10 +138,11 @@ export const copy = {
   /** 04 §6 — las oraciones de cada columna no están escritas en 04. */
   personalizacion: {
     title: 'Tu marca en cada *prenda*.',
+    // Oraciones redactadas (04 pide una por columna, sin plazos ni mínimos).
     items: [
-      { title: 'Bordado', pending: 'texto Bordado' },
-      { title: 'Estampado', pending: 'texto Estampado' },
-      { title: 'Asesoramiento', pending: 'texto Asesoramiento' },
+      { title: 'Bordado', text: 'Bordamos el logo o el nombre de tu empresa en las prendas que elijas.' },
+      { title: 'Estampado', text: 'Estampamos tu marca en la ropa de trabajo de todo tu equipo.' },
+      { title: 'Asesoramiento', text: 'Te ayudamos a elegir la técnica, la prenda y la ubicación del logo según el uso.' },
     ],
     minimos: 'mínimos de personalización',
     cta: 'Consultar personalización',
@@ -207,7 +219,7 @@ export const copy = {
     waLabel: 'WhatsApp local',
     comoLlegar: 'Cómo llegar',
     escribir: 'Escribir al local',
-    cargarMapa: 'mapa interactivo: texto del botón',
+    cargarMapa: 'Ver mapa interactivo',
   },
 
   /** 04 §11 */

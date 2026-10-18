@@ -5,7 +5,7 @@ import { copy } from '../config/copy';
 import { emphasis } from '../lib/emphasis';
 import Pending from '../components/Pending.astro';
 ---
-<section class="section" id="marcas" aria-labelledby="marcas-title">
+<section class="section section--rule" id="marcas" aria-labelledby="marcas-title">
   <div class="container grid marcas">
     <h2 id="marcas-title" class="marcas__title" data-reveal set:html={emphasis(copy.marcas.title)} />
     <ul role="list" class="marcas__list" data-reveal>
