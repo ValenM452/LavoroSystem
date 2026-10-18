@@ -1,0 +1,87 @@
+---
+/**
+ * Foto a sangre con titular serif blanco abajo-izquierda (03 §5).
+ * `size="hero"` = 100svh (máx. 900 px) + LCP; `imgMobile` = recorte vertical propio (dirección de arte).
+ */
+import { getImage } from 'astro:assets';
+import type { ImageSlot } from '../config/images';
+import SectionHeading from './SectionHeading.astro';
+import Pending from './Pending.astro';
+
+interface Props {
+  img: ImageSlot;
+  imgMobile?: ImageSlot;
+  title: string;
+  eyebrow?: string;
+  lead?: string;
+  as?: 'h1' | 'h2';
+  size?: 'hero' | 'band';
+  priority?: boolean;
+  id?: string;
+}
+const { img, imgMobile, title, eyebrow, lead, as = 'h2', size = 'band', priority = false, id } = Astro.props;
+
+const formats = ['avif', 'webp'] as const;
+const fit = (slot: ImageSlot, widths: number[]) => widths.filter((w) => w <= slot.src.width);
+const sources: { media?: string; type: string; srcset: string }[] = [];
+if (imgMobile) {
+  for (const format of formats) {
+    const r = await getImage({ src: imgMobile.src, widths: fit(imgMobile, [480, 750, 1080]), format });
+    sources.push({ media: '(max-width: 767px)', type: `image/${format}`, srcset: r.srcSet.attribute });
+  }
+}
+for (const format of formats) {
+  const r = await getImage({ src: img.src, widths: fit(img, [960, 1440, 1920, 2400]), format });
+  sources.push({ type: `image/${format}`, srcset: r.srcSet.attribute });
+}
+const fallback = await getImage({ src: img.src, width: Math.min(1920, img.src.width), format: 'jpg' });
+const pending = img.pending ?? imgMobile?.pending ?? null;
+const alt = pending ? '' : img.alt;
+---
+<section class:list={['band', `band--${size}`]} id={id} data-reveal-zoom={priority ? undefined : ''} aria-labelledby={id ? `${id}-title` : undefined}>
+  <picture class="band__media">
+    {sources.map((s) => <source media={s.media} type={s.type} srcset={s.srcset} sizes="100vw" />)}
+    <img
+      src={fallback.src}
+      width={img.src.width}
+      height={img.src.height}
+      alt={alt}
+      sizes="100vw"
+      loading={priority ? 'eager' : 'lazy'}
+      decoding={priority ? 'sync' : 'async'}
+      fetchpriority={priority ? 'high' : 'auto'}
+      style={img.position ? `object-position: ${img.position}` : undefined}
+    />
+  </picture>
+  <div class="band__overlay" aria-hidden="true"></div>
+  {pending && <Pending text={pending} class="band__tag" />}
+  <div class="container band__content">
+    <SectionHeading title={title} eyebrow={eyebrow} lead={lead} as={as} id={id ? `${id}-title` : undefined} class="band__heading" />
+    {Astro.slots.has('default') && <div class="band__ctas"><slot /></div>}
+  </div>
+</section>
+
+<style>
+  .band {
+    position: relative;
+    display: grid;
+    align-items: end;
+    overflow: hidden;
+    background: var(--graphite);
+    color: var(--white);
+    --focus-outer: var(--white);
+  }
+  .band--hero { min-height: var(--hero-h); }
+  .band--band { min-height: var(--band-h); }
+  .band__media, .band__overlay { position: absolute; inset: 0; }
+  .band__media img { width: 100%; height: 100%; object-fit: cover; }
+  .band__overlay { background: var(--overlay-photo); }
+  .band :global(.band__tag) { position: absolute; top: calc(var(--header-h) + var(--sp-4)); right: var(--gutter); }
+  .band__content { position: relative; display: grid; gap: var(--sp-6); padding-block: var(--sp-8) var(--sp-7); }
+  .band :global(.sh__title) { max-width: 12em; }
+  .band :global(.sh__lead) { max-width: 46ch; }
+  .band__ctas { display: flex; flex-wrap: wrap; gap: var(--sp-3); align-items: center; }
+  @media (min-width: 1024px) {
+    .band__content { padding-bottom: var(--sp-8); }
+  }
+</style>

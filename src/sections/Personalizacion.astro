@@ -1,0 +1,26 @@
+---
+/** 04 §6 — banda de foto + 3 columnas de texto (sin íconos) + CTA. */
+import { copy } from '../config/copy';
+import { images } from '../config/images';
+import { personalizacionHref } from '../lib/links';
+import ImageBand from '../components/ImageBand.astro';
+import EditorialList from '../components/EditorialList.astro';
+import Button from '../components/Button.astro';
+import Pending from '../components/Pending.astro';
+---
+<div id="personalizacion">
+  <ImageBand img={images.personalizacion} title={copy.personalizacion.title} id="pers" />
+  <div class="section pers">
+    <div class="container pers__body">
+      <EditorialList items={copy.personalizacion.items} columns={3} />
+      <p class="pers__minimos"><Pending text={copy.personalizacion.minimos} /></p>
+      <div><Button href={personalizacionHref} arrow>{copy.personalizacion.cta}</Button></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .pers { padding-top: var(--sp-7); }
+  .pers__body { display: grid; gap: var(--sp-6); }
+  .pers__minimos { margin: 0; }
+</style>

@@ -1,0 +1,43 @@
+---
+/** Pasos numerados 01–04, número en serif itálica, separadores --line (03 §5). */
+import Pending from './Pending.astro';
+
+interface Step { title: string; text: string; pending?: string }
+interface Props { steps: readonly Step[] }
+const { steps } = Astro.props;
+---
+<ol role="list" class="process">
+  {steps.map((s, i) => (
+    <li class="process__step" data-reveal>
+      <span class="process__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+      <div>
+        <h3 class="process__title">{s.title}</h3>
+        <p class="process__text">{s.text} {s.pending && <Pending text={s.pending} />}</p>
+      </div>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .process { margin: 0; padding: 0; list-style: none; }
+  .process__step {
+    display: grid;
+    grid-template-columns: var(--sp-8) 1fr;
+    gap: var(--sp-4);
+    padding-block: var(--sp-5);
+    border-top: var(--hairline) solid var(--line);
+  }
+  .process__step:last-child { border-bottom: var(--hairline) solid var(--line); }
+  .process__num {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: var(--fs-h3);
+    line-height: var(--lh-head);
+  }
+  .process__title { margin-bottom: var(--sp-2); }
+  .process__text { margin: 0; }
+  @media (min-width: 768px) {
+    .process__step { grid-template-columns: calc(var(--sp-8) + var(--sp-6)) 1fr; }
+  }
+</style>

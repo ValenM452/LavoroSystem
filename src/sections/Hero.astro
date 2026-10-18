@@ -1,0 +1,20 @@
+---
+/** Hero (04 §2 home · 04 /empresas §1). Foto a sangre con recorte mobile propio; LCP con fetchpriority. */
+import { site } from '../config/site';
+import { copy } from '../config/copy';
+import { images } from '../config/images';
+import { tiendaTarget } from '../lib/links';
+import ImageBand from '../components/ImageBand.astro';
+import Button from '../components/Button.astro';
+
+interface Props { variant?: 'home' | 'empresas' }
+const { variant = 'home' } = Astro.props;
+const tienda = tiendaTarget('hero');
+const img = images.hero[variant];
+---
+{variant === 'home' && (
+  <ImageBand img={img.desktop} imgMobile={img.mobile} size="hero" as="h1" priority eyebrow={copy.hero.eyebrow} title={copy.hero.title} lead={copy.hero.lead}>
+    <Button href={tienda.href} pending={tienda.pending} track="click_tienda">{copy.hero.ctaTienda}</Button>
+    <Button href={site.paths.cotizar} variant="secondary" tone="dark" arrow>{copy.hero.ctaEmpresas}</Button>
+  </ImageBand>
+)}

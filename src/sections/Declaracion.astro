@@ -1,0 +1,25 @@
+---
+/** 04 §3 — titular en 7 columnas, párrafo en 4 a la derecha, alineado abajo. */
+import { copy } from '../config/copy';
+import { emphasis } from '../lib/emphasis';
+---
+<section class="section decl" aria-labelledby="decl-title">
+  <div class="container grid decl__grid">
+    <h2 id="decl-title" class="decl__title" data-reveal set:html={emphasis(copy.declaracion.title)} />
+    <p class="decl__text" data-reveal>{copy.declaracion.text}</p>
+  </div>
+</section>
+
+<style>
+  .decl__grid { row-gap: var(--sp-6); }
+  .decl__title, .decl__text { grid-column: 1 / -1; }
+  .decl__text { margin: 0; }
+  @media (min-width: 768px) {
+    .decl__text { grid-column: 3 / -1; }
+  }
+  @media (min-width: 1024px) {
+    .decl__grid { align-items: end; }
+    .decl__title { grid-column: 1 / span 7; }
+    .decl__text { grid-column: 9 / -1; }
+  }
+</style>

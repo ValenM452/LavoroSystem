@@ -1,0 +1,29 @@
+---
+/** 04 §7 — titular izquierda (5 col), lista numerada derecha (6 col). Se reutiliza en /empresas. */
+import { copy } from '../config/copy';
+import SectionHeading from '../components/SectionHeading.astro';
+import ProcessList from '../components/ProcessList.astro';
+import Button from '../components/Button.astro';
+
+interface Props { ctaHref: string }
+const { ctaHref } = Astro.props;
+---
+<section class="section section--stone" aria-labelledby="proc-title">
+  <div class="container grid proc">
+    <SectionHeading id="proc-title" class="proc__head" eyebrow={copy.proceso.eyebrow} title={copy.proceso.title} />
+    <div class="proc__list">
+      <ProcessList steps={copy.proceso.steps} />
+      <div class="proc__cta"><Button href={ctaHref} arrow>{copy.proceso.cta}</Button></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .proc { row-gap: var(--sp-7); }
+  .proc :global(.proc__head), .proc__list { grid-column: 1 / -1; }
+  .proc__cta { margin-top: var(--sp-6); }
+  @media (min-width: 1024px) {
+    .proc :global(.proc__head) { grid-column: 1 / span 5; align-self: start; }
+    .proc__list { grid-column: 7 / -1; }
+  }
+</style>

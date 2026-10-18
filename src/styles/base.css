@@ -107,10 +107,12 @@ small, .small { font-size: var(--fs-small); }
 .btn--secondary { background: transparent; color: inherit; border-color: currentColor; }
 .btn--secondary:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
 
-/* Sobre fondos oscuros (bordó / ink): el primario se invierte para mantener contraste */
-.btn--dark.btn--primary { background: var(--white); color: var(--ink); }
-.btn--dark.btn--primary:hover { background: var(--paper-2); }
-.btn--dark.btn--secondary:hover { background: var(--white); color: var(--ink); border-color: var(--white); }
+/* Sobre fondos oscuros (ink / foto): el secundario se invierte al hover. */
+.btn--on-dark.btn--secondary:hover,
+.btn--on-bordo.btn--secondary:hover { background: var(--white); color: var(--ink); border-color: var(--white); }
+/* Sobre bordó: el primario bordó no contrasta, se invierte a blanco. */
+.btn--on-bordo.btn--primary { background: var(--white); color: var(--ink); }
+.btn--on-bordo.btn--primary:hover { background: var(--paper-2); }
 .btn__icon { width: 1.125em; height: 1.125em; flex: none; fill: currentColor; }
 
 /* Subrayado que crece de izquierda a derecha (03 §6) */
@@ -128,6 +130,9 @@ small, .small { font-size: var(--fs-small); }
   transition: opacity var(--dur-reveal) var(--ease), transform var(--dur-reveal) var(--ease);
 }
 .js [data-reveal].is-visible { opacity: 1; transform: none; }
+/* Imágenes de ImageBand: escala 1.06 → 1 al entrar (03 §6). */
+.js [data-reveal-zoom] img { transform: scale(var(--image-zoom-from)); transition: transform var(--dur-image) var(--ease); }
+.js [data-reveal-zoom].is-visible img { transform: none; }
 
 .skip-link {
   position: absolute;

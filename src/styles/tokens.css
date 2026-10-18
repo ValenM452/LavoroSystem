@@ -86,6 +86,7 @@
   --topbar-h: 32px;
   --eyebrow-line: 24px;
   --fs-btn: .9375rem;
+  --fs-tag: .6875rem;
   --btn-pad-y: 12px;
   --btn-pad-x: 22px;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -104,6 +105,14 @@
   --mega-open-delay: 150ms;
   --mega-close-delay: 300ms;
   --reveal-shift: 16px;
+
+  --hero-h: min(100svh, 900px);
+  --band-h: min(78vh, 760px);
+  --map-h: 640px;
+  --thumb: 64px;
+  --check: 1.25rem;
+  --panel-w: 34rem;
+  --form-col-gap: var(--sp-5);
   --image-zoom-from: 1.06;
 }
 

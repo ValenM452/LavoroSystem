@@ -31,6 +31,9 @@ export const site = {
     },
     address: '[[PENDIENTE: dirección del local]]',
     hours: '[[PENDIENTE: horarios]]',
+    /** "Cómo llegar" (link) y mapa embebido; dependen de la dirección. */
+    mapsUrl: '[[PENDIENTE: link Google Maps]]',
+    mapsEmbedUrl: '[[PENDIENTE: link Google Maps]]',
   },
 
   social: {

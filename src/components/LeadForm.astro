@@ -1,0 +1,120 @@
+---
+/**
+ * Formulario de cotización (05 §2) — SOLO INTERFAZ (T06). El envío es simulado en src/lib/leadForm.ts;
+ * el endpoint real /api/lead llega en T08 (action ya apunta ahí para el modo sin JS).
+ */
+import { site } from '../config/site';
+import { copy } from '../config/copy';
+import { cantidadOptions, personalizacionOptions, plazoOptions, productoOptions, rubroOptions } from '../lib/leadSchema';
+import Field from './Field.astro';
+import ChoiceGroup from './ChoiceGroup.astro';
+
+interface Props { idPrefix: string }
+const { idPrefix } = Astro.props;
+const L = copy.form.labels;
+const fid = (n: string) => `${idPrefix}-${n}`;
+---
+<div class="lead" data-lead-root>
+  <form class="lead__form" action="/api/lead" method="post" data-lead-form>
+    <p class="lead__summary" data-lead-summary role="alert"></p>
+
+    <div class="lead__grid">
+      <Field id={fid('nombre')} name="nombre" label={L.nombre} required autocomplete="name" maxlength={80} />
+      <Field id={fid('empresa')} name="empresa" label={L.empresa} required autocomplete="organization" />
+      <Field id={fid('telefono')} name="telefono" label={L.telefono} type="tel" required autocomplete="tel" inputmode="tel" />
+      <Field id={fid('email')} name="email" label={L.email} type="email" autocomplete="email" inputmode="email" />
+      <Field id={fid('localidad')} name="localidad" label={L.localidad} required autocomplete="address-level2" />
+      <Field id={fid('rubro')} name="rubro" label={L.rubro} type="select" required options={rubroOptions} />
+      <Field id={fid('cantidad')} name="cantidad" label={L.cantidad} type="select" required options={cantidadOptions} />
+      <Field id={fid('plazo')} name="plazo" label={L.plazo} type="select" options={plazoOptions} />
+    </div>
+
+    <ChoiceGroup id={fid('productos')} name="productos[]" errorKey="productos" legend={L.productos} type="checkbox" options={productoOptions} required columns={2} />
+    <ChoiceGroup id={fid('personalizacion')} name="personalizacion" legend={L.personalizacion} type="radio" options={personalizacionOptions} required columns={2} />
+    <Field id={fid('comentario')} name="comentario" label={L.comentario} type="textarea" maxlength={1000} />
+
+    <div class="lead__consent">
+      <label class="choice">
+        <input type="checkbox" name="acepta" required aria-describedby={fid('acepta-error')} />
+        <span>{copy.form.acepta}</span>
+      </label>
+      <a class="lead__privacy link-u" href={site.paths.privacidad}>{copy.form.privacidad}</a>
+      <p class="field__error" id={fid('acepta-error')} data-error-for="acepta"></p>
+    </div>
+
+    <!-- Antispam y atribución (05 §2). Se completan en el cliente. -->
+    <div class="sr-only" aria-hidden="true">
+      <label for={fid('website')}>Website</label>
+      <input id={fid('website')} name="website" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+    <input type="hidden" name="t" />
+    <input type="hidden" name="utm_source" />
+    <input type="hidden" name="utm_medium" />
+    <input type="hidden" name="utm_campaign" />
+    <input type="hidden" name="pagina" />
+    <input type="hidden" name="referrer" />
+
+    <div class="lead__actions">
+      <button type="submit" class="btn btn--primary" data-lead-submit>{copy.form.submit}</button>
+      <a class="small link-u" href={site.contact.whatsappEmpresas.url}>{copy.form.alt}</a>
+    </div>
+  </form>
+
+  <div class="lead__success" data-lead-success role="status" tabindex="-1" hidden>
+    <p class="h3">{copy.form.success}</p>
+    <a class="btn btn--secondary" href={site.contact.whatsappEmpresas.url} data-lead-wa>
+      <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12.04 2a9.9 9.9 0 0 0-8.46 15.04L2 22l5.1-1.54A9.93 9.93 0 1 0 12.04 2Zm0 1.8a8.13 8.13 0 1 1-4.2 15.1l-.3-.18-3.02.91.92-2.95-.2-.31A8.12 8.12 0 0 1 12.04 3.8Z"/></svg>
+      {copy.form.successCta}
+    </a>
+  </div>
+</div>
+
+<script>
+  import '../lib/leadForm';
+</script>
+
+<style>
+  .lead__form { display: grid; gap: var(--sp-6); }
+  .lead__summary:empty { display: none; }
+  .lead__summary { margin: 0; padding: var(--sp-3) var(--sp-4); border-left: var(--ring) solid var(--accent); background: var(--white); font-weight: 500; }
+  .lead__grid { display: grid; gap: var(--sp-6) var(--form-col-gap); }
+  .lead__privacy { display: inline-flex; align-items: center; min-height: var(--tap); font-size: var(--fs-small); text-decoration: underline; }
+  .lead__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-4); }
+  .lead__actions a { display: inline-flex; align-items: center; min-height: var(--tap); }
+  .lead__success { display: grid; gap: var(--sp-5); justify-items: start; padding-block: var(--sp-6); }
+  .lead__success:focus { outline: none; }
+  .lead :global([aria-busy='true']) [data-lead-submit] { opacity: .7; cursor: progress; }
+
+  /* Campos (Field / ChoiceGroup) */
+  .lead :global(.field) { display: grid; gap: var(--sp-2); }
+  .lead :global(.field__label) { font-size: var(--fs-small); font-weight: 500; padding: 0; }
+  .lead :global(.field__opt) { color: var(--muted); font-weight: 400; }
+  .lead :global(.field__control) {
+    width: 100%;
+    min-height: var(--tap);
+    padding: var(--sp-2) 0;
+    border: 0;
+    border-bottom: var(--hairline) solid var(--ink);
+    border-radius: var(--radius) var(--radius) 0 0;
+    background: transparent;
+  }
+  .lead :global(.field__control--area) { resize: vertical; }
+  .lead :global(.field__control:focus-visible) {
+    outline: none;
+    box-shadow: none;
+    border-bottom: var(--ring) solid var(--accent);
+    background: var(--white);
+  }
+  .lead :global([aria-invalid='true']) { border-bottom-color: var(--accent); }
+  .lead :global(.field__error) { margin: 0; color: var(--accent); font-size: var(--fs-small); font-weight: 500; }
+  .lead :global(.field__error:empty) { display: none; }
+  .lead :global(.choices) { margin: 0; padding: 0; border: 0; display: grid; gap: var(--sp-2); }
+  .lead :global(.choices__list) { display: grid; }
+  .lead :global(.choice) { display: flex; align-items: center; gap: var(--sp-3); min-height: var(--tap); cursor: pointer; }
+  .lead :global(.choice input) { width: var(--check); height: var(--check); flex: none; accent-color: var(--accent); }
+
+  @media (min-width: 768px) {
+    .lead__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .lead :global(.choices__list--2) { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--form-col-gap); }
+  }
+</style>

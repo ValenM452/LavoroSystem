@@ -1,0 +1,26 @@
+---
+/** Eyebrow + titular serif (una sola itálica, `*palabra*`) + bajada opcional. 03 §5. */
+import { emphasis } from '../lib/emphasis';
+import Eyebrow from './Eyebrow.astro';
+
+interface Props {
+  title: string;
+  eyebrow?: string;
+  lead?: string;
+  as?: 'h1' | 'h2';
+  id?: string;
+  class?: string;
+}
+const { title, eyebrow, lead, as: Tag = 'h2', id, class: className } = Astro.props;
+---
+<div class:list={['sh', className]}>
+  {eyebrow && <Eyebrow text={eyebrow} />}
+  <Tag id={id} class="sh__title" set:html={emphasis(title)} />
+  {lead && <p class="sh__lead">{lead}</p>}
+</div>
+
+<style>
+  .sh { display: grid; gap: var(--sp-4); }
+  .sh :global(.eyebrow) { margin: 0; }
+  .sh__lead { margin: 0; }
+</style>

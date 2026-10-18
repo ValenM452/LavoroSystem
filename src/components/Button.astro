@@ -4,8 +4,8 @@ import Pending from './Pending.astro';
 interface Props {
   href: string;
   variant?: 'primary' | 'secondary' | 'whatsapp';
-  /** Fondo oscuro (bordó / ink): el primario se invierte. */
-  tone?: 'light' | 'dark';
+  /** `dark` = sobre ink o foto; `bordo` = sobre bordó (el primario se invierte a blanco). */
+  tone?: 'light' | 'dark' | 'bordo';
   arrow?: boolean;
   /** Texto del [[PENDIENTE]] cuando el destino todavía no existe. */
   pending?: string | null;
@@ -15,7 +15,7 @@ interface Props {
   track?: string;
 }
 const { href, variant = 'primary', tone = 'light', arrow = false, pending = null, external = false, class: className, track } = Astro.props;
-const classes = ['btn', variant === 'primary' ? 'btn--primary' : 'btn--secondary', tone === 'dark' && 'btn--dark', pending && 'is-pending', className];
+const classes = ['btn', variant === 'primary' ? 'btn--primary' : 'btn--secondary', tone === 'dark' && 'btn--on-dark', tone === 'bordo' && 'btn--on-bordo', pending && 'is-pending', className];
 ---
 {pending ? (
   <span class="wrap">

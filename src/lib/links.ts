@@ -31,3 +31,8 @@ export function externalTarget(url: string): Target {
 
 /** Link a /empresas precargando el rubro (04 §1, T05). */
 export const rubroHref = (slug: string) => `${site.paths.empresas}?rubro=${slug}#cotizar`;
+
+/** Link al formulario con personalización preseleccionada (04 §6). */
+export const personalizacionHref = `${site.paths.empresas}?personalizacion=1#cotizar`;
+
+export const pendingLabel = (value: string) => pendingText(value);

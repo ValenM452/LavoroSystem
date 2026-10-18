@@ -1,5 +1,5 @@
 /** Aparición al entrar en viewport, una sola vez (03 §6). */
-const items = document.querySelectorAll<HTMLElement>('[data-reveal]');
+const items = document.querySelectorAll<HTMLElement>('[data-reveal], [data-reveal-zoom]');
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 if (reduce || !('IntersectionObserver' in window)) {

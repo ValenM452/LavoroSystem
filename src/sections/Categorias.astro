@@ -1,0 +1,44 @@
+---
+/** 04 §4 — 8 tiles con foto, link a cada categoría de Tiendanube (con UTM). */
+import { site, type CategoryKey } from '../config/site';
+import { copy } from '../config/copy';
+import { images } from '../config/images';
+import { tiendaTarget } from '../lib/links';
+import SectionHeading from '../components/SectionHeading.astro';
+import PhotoTile from '../components/PhotoTile.astro';
+import Pending from '../components/Pending.astro';
+
+const keys = ['pantalones', 'camisas', 'calzadoDeSeguridad', 'overoles', 'elementosDeSeguridad', 'salud', 'gastronomia', 'colegios'] as const satisfies readonly CategoryKey[];
+const tiles = keys.map((k) => ({ key: k, label: site.tiendanube.categories[k].label, target: tiendaTarget('categorias', k) }));
+const all = tiendaTarget('categorias');
+---
+<section class="section section--alt" aria-labelledby="cat-title">
+  <div class="container cats">
+    <SectionHeading id="cat-title" eyebrow={copy.categorias.eyebrow} title={copy.categorias.title} />
+    <ul role="list" class="cats__grid">
+      {tiles.map((t) => (
+        <li data-reveal>
+          <PhotoTile img={images.categorias[t.key]} label={t.label} href={t.target.href} pending={t.target.pending} sizes="(min-width: 1024px) 25vw, 50vw" />
+        </li>
+      ))}
+    </ul>
+    <p class="cats__all">
+      {all.pending
+        ? <span>{copy.categorias.verTienda} → <Pending text={all.pending} /></span>
+        : <a class="link-u" href={all.href}>{copy.categorias.verTienda} →</a>}
+    </p>
+  </div>
+</section>
+
+<style>
+  .cats { display: grid; gap: var(--sp-7); }
+  .cats__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-3); margin: 0; padding: 0; list-style: none; }
+  .cats__all { margin: 0; font-weight: 500; }
+  .cats__all a, .cats__all span { display: inline-flex; align-items: center; gap: var(--sp-2); min-height: var(--tap); flex-wrap: wrap; }
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .cats__grid :global(.rimg) { aspect-ratio: var(--ratio-square); }
+  }
+  @media (min-width: 1024px) {
+    .cats__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-4); }
+  }
+</style>

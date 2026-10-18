@@ -10,8 +10,10 @@ interface Props {
   ratio?: 'tile' | 'photo' | 'wide' | 'square' | 'fill';
   widths?: number[];
   priority?: boolean;
+  /** El contenedor muestra el [[PENDIENTE]] de la foto en otro lugar. */
+  hideTag?: boolean;
 }
-const { img, sizes, ratio = 'fill', widths = [480, 800, 1200, 1600], priority = false } = Astro.props;
+const { img, sizes, ratio = 'fill', widths = [480, 800, 1200, 1600], priority = false, hideTag = false } = Astro.props;
 const usable = widths.filter((w) => w <= img.src.width);
 // Mientras la imagen es un relleno se renderiza decorativa (alt vacío).
 const alt = img.pending ? '' : img.alt;
@@ -28,7 +30,7 @@ const alt = img.pending ? '' : img.alt;
     decoding="async"
     style={img.position ? `object-position: ${img.position}` : undefined}
   />
-  {img.pending && <Pending text={img.pending} class="rimg__tag" />}
+  {img.pending && !hideTag && <Pending text={img.pending} class="rimg__tag" />}
 </div>
 
 <style>

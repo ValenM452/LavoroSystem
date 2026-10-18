@@ -1,0 +1,32 @@
+---
+/** 04 §5 — reemplaza "Clientes que confían": wordmarks en texto, sin logos. */
+import { site } from '../config/site';
+import { copy } from '../config/copy';
+import { emphasis } from '../lib/emphasis';
+import Pending from '../components/Pending.astro';
+---
+<section class="section" id="marcas" aria-labelledby="marcas-title">
+  <div class="container grid marcas">
+    <h2 id="marcas-title" class="marcas__title" data-reveal set:html={emphasis(copy.marcas.title)} />
+    <ul role="list" class="marcas__list" data-reveal>
+      {site.brands.map((b) => <li class="marcas__brand">{b}</li>)}
+      <li class="marcas__pending"><Pending text={copy.marcas.pending} /></li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .marcas { row-gap: var(--sp-6); align-items: center; }
+  .marcas__title, .marcas__list { grid-column: 1 / -1; }
+  .marcas__list { display: grid; margin: 0; padding: 0; list-style: none; }
+  .marcas__list li { display: flex; align-items: center; min-height: var(--tap); padding-block: var(--sp-3); border-top: var(--hairline) solid var(--line); }
+  .marcas__brand { font-weight: 600; text-transform: uppercase; letter-spacing: var(--tracking-eyebrow); color: var(--steel); }
+  @media (min-width: 768px) {
+    .marcas__list { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); }
+  }
+  @media (min-width: 1024px) {
+    .marcas__title { grid-column: 1 / span 4; }
+    .marcas__list { grid-column: 5 / -1; display: flex; flex-wrap: wrap; }
+    .marcas__list li { border-top: 0; padding: 0 var(--sp-5); border-left: var(--hairline) solid var(--line); }
+  }
+</style>

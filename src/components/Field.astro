@@ -1,0 +1,35 @@
+---
+/** Label arriba, input con borde inferior, error en texto enlazado por aria-describedby (03 §5, T06). */
+import { copy } from '../config/copy';
+
+interface Option { value: string; label: string }
+interface Props {
+  id: string;
+  name: string;
+  label: string;
+  type?: 'text' | 'tel' | 'email' | 'select' | 'textarea';
+  required?: boolean;
+  options?: readonly (Option | string)[];
+  autocomplete?: string;
+  inputmode?: 'text' | 'tel' | 'email';
+  maxlength?: number;
+  class?: string;
+}
+const { id, name, label, type = 'text', required = false, options = [], autocomplete, inputmode, maxlength, class: className } = Astro.props;
+const errorId = `${id}-error`;
+const opts = options.map((o) => (typeof o === 'string' ? { value: o, label: o } : o));
+---
+<div class:list={['field', className]}>
+  <label class="field__label" for={id}>{label}{!required && <span class="field__opt"> {copy.form.optional}</span>}</label>
+  {type === 'select' ? (
+    <select class="field__control" id={id} name={name} required={required} aria-describedby={errorId}>
+      <option value="">{copy.form.choose}</option>
+      {opts.map((o) => <option value={o.value}>{o.label}</option>)}
+    </select>
+  ) : type === 'textarea' ? (
+    <textarea class="field__control field__control--area" id={id} name={name} required={required} maxlength={maxlength} rows="4" aria-describedby={errorId}></textarea>
+  ) : (
+    <input class="field__control" id={id} name={name} type={type} required={required} autocomplete={autocomplete} inputmode={inputmode} maxlength={maxlength} aria-describedby={errorId} />
+  )}
+  <p class="field__error" id={errorId} data-error-for={name}></p>
+</div>

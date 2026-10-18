@@ -1,15 +1,28 @@
 ---
 import Base from '../layouts/Base.astro';
-import Pending from '../components/Pending.astro';
+import { site } from '../config/site';
 import { copy } from '../config/copy';
+import Hero from '../sections/Hero.astro';
+import Declaracion from '../sections/Declaracion.astro';
+import Categorias from '../sections/Categorias.astro';
+import Marcas from '../sections/Marcas.astro';
+import Personalizacion from '../sections/Personalizacion.astro';
+import Proceso from '../sections/Proceso.astro';
+import Rubros from '../sections/Rubros.astro';
+import Cotizar from '../sections/Cotizar.astro';
+import Local from '../sections/Local.astro';
+import Cierre from '../sections/Cierre.astro';
 ---
 
-<Base title={copy.seo.home.title} description={copy.seo.home.description}>
-  <div class="container empty">
-    <Pending text="secciones de la home (llegan en la Tanda 2)" />
-  </div>
+<Base title={copy.seo.home.title} description={copy.seo.home.description} overlay>
+  <Hero />
+  <Declaracion />
+  <Categorias />
+  <Marcas />
+  <Personalizacion />
+  <Proceso ctaHref={site.paths.cotizar} />
+  <Rubros />
+  <Cotizar id="contacto" />
+  <Local />
+  <Cierre />
 </Base>
-
-<style>
-  .empty { min-height: 60vh; padding-block: var(--sp-8); }
-</style>

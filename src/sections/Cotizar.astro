@@ -1,0 +1,42 @@
+---
+/** 04 §9 — titular + datos de contacto a la izquierda, formulario a la derecha. #contacto (home) / #cotizar (/empresas). */
+import { site } from '../config/site';
+import { copy } from '../config/copy';
+import { isPending, pendingLabel } from '../lib/links';
+import SectionHeading from '../components/SectionHeading.astro';
+import LeadForm from '../components/LeadForm.astro';
+import Pending from '../components/Pending.astro';
+
+interface Props { id: 'contacto' | 'cotizar' }
+const { id } = Astro.props;
+const c = site.contact;
+---
+<section class="section" id={id} aria-labelledby={`${id}-title`}>
+  <div class="container grid cot">
+    <div class="cot__aside">
+      <SectionHeading id={`${id}-title`} title={copy.form.title} />
+      <dl class="cot__data">
+        <div><dt>{copy.form.datosWa}</dt><dd><a class="link-u" href={c.whatsappEmpresas.url}>{c.whatsappEmpresas.label}</a></dd></div>
+        <div><dt>{copy.form.datosEmail}</dt><dd><a class="link-u" href={`mailto:${c.email}`}>{c.email}</a></dd></div>
+        <div><dt>{copy.form.datosDireccion}</dt><dd>{isPending(c.address) ? <Pending text={pendingLabel(c.address)} /> : c.address}</dd></div>
+      </dl>
+    </div>
+    <div class="cot__form">
+      <LeadForm idPrefix={id} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .cot { row-gap: var(--sp-7); }
+  .cot__aside, .cot__form { grid-column: 1 / -1; }
+  .cot__aside { display: grid; gap: var(--sp-6); align-content: start; }
+  .cot__data { display: grid; gap: var(--sp-4); margin: 0; }
+  .cot__data dt { font-size: var(--fs-eyebrow); font-weight: 500; letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: var(--muted); }
+  .cot__data dd { margin: 0; }
+  .cot__data a { display: inline-flex; align-items: center; min-height: var(--tap); }
+  @media (min-width: 1024px) {
+    .cot__aside { grid-column: 1 / span 5; }
+    .cot__form { grid-column: 6 / -1; }
+  }
+</style>

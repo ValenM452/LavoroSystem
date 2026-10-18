@@ -1,0 +1,37 @@
+---
+/** 50 % foto / 50 % panel de color (03 §5). En mobile y tablet: foto arriba, panel abajo. */
+import type { ImageSlot } from '../config/images';
+import ResponsiveImage from './ResponsiveImage.astro';
+
+interface Props {
+  img: ImageSlot;
+  tone?: 'bordo' | 'ink';
+  reverse?: boolean;
+  id?: string;
+  labelledby?: string;
+}
+const { img, tone = 'bordo', reverse = false, id, labelledby } = Astro.props;
+---
+<section class:list={['split', reverse && 'split--reverse', tone === 'bordo' ? 'section--bordo' : 'section--ink']} id={id} aria-labelledby={labelledby}>
+  <div class="split__media">
+    <ResponsiveImage img={img} sizes="(min-width: 1024px) 50vw, 100vw" widths={[480, 800, 1200, 1600]} />
+  </div>
+  <div class="split__panel">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .split { display: grid; }
+  .split__media { aspect-ratio: var(--ratio-photo); }
+  .split__panel { padding: var(--section-y) var(--gutter); display: grid; gap: var(--sp-6); align-content: center; }
+  @media (min-width: 768px) {
+    .split__media { aspect-ratio: var(--ratio-wide); }
+  }
+  @media (min-width: 1024px) {
+    .split { grid-template-columns: 1fr 1fr; }
+    .split__media { aspect-ratio: auto; min-height: 100%; }
+    .split--reverse .split__media { order: 2; }
+    .split__panel { padding-inline: var(--sp-8); max-width: calc(var(--container) / 2 + var(--gutter)); }
+  }
+</style>
