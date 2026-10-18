@@ -92,6 +92,14 @@ export const copy = {
     },
   },
 
+  /** 05 §7 — páginas legales (T10) */
+  legales: {
+    eyebrow: 'Legales',
+    toc: 'En esta página',
+    review: 'Texto base pendiente de validación por el contador o asesor legal. No publicar sin esa revisión.',
+    vigencia: 'Vigente desde:',
+  },
+
   /** 04 §12 — footer */
   footer: {
     tienda: 'Tienda',

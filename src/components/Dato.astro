@@ -1,0 +1,9 @@
+---
+/** Valor de `site.ts` que puede seguir pendiente: muestra el dato o su `[[PENDIENTE]]`. */
+import Pending from './Pending.astro';
+import { isPending, pendingLabel } from '../lib/links';
+
+interface Props { value: string }
+const { value } = Astro.props;
+---
+{isPending(value) ? <Pending text={pendingLabel(value)} /> : value}

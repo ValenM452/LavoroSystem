@@ -1,0 +1,6 @@
+---
+/** Marca de texto legal a validar por el contador (05 §7). Se busca con `[[REVISAR CONTADOR` antes de publicar. */
+interface Props { text?: string }
+const { text } = Astro.props;
+---
+<span class="pending">[[REVISAR CONTADOR{text && `: ${text}`}]]</span>

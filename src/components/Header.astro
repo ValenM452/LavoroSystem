@@ -11,7 +11,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const tienda = tiendaTarget('nav');
 const c = site.contact;
 ---
-<div class="topbar on-dark">
+<div class="topbar on-dark" data-seccion="topbar">
   <div class="container topbar__inner">
     <p class="topbar__text">{copy.topbar.left}</p>
     <ul role="list" class="topbar__links">

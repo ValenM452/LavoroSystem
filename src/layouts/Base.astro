@@ -1,7 +1,9 @@
 ---
 /**
  * Layout base: fuentes, tokens, SEO (title, description, canonical, OG), header y footer.
- * Tracking (GA4 / Pixel) llega en T09.
+ * Medición (05 §5, T09): GA4 y Meta Pixel solo si existe su ID en env. Los stubs (`gtag`, `fbq`)
+ * se definen al instante para encolar eventos; los scripts reales se piden después de `load`,
+ * con la primera interacción o a los 3,5 s, para no competir con el LCP.
  */
 import '@fontsource-variable/source-serif-4/opsz.css';
 import '@fontsource-variable/source-serif-4/opsz-italic.css';
@@ -13,6 +15,7 @@ import { site } from '../config/site';
 import { copy } from '../config/copy';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { PUBLIC_GA4_ID, PUBLIC_META_PIXEL_ID } from 'astro:env/client';
 
 interface Props {
   title?: string;
@@ -21,6 +24,8 @@ interface Props {
 }
 
 const { title = site.name, description = '', noindex = false } = Astro.props;
+const ga4Id = PUBLIC_GA4_ID?.trim() ?? '';
+const pixelId = PUBLIC_META_PIXEL_ID?.trim() ?? '';
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 ---
 
@@ -41,6 +46,39 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : un
     {canonical && <meta property="og:url" content={canonical} />}
     <link rel="preload" href={serifLatin} as="font" type="font/woff2" crossorigin />
     <script is:inline>document.documentElement.classList.add('js');</script>
+    {(ga4Id || pixelId) && (
+      <script is:inline define:vars={{ ga4Id, pixelId }}>
+        const w = window;
+        const srcs = [];
+        if (ga4Id) {
+          w.dataLayer = w.dataLayer || [];
+          w.gtag = function () { w.dataLayer.push(arguments); };
+          w.gtag('js', new Date());
+          w.gtag('config', ga4Id);
+          srcs.push('https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(ga4Id));
+        }
+        if (pixelId && !w.fbq) {
+          const n = (w.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); });
+          w._fbq = n; n.push = n; n.loaded = true; n.version = '2.0'; n.queue = [];
+          w.fbq('init', pixelId);
+          w.fbq('track', 'PageView');
+          srcs.push('https://connect.facebook.net/en_US/fbevents.js');
+        }
+        let done = false;
+        const evs = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+        const inject = () => {
+          if (done) return;
+          done = true;
+          evs.forEach((e) => w.removeEventListener(e, inject));
+          srcs.forEach((src) => { const s = document.createElement('script'); s.async = true; s.src = src; document.head.appendChild(s); });
+        };
+        const arm = () => {
+          evs.forEach((e) => w.addEventListener(e, inject, { once: true, passive: true }));
+          setTimeout(inject, 3500);
+        };
+        document.readyState === 'complete' ? arm() : w.addEventListener('load', arm, { once: true });
+      </script>
+    )}
   </head>
   <body>
     <a class="skip-link" href="#contenido">{copy.a11y.skip}</a>
@@ -51,6 +89,8 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : un
     <Footer />
     <script>
       import '../lib/reveal';
+      import { initClickTracking } from '../lib/track';
+      initClickTracking();
     </script>
   </body>
 </html>

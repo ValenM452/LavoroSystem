@@ -1,0 +1,72 @@
+---
+/** Cambios y devoluciones (05 §7, T10). Sin plazos ni condiciones comerciales inventadas: van como [[PENDIENTE]]. */
+import Legal from '../../layouts/Legal.astro';
+import Dato from '../../components/Dato.astro';
+import Pending from '../../components/Pending.astro';
+import Revisar from '../../components/Revisar.astro';
+import LinkExterno from '../../components/LinkExterno.astro';
+import { site } from '../../config/site';
+
+const toc = [
+  { id: 'arrepentimiento', label: 'Arrepentimiento de compra online' },
+  { id: 'cambios', label: 'Cambios de talle o modelo' },
+  { id: 'personalizados', label: 'Productos personalizados' },
+  { id: 'fallas', label: 'Productos con falla' },
+  { id: 'empresas', label: 'Pedidos de empresas' },
+  { id: 'como', label: 'Cómo hacer un cambio o devolución' },
+];
+---
+<Legal
+  title="Cambios y devoluciones"
+  description="Cómo cambiar o devolver un producto comprado en LAVORO y cómo usar el botón de arrepentimiento."
+  toc={toc}
+>
+  <h2 id="arrepentimiento">Arrepentimiento de compra online</h2>
+  <p>
+    Si compraste en la tienda online, podés arrepentirte de la compra dentro de los 10 días corridos desde que recibiste el
+    producto o desde que se celebró el contrato, lo último que ocurra, sin dar explicaciones (art. 34 de la Ley 24.240 y
+    art. 1110 del Código Civil y Comercial). <Revisar />
+  </p>
+  <p>
+    Para hacerlo, usá el <LinkExterno url={site.tiendanube.arrepentimientoUrl}>botón de arrepentimiento</LinkExterno>.
+    El producto se devuelve en el mismo estado en que lo recibiste. Los gastos de devolución quedan a cargo de {site.name}.
+    <Revisar text="reintegro y forma de devolución" />
+  </p>
+
+  <h2 id="cambios">Cambios de talle o modelo</h2>
+  <ul>
+    <li>Plazo para pedir el cambio: <Pending text="plazo de cambio" /></li>
+    <li>Estado del producto: <Pending text="condiciones (sin uso, con etiqueta, en su envoltorio)" /></li>
+    <li>Comprobante: <Pending text="ticket o número de pedido requerido" /></li>
+    <li>Costo de envío del cambio: <Pending text="quién paga el envío en un cambio" /></li>
+  </ul>
+
+  <h2 id="personalizados">Productos personalizados</h2>
+  <p>
+    Las prendas bordadas o estampadas con un logo o nombre se hacen a pedido.
+    Condiciones de cambio y devolución de estos productos: <Revisar text="excepción del art. 1116 CCyC para productos hechos según especificaciones del cliente" />
+  </p>
+
+  <h2 id="fallas">Productos con falla</h2>
+  <p>
+    Si un producto tiene una falla de fabricación, escribinos con una foto y el número de pedido. Rige la garantía legal de la
+    Ley 24.240 (arts. 11 y siguientes). <Revisar text="plazo de garantía legal aplicable" />
+  </p>
+
+  <h2 id="empresas">Pedidos de empresas</h2>
+  <p>
+    En los pedidos por cotización, las condiciones de cambio se acuerdan en cada cotización.
+    <Pending text="política de cambios para pedidos mayoristas" />
+  </p>
+
+  <h2 id="como">Cómo hacer un cambio o devolución</h2>
+  <ul>
+    <li>Por WhatsApp al local: <a class="link-u" href={site.contact.whatsappLocal.url}>{site.contact.whatsappLocal.label}</a></li>
+    <li>Por email: <a class="link-u" href={`mailto:${site.contact.email}`}>{site.contact.email}</a></li>
+    <li>En el local: <Dato value={site.contact.address} />, {site.locality}. Horarios: <Dato value={site.contact.hours} /></li>
+  </ul>
+  <p>
+    Si no resolvemos tu reclamo, podés acudir a
+    <a class="link-u" href={site.defensaConsumidorUrl} target="_blank" rel="noopener">Defensa del Consumidor</a>.
+  </p>
+</Legal>

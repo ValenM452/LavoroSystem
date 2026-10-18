@@ -5,6 +5,7 @@
 import { leadSchema, rubroOptions, type LeadInput } from './leadSchema';
 import { copy } from '../config/copy';
 import { site } from '../config/site';
+import { track } from './track';
 
 interface LeadResponse { ok: boolean; error?: string; errors?: Record<string, string> }
 
@@ -142,6 +143,7 @@ function init(root: HTMLElement) {
     }
   };
 
+  form.addEventListener('focusin', () => track('form_start', { pagina: location.pathname }), { once: true });
   form.addEventListener('focusout', () => submitted && validate(false));
   form.addEventListener('change', () => submitted && validate(false));
 
@@ -164,6 +166,7 @@ function init(root: HTMLElement) {
     const whatsappUrl = `https://wa.me/${site.contact.whatsappEmpresas.number}?text=${encodeURIComponent(text)}`;
 
     if (res.ok) {
+      track('generate_lead', { rubro: data.rubro, cantidad: data.cantidad });
       waLink.href = whatsappUrl;
       form.hidden = true;
       success.hidden = false;

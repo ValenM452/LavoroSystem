@@ -30,6 +30,9 @@ export default defineConfig({
     schema: {
       LEAD_WEBHOOK_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
       LEAD_WEBHOOK_SECRET: envField.string({ context: 'server', access: 'secret', optional: true }),
+      // Medición (T09): sin ID no se carga el script. Se fijan en el build (públicos).
+      PUBLIC_GA4_ID: envField.string({ context: 'client', access: 'public', optional: true }),
+      PUBLIC_META_PIXEL_ID: envField.string({ context: 'client', access: 'public', optional: true }),
     },
   },
 });

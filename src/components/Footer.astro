@@ -11,11 +11,12 @@ const categorias = (['pantalones', 'camisas', 'calzadoDeSeguridad', 'overoles', 
   (key) => ({ label: site.tiendanube.categories[key].label, target: tiendaTarget('footer', key) }),
 );
 const legales = [
-  { label: f.terminos, href: site.paths.terminos, pending: null },
-  { label: f.privacidad, href: site.paths.privacidad, pending: null },
-  { label: f.cambios, href: site.paths.cambios, pending: null },
-  { label: f.arrepentimiento, ...externalTarget(site.tiendanube.arrepentimientoUrl) },
-  { label: f.defensa, ...externalTarget(site.defensaConsumidorUrl) },
+  { label: f.terminos, href: site.paths.terminos, pending: null, external: false },
+  { label: f.privacidad, href: site.paths.privacidad, pending: null, external: false },
+  { label: f.cambios, href: site.paths.cambios, pending: null, external: false },
+  { label: f.arrepentimiento, ...externalTarget(site.tiendanube.arrepentimientoUrl), external: true },
+  { label: f.defensa, ...externalTarget(site.defensaConsumidorUrl), external: true },
+  { label: f.dataFiscal, ...externalTarget(site.dataFiscal), external: true },
 ];
 const pendingText = (v: string) => v.replace(/^\[\[PENDIENTE:\s*/, '').replace(/\]\]$/, '');
 ---
@@ -66,15 +67,14 @@ const pendingText = (v: string) => v.replace(/^\[\[PENDIENTE:\s*/, '').replace(/
         {legales.map((l) => (
           <li>{l.pending
             ? <span class="is-pending">{l.label} <Pending text={l.pending} /></span>
-            : <a class="link-u" href={l.href}>{l.label}</a>}</li>
+            : <a class="link-u" href={l.href} target={l.external ? '_blank' : undefined} rel={l.external ? 'noopener' : undefined}>{l.label}</a>}</li>
         ))}
-        <li>{f.dataFiscal} <Pending text={pendingText(site.dataFiscal)} /></li>
       </ul>
     </section>
   </div>
 
   <div class="container footer__legal">
-    <p>{f.copyright} · <Pending text={pendingText(site.legal.businessName)} /></p>
+    <p>{f.copyright} · {isPending(site.legal.businessName) ? <Pending text={pendingText(site.legal.businessName)} /> : site.legal.businessName}{!isPending(site.legal.cuit) && ` · CUIT ${site.legal.cuit}`}</p>
   </div>
 </footer>
 

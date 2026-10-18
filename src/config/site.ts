@@ -66,8 +66,12 @@ export const site = {
     arrepentimientoUrl: '[[PENDIENTE: URL botón de arrepentimiento]]',
   },
 
+  /** Link del formulario "Data Fiscal" de ARCA (qr.afip.gob.ar/?qr=…), lo genera el titular del CUIT. */
   dataFiscal: '[[PENDIENTE: QR Data Fiscal]]',
-  defensaConsumidorUrl: '[[PENDIENTE: URL Defensa del Consumidor]]',
+  /** Organismos públicos (URLs oficiales, verificadas el 18/10/2026). */
+  defensaConsumidorUrl: 'https://www.argentina.gob.ar/economia/industria-y-comercio/defensadelconsumidor',
+  reclamoConsumidorUrl: 'https://www.argentina.gob.ar/servicio/iniciar-un-reclamo-ante-defensa-del-consumidor',
+  aaipUrl: 'https://www.argentina.gob.ar/aaip',
 
   /** Rubros B2B (01 §6). `label` = corto (menús, grillas); `longLabel` = completo (select del formulario). */
   rubros: [

@@ -1,0 +1,11 @@
+---
+/** Link externo de `site.ts` que puede estar pendiente (botón de arrepentimiento, Data Fiscal, etc.). */
+import Pending from './Pending.astro';
+import { externalTarget } from '../lib/links';
+
+interface Props { url: string }
+const t = externalTarget(Astro.props.url);
+---
+{t.pending
+  ? <span class="is-pending"><slot /> <Pending text={t.pending} /></span>
+  : <a class="link-u" href={t.href} target="_blank" rel="noopener"><slot /></a>}

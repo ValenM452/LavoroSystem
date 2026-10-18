@@ -1,0 +1,103 @@
+---
+/** Términos y condiciones (05 §7, T10). Texto base: validar con el contador antes de publicar. */
+import Legal from '../../layouts/Legal.astro';
+import Dato from '../../components/Dato.astro';
+import Pending from '../../components/Pending.astro';
+import Revisar from '../../components/Revisar.astro';
+import LinkExterno from '../../components/LinkExterno.astro';
+import { site } from '../../config/site';
+import { externalTarget } from '../../lib/links';
+
+const tienda = externalTarget(site.tiendanube.baseUrl);
+const toc = [
+  { id: 'titular', label: 'Quién es el titular' },
+  { id: 'alcance', label: 'Qué incluye este sitio' },
+  { id: 'tienda', label: 'Compras en la tienda online' },
+  { id: 'cotizaciones', label: 'Cotizaciones para empresas' },
+  { id: 'informacion', label: 'Información de productos' },
+  { id: 'revocacion', label: 'Derecho de arrepentimiento' },
+  { id: 'propiedad', label: 'Marcas y contenidos' },
+  { id: 'consumidor', label: 'Defensa del consumidor' },
+  { id: 'jurisdiccion', label: 'Ley aplicable' },
+  { id: 'cambios', label: 'Cambios en estos términos' },
+];
+---
+<Legal
+  title="Términos y condiciones"
+  description="Condiciones de uso del sitio de LAVORO, de las cotizaciones para empresas y de las compras en la tienda online."
+  toc={toc}
+>
+  <h2 id="titular">Quién es el titular</h2>
+  <p>
+    Este sitio pertenece a <Dato value={site.legal.businessName} />, CUIT <Dato value={site.legal.cuit} />,
+    que opera con el nombre comercial {site.name}, con domicilio en <Dato value={site.contact.address} />, {site.locality}.
+  </p>
+  <p>
+    Contacto: <a class="link-u" href={`mailto:${site.contact.email}`}>{site.contact.email}</a> ·
+    WhatsApp del local {site.contact.whatsappLocal.label} · WhatsApp para empresas {site.contact.whatsappEmpresas.label}.
+  </p>
+
+  <h2 id="alcance">Qué incluye este sitio</h2>
+  <p>
+    Este sitio es institucional: presenta a {site.name}, sus rubros y las marcas que trabaja, y permite pedir una
+    cotización para empresas. Al usarlo aceptás estos términos. Si no estás de acuerdo, no lo uses.
+  </p>
+
+  <h2 id="tienda">Compras en la tienda online</h2>
+  <p>
+    Las compras se hacen en la tienda online de {site.name}
+    {tienda.pending ? <Pending text={tienda.pending} /> : <>(<a class="link-u" href={tienda.href}>{tienda.href.replace(/^https?:\/\//, '').replace(/\/$/, '')}</a>)</>},
+    que funciona sobre la plataforma Tiendanube. Precios, stock, medios de pago, envíos y retiro en el local se informan
+    en la tienda al momento de comprar. El proceso de compra también se rige por las condiciones de esa plataforma.
+  </p>
+  <p><Revisar text="condiciones de venta propias que se agregan a las de Tiendanube" /></p>
+
+  <h2 id="cotizaciones">Cotizaciones para empresas</h2>
+  <p>
+    Enviar el formulario de cotización no es una compra ni genera obligación de pago. Es un pedido para que te contactemos.
+    Las condiciones de cada pedido (productos, cantidades, personalización, precio, forma de pago y entrega) se informan
+    en la cotización que te enviamos y valen solo para ese pedido.
+  </p>
+  <p>Validez de las cotizaciones: <Pending text="plazo de validez de una cotización" /></p>
+
+  <h2 id="informacion">Información de productos</h2>
+  <p>
+    Las fotos de ambiente del sitio (obras, campos, talleres) son ilustrativas y no muestran clientes ni trabajos de {site.name}.
+    Colores, talles y características de cada producto se informan en la tienda o en la cotización.
+  </p>
+
+  <h2 id="revocacion">Derecho de arrepentimiento</h2>
+  <p>
+    Si comprás como consumidor a distancia, tenés derecho a revocar la compra dentro de los 10 días corridos desde que recibís
+    el producto o desde que se celebra el contrato, lo último que ocurra, según el artículo 34 de la Ley 24.240 de Defensa del
+    Consumidor y los artículos 1110 y siguientes del Código Civil y Comercial. <Revisar />
+  </p>
+  <p>
+    Podés hacerlo con el <LinkExterno url={site.tiendanube.arrepentimientoUrl}>botón de arrepentimiento</LinkExterno>.
+    El detalle está en <a class="link-u" href={site.paths.cambios}>Cambios y devoluciones</a>.
+  </p>
+
+  <h2 id="propiedad">Marcas y contenidos</h2>
+  <p>
+    Los textos, el logo y el diseño de este sitio son de {site.name}. Las marcas de los productos que comercializamos
+    ({site.brands.join(', ')}) pertenecen a sus respectivos titulares y se mencionan solo para identificar los productos.
+  </p>
+
+  <h2 id="consumidor">Defensa del consumidor</h2>
+  <p>
+    Si tenés un reclamo, primero escribinos y lo resolvemos. También podés acudir a la
+    <a class="link-u" href={site.defensaConsumidorUrl} target="_blank" rel="noopener">Dirección Nacional de Defensa del Consumidor</a>
+    o <a class="link-u" href={site.reclamoConsumidorUrl} target="_blank" rel="noopener">iniciar un reclamo en línea</a>.
+  </p>
+
+  <h2 id="jurisdiccion">Ley aplicable</h2>
+  <p>
+    Estos términos se rigen por las leyes de la República Argentina.
+    Jurisdicción: <Revisar text="tribunales competentes (en relaciones de consumo, los del domicilio del consumidor)" />
+  </p>
+
+  <h2 id="cambios">Cambios en estos términos</h2>
+  <p>
+    Podemos actualizar estos términos. La versión vigente es la publicada en esta página, con su fecha de vigencia.
+  </p>
+</Legal>

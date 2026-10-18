@@ -1,0 +1,75 @@
+---
+/**
+ * Layout de páginas legales (05 §7, T10): título, aviso de revisión, índice y texto a ancho de lectura.
+ * Los textos son base para validar con el contador: cada página lleva el aviso `[[REVISAR CONTADOR]]`.
+ */
+import Base from './Base.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import Pending from '../components/Pending.astro';
+import { copy } from '../config/copy';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Secciones de la página, en orden: `id` del `<h2>` y texto del índice. */
+  toc: { id: string; label: string }[];
+}
+const { title, description, toc } = Astro.props;
+const l = copy.legales;
+---
+<Base title={`${title} · LAVORO`} description={description}>
+  <section class="section" aria-labelledby="legal-title">
+    <div class="container legal">
+      <SectionHeading as="h1" id="legal-title" eyebrow={l.eyebrow} title={title} />
+      <p class="legal__review"><span class="pending">[[REVISAR CONTADOR]]</span> {l.review}</p>
+      <p class="legal__meta">{l.vigencia} <Pending text="fecha de vigencia" /></p>
+
+      <div class="legal__grid">
+        <nav class="legal__toc" aria-label={l.toc}>
+          <p class="legal__toc-title">{l.toc}</p>
+          <ol>
+            {toc.map((t) => <li><a class="link-u" href={`#${t.id}`}>{t.label}</a></li>)}
+          </ol>
+        </nav>
+        <div class="legal__body">
+          <slot />
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .legal { display: grid; gap: var(--sp-5); }
+  .legal__review, .legal__meta { margin: 0; font-size: var(--fs-small); color: var(--muted); }
+  .legal__review { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; }
+  .legal__grid { display: grid; gap: var(--sp-7); margin-top: var(--sp-5); }
+  .legal__toc { padding: var(--sp-5); background: var(--bordo-050); border-top: var(--accent-bar) solid var(--gold-500); border-radius: var(--radius); align-self: start; }
+  .legal__toc-title {
+    margin: 0 0 var(--sp-3);
+    font-size: var(--fs-eyebrow);
+    font-weight: 600;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--eyebrow);
+  }
+  .legal__toc ol { margin: 0; padding-left: var(--sp-5); display: grid; }
+  .legal__toc a { display: inline-flex; align-items: center; min-height: var(--tap); }
+
+  .legal__body { max-width: var(--measure); min-width: 0; overflow-wrap: anywhere; }
+  .legal__body :global(h2) {
+    margin: var(--sp-7) 0 var(--sp-4);
+    font-size: var(--fs-h3);
+    line-height: var(--lh-head);
+    scroll-margin-top: calc(var(--header-h) + var(--sp-5));
+  }
+  .legal__body :global(h2:first-child) { margin-top: 0; }
+  .legal__body :global(p), .legal__body :global(li) { margin: 0 0 var(--sp-4); }
+  .legal__body :global(ul) { margin: 0 0 var(--sp-4); padding-left: var(--sp-5); }
+  .legal__body :global(.pending) { margin-inline: var(--sp-1); }
+
+  @media (min-width: 1024px) {
+    .legal__grid { grid-template-columns: 18rem minmax(0, 1fr); gap: var(--sp-8); }
+    .legal__toc { position: sticky; top: calc(var(--header-h) + var(--sp-5)); }
+  }
+</style>
