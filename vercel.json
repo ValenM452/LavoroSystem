@@ -1,4 +1,5 @@
 {
+  "framework": "astro",
   "git": {
     "deploymentEnabled": {
       "main": false
