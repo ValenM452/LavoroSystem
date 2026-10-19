@@ -10,7 +10,7 @@ import Button from '../components/Button.astro';
 
 const e = copy.empresasHome;
 ---
-<section class="section section--rule" aria-labelledby="emp-title">
+<section class="section section--sand" aria-labelledby="emp-title">
   <div class="container grid emp">
     <div class="emp__media" data-reveal>
       <ResponsiveImage img={images.empresas} sizes="(min-width: 1024px) 40vw, 100vw" />
@@ -34,7 +34,9 @@ const e = copy.empresasHome;
 <style>
   .emp { row-gap: var(--sp-7); align-items: center; }
   .emp__media, .emp__copy { grid-column: 1 / -1; }
-  .emp__media { aspect-ratio: var(--ratio-photo); border-radius: var(--radius-lg); overflow: hidden; }
+  .emp__media { display: none; aspect-ratio: var(--ratio-photo); border-radius: var(--radius-lg); overflow: hidden; }
+  /* En mobile la foto se omite: es la misma de Talleres en la grilla de Rubros que sigue (docs/10 §4). */
+  @media (min-width: 640px) { .emp__media { display: block; aspect-ratio: var(--ratio-wide); } }
   .emp__copy { display: grid; gap: var(--sp-4); }
   .emp__copy p { margin: 0; }
   .emp__list-title { margin-top: var(--sp-3); font-family: var(--font-sans); font-size: var(--fs-small); font-weight: 600; letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: var(--bordo-700); }

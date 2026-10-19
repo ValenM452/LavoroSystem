@@ -1,5 +1,5 @@
 ---
-/** Home y /empresas: 10 rubros — lista con miniaturas (mobile/tablet), grilla de fotos 5×2 (desktop). Click → precarga el rubro. */
+/** Home y /empresas: 10 rubros sobre bordó profundo — grilla de fotos 4:3, 2×5 (mobile y tablet: 10 rubros sin huérfanos) · 5×2 (desktop) (docs/10 §4.6). Click → precarga el rubro. */
 import { site } from '../config/site';
 import { copy } from '../config/copy';
 import { images } from '../config/images';
@@ -7,31 +7,29 @@ import { rubroHref } from '../lib/links';
 import SectionHeading from '../components/SectionHeading.astro';
 import PhotoTile from '../components/PhotoTile.astro';
 ---
-<section class="section section--rule" id="rubros" aria-labelledby="rubros-title">
+<section class="section section--deep" id="rubros" aria-labelledby="rubros-title">
   <div class="container rg">
     <SectionHeading id="rubros-title" eyebrow={copy.rubros.eyebrow} title={copy.rubros.title} lead={copy.rubros.text} />
     <ul role="list" class="rg__list">
       {site.rubros.map((r) => (
         <li data-reveal>
-          <PhotoTile img={images.rubros[r.slug]} label={r.label} href={rubroHref(r.slug)} variant="auto" sizes="(min-width: 1024px) 20vw, 64px" />
+          <PhotoTile img={images.rubros[r.slug]} label={r.label} href={rubroHref(r.slug)} ratio="photo" sizes="(min-width: 1024px) 20vw, 50vw" />
         </li>
       ))}
     </ul>
+    <p class="rg__nota">{copy.rubros.nota}</p>
   </div>
 </section>
 
 <style>
-  .rg { display: grid; gap: var(--sp-7); }
-  .rg__list { display: grid; margin: 0; padding: 0; list-style: none; column-gap: var(--gutter); }
-  .rg__list li { border-top: var(--hairline) solid var(--line); padding-block: var(--sp-3); }
-  .rg__list :global(.ptile--auto) { border-radius: var(--radius); }
-  .rg__list :global(.ptile__media) { border-radius: var(--radius); overflow: hidden; }
-  @media (min-width: 768px) {
-    .rg__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
+  .rg { display: grid; gap: var(--sp-6); }
+  .rg__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-3); margin: 0; padding: 0; list-style: none; }
+  .rg__list :global(.ptile) { border-radius: var(--radius-lg); }
+  .rg__list :global(.ptile__label) { font-size: clamp(1.0625rem, .95rem + .5vw, var(--fs-h3)); }
+  .rg__list :global(.ptile__caption) { left: var(--sp-3); right: var(--sp-3); bottom: var(--sp-3); }
+  .rg__nota { margin: 0; font-size: var(--fs-small); color: var(--muted); }
   @media (min-width: 1024px) {
     .rg__list { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--sp-4); }
-    .rg__list li { border-top: 0; padding: 0; }
-    .rg__list :global(.ptile--auto) { border-radius: var(--radius-lg); }
+    .rg__list :global(.ptile__caption) { left: var(--sp-4); right: var(--sp-4); bottom: var(--sp-4); }
   }
 </style>

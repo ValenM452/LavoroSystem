@@ -1,18 +1,18 @@
 ---
-/** 04 §7 — proceso B2B en 4 pasos sobre bordó profundo. Se reutiliza en /empresas. */
+/** 04 §7 — proceso B2B en 4 pasos sobre arena (docs/10 §4.8). En la home va justo antes del formulario, sin CTA propio. */
 import { copy } from '../config/copy';
 import SectionHeading from '../components/SectionHeading.astro';
 import ProcessList from '../components/ProcessList.astro';
 import Button from '../components/Button.astro';
 
-interface Props { ctaHref: string }
+interface Props { ctaHref?: string }
 const { ctaHref } = Astro.props;
 ---
-<section class="section section--deep" aria-labelledby="proc-title">
+<section class="section section--sand" aria-labelledby="proc-title">
   <div class="container proc">
     <div class="proc__head">
       <SectionHeading id="proc-title" eyebrow={copy.proceso.eyebrow} title={copy.proceso.title} />
-      <Button href={ctaHref} tone="bordo" arrow>{copy.proceso.cta}</Button>
+      {ctaHref && <Button href={ctaHref} arrow>{copy.proceso.cta}</Button>}
     </div>
     <ProcessList steps={copy.proceso.steps} />
   </div>

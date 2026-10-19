@@ -1,9 +1,10 @@
 ---
-/** /empresas (04 "/empresas"): reutiliza componentes y secciones de la home. */
+/** /empresas (04 "/empresas", orden de docs/10 §4.10): reutiliza componentes y secciones de la home. */
 import Base from '../layouts/Base.astro';
 import { copy } from '../config/copy';
 import Hero from '../sections/Hero.astro';
 import ListaEditorial from '../sections/ListaEditorial.astro';
+import Confianza from '../sections/Confianza.astro';
 import RubrosGrid from '../sections/RubrosGrid.astro';
 import Proceso from '../sections/Proceso.astro';
 import Personalizacion from '../sections/Personalizacion.astro';
@@ -15,11 +16,11 @@ const e = copy.empresas;
 
 <Base title={e.seo.title} description={e.seo.description}>
   <Hero variant="empresas" />
-  <ListaEditorial id="cotizamos" eyebrow={copy.proceso.eyebrow} title={e.cotizamos.title} items={e.cotizamos.items} />
+  <ListaEditorial id="cotizamos" eyebrow={copy.proceso.eyebrow} title={e.cotizamos.title} items={e.cotizamos.items} tone="sand" />
   <RubrosGrid />
-  <Proceso ctaHref="#cotizar" />
-  <ListaEditorial id="porque" eyebrow={copy.empresasHome.eyebrow} title={e.porque.title} items={e.porque.items} />
   <Personalizacion />
+  <Proceso />
+  <Confianza id="porque" tone="white" eyebrow={copy.empresasHome.eyebrow} title={e.porque.title} text="" items={e.porque.items} />
   <Cotizar id="cotizar" />
   <Cierre />
 </Base>

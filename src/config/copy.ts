@@ -27,10 +27,14 @@ export const copy = {
     abrirMenu: 'Abrir menú',
     cerrarMenu: 'Cerrar menú',
     whatsapp: 'WhatsApp empresas',
+    cotizarEmpresas: 'Cotizar para empresas',
+    local: 'Local',
   },
 
   /** 04 §1 — mega menú. Frase corta por rubro (redactada; 04 no la define). */
   mega: {
+    eyebrow: 'Rubros que equipamos',
+    verTodos: 'Ver todos los rubros',
     cotizarPara: (rubro: string) => `Cotizar para ${rubro}`,
     frases: {
       mineria: 'Indumentaria y calzado de seguridad para el trabajo en mina y planta.',
@@ -100,6 +104,27 @@ export const copy = {
     vigencia: 'Vigente desde:',
   },
 
+  /** docs/10 §5.5 — atribución de fotos de stock (CC BY exige crédito visible). */
+  creditos: {
+    seoTitle: 'Créditos de imágenes · LAVORO',
+    description: 'Autoría y licencia de las fotos ilustrativas usadas en el sitio de LAVORO.',
+    title: 'Créditos de *imágenes*.',
+    lead: 'Algunas fotos del sitio son imágenes ilustrativas de ambientes de trabajo, con licencia libre. No muestran clientes, equipos ni trabajos de LAVORO.',
+    uso: 'Dónde se usa',
+    autor: 'Autor',
+    licencia: 'Licencia',
+    fuente: 'Ver original',
+    recorte: 'Imagen recortada para el sitio.',
+    usos: {
+      heroHome: 'Portada de inicio',
+      heroEmpresas: 'Portada de empresas',
+      empresas: 'Bloque empresas (inicio)',
+      personalizacion: 'Personalización',
+      local: 'Local en Chilecito',
+      rubro: (r: string) => `Rubro: ${r}`,
+    },
+  },
+
   /** 04 §12 — footer */
   footer: {
     tienda: 'Tienda',
@@ -108,6 +133,7 @@ export const copy = {
     cotizar: 'Cotizar',
     rubros: 'Rubros',
     personalizacion: 'Personalización',
+    marcas: 'Marcas',
     contacto: 'Contacto',
     empresasWa: 'Empresas y cotizaciones',
     localWa: 'Local',
@@ -118,6 +144,7 @@ export const copy = {
     arrepentimiento: 'Botón de arrepentimiento',
     defensa: 'Defensa del Consumidor',
     dataFiscal: 'Data Fiscal',
+    creditos: 'Créditos de imágenes',
     copyright: '© 2026 LAVORO',
   },
 
@@ -218,6 +245,7 @@ export const copy = {
     title: 'Conocemos trabajos *distintos*.',
     text: 'Cada rubro tiene exigencias propias de abrigo, resistencia, higiene o seguridad. Te ayudamos a elegir según la tarea.',
     cta: 'Cotizar para mi rubro',
+    nota: 'Imágenes ilustrativas de cada rubro.',
   },
 
   /** 04 §9 + 05 §2 (campos). Mensajes de error y "(opcional)": microcopy de interfaz, no está en 04. */
@@ -235,6 +263,9 @@ export const copy = {
     failure: 'No pudimos enviar tu solicitud. Mandala por WhatsApp y seguimos por ahí.',
     failureCta: 'Enviar por WhatsApp',
     optional: '(opcional)',
+    /** docs/10 §6.2 — agrupación visual del formulario (sin cambiar campos). */
+    grupos: { datos: '1. Tus datos', pedido: '2. Tu pedido' },
+    nota: 'Los campos opcionales están marcados.',
     choose: 'Elegí una opción',
     labels: {
       nombre: 'Nombre y apellido',

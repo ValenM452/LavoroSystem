@@ -4,7 +4,8 @@
 > Fuente: Wikimedia Commons. Licencias que permiten uso comercial: CC0, dominio público y CC BY.
 > Recortadas a 1600×1200 (recortar es una adaptación permitida por CC BY indicando el cambio).
 > **Antes de publicar:** las CC BY exigen atribución visible para quien visita el sitio
-> (autor, licencia, link). Propuesta: una línea "Créditos de imágenes" en el footer o en /legales (T10).
+> (autor, licencia, link). Resuelto en T15: `/legales/creditos-imagenes` se genera sola desde `src/config/images.ts`
+> (link en la columna Legales del footer).
 > Ninguna foto se presenta como cliente, equipo o trabajo de LAVORO (AGENTS §2.4).
 
 | Rubro | Archivo | Autor | Licencia | Origen |

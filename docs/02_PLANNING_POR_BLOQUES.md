@@ -57,15 +57,17 @@ Sin esto, nada de lo demás se puede entregar.
 - [ ] C7. Compra de prueba real (y reembolso).
 
 ### BLOQUE D — Landing en código (19–24/10) · CODEX
-Tickets en `06_TICKETS_CODEX.md`.
-- [ ] D1. Scaffold + tokens + layout (T01–T02).
-- [ ] D2. Secciones de la landing (T03–T06).
-- [ ] D3. `/empresas` (T07).
+Tickets en `06_TICKETS_CODEX.md`. Decisiones de diseño cerradas en `10_PULIDO_BLOQUES_D_E.md`.
+- [x] D1. Scaffold + tokens + layout (T01–T02).
+- [x] D2. Secciones de la landing (T03–T06).
+- [x] D3. `/empresas` (T07).
+- [x] D4. Pulido: fondos y paleta oficial (T12), menús (T13), hero mobile, catálogo y orden de secciones (T14), créditos de imágenes (T15).
 
 ### BLOQUE E — Sistema B2B de leads (22–24/10) · CODEX + MANUAL
-- [ ] E1. Google Sheet "LAVORO — Leads" con columnas del `05` §3 + Apps Script (T08).
-- [ ] E2. Endpoint `/api/lead`, validación, anti-spam, mail, éxito con salto a WhatsApp (T08).
-- [ ] E3. Lead de prueba de punta a punta.
+- [x] E1. Google Sheet "LAVORO — Leads" con columnas del `05` §3 + Apps Script (T08).
+- [x] E2. Endpoint `/api/lead`, validación, anti-spam, mail, éxito con salto a WhatsApp (T08).
+- [x] E3. Formulario en 2 grupos + mejoras del Apps Script: alerta de 24 h, posible duplicado, mail con WhatsApp arriba (T16).
+- [ ] E4. Lead de prueba de punta a punta con la checklist de `10` §7.6 + capacitación al dueño con el manual de `10` §7 (T17).
 
 ### BLOQUE F — Medición y legales (24–25/10) · CODEX
 - [ ] F1. GA4 + Meta Pixel + eventos (T09).

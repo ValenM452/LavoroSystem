@@ -46,20 +46,23 @@ const lead = variant === 'home' ? copy.hero.lead : copy.empresasHome.text;
 </section>
 
 <style>
-  .hero { padding-block: var(--sp-7) var(--section-y); }
-  .hero__grid { display: grid; gap: var(--sp-7); align-items: stretch; }
+  /* Mobile: foto 4:3 arriba, a sangre del contenedor (docs/10 §4.1). Desktop: partido texto/foto. */
+  .hero { padding-block: 0 var(--section-y); }
+  .hero__grid { display: grid; gap: var(--sp-6); align-items: stretch; }
   .hero__copy { display: grid; gap: var(--sp-5); align-content: center; }
   .hero__copy h1 { max-width: 13em; }
   .hero__lead { margin: 0; color: var(--steel); max-width: 46ch; }
   .hero__paths { display: grid; gap: var(--sp-4); margin-top: var(--sp-2); }
   .hero__ctas { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
-  .hero__media { height: var(--hero-media-h); border-radius: var(--radius-lg); overflow: hidden; }
+  .hero__media { order: -1; aspect-ratio: var(--ratio-photo); margin-inline: calc(-1 * var(--gutter)); overflow: hidden; }
   @media (min-width: 640px) {
+    .hero { padding-top: var(--sp-6); }
+    .hero__media { margin-inline: 0; border-radius: var(--radius-lg); aspect-ratio: var(--ratio-wide); }
     .hero__paths { grid-template-columns: 1fr 1fr; }
   }
   @media (min-width: 1024px) {
     .hero { padding-top: var(--sp-8); }
     .hero__grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--sp-8); }
-    .hero__media { height: auto; min-height: var(--hero-media-min); }
+    .hero__media { order: 0; aspect-ratio: auto; height: auto; min-height: var(--hero-media-min); }
   }
 </style>

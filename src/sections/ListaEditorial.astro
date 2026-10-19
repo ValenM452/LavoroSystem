@@ -8,10 +8,11 @@ interface Props {
   title: string;
   items: readonly { title: string; text?: string }[];
   eyebrow?: string;
+  tone?: 'sand' | 'white';
 }
-const { id, title, items, eyebrow } = Astro.props;
+const { id, title, items, eyebrow, tone = 'white' } = Astro.props;
 ---
-<section class="section section--rule" aria-labelledby={`${id}-title`}>
+<section class:list={['section', tone === 'sand' ? 'section--sand' : 'section--rule']} aria-labelledby={`${id}-title`}>
   <div class="container grid lista">
     <SectionHeading id={`${id}-title`} eyebrow={eyebrow} title={title} class="lista__head" />
     <div class="lista__body"><EditorialList items={items} columns={2} /></div>

@@ -1,6 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import { site } from '../config/site';
 import { copy } from '../config/copy';
 import Hero from '../sections/Hero.astro';
 import Confianza from '../sections/Confianza.astro';
@@ -21,9 +20,9 @@ import Cierre from '../sections/Cierre.astro';
   <Catalogo />
   <Marcas />
   <EmpresasHome />
-  <Proceso ctaHref={site.paths.cotizar} />
   <RubrosGrid />
   <Personalizacion />
+  <Proceso />
   <Cotizar id="contacto" />
   <Local />
   <Cierre />

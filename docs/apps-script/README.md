@@ -44,11 +44,19 @@ Formulario web ─▶ /api/lead (Vercel) ─▶ este Apps Script ─┬─▶ fi
 1. En el editor, arriba, elegir la función **`configurarPlanilla`** y tocar **▶ Ejecutar**.
 2. La primera vez Google pide permisos: **Revisar permisos → elegir la cuenta → Configuración avanzada → Ir a LAVORO Leads (no seguro) → Permitir**. El aviso de "no seguro" aparece porque el script es propio y no está verificado por Google; es normal.
 3. Volver a la planilla. Tienen que aparecer:
-   - **Leads**: las 24 columnas de `05 §3`. Las 6 últimas (fondo amarillo) son las que completa el negocio a mano: `estado`, `responsable`, `fecha_contacto`, `monto_cotizado`, `resultado`, `notas`.
+   - **Leads**: las 24 columnas de `05 §3` + `posible_duplicado` al final. Las 6 de fondo amarillo son las que completa el negocio a mano: `estado`, `responsable`, `fecha_contacto`, `monto_cotizado`, `resultado`, `notas`.
    - `estado` tiene lista desplegable: Nuevo · Contactado · Cotizado · Ganado · Perdido · Descartado. Cada lead entra como **Nuevo**.
-   - **KPIs**: resumen (totales, % contactados, tasa de cierre, monto ganado) y tablas por semana, rubro, origen y estado. Se actualizan solas.
+   - **Alerta de 24 h:** una fila que sigue en **Nuevo** más de 24 h después de `fecha` se pinta de rojo claro. Se va sola al cambiar el estado.
+   - **`posible_duplicado`:** el script escribe `Sí — L-…` si el mismo teléfono ya mandó otra solicitud en los últimos 30 días. Solo avisa: no borra ni junta filas.
+   - **KPIs**: resumen (totales, % contactados, tasa de cierre, monto ganado, % contactados al día siguiente o antes, posibles duplicados) y tablas por semana, rubro, origen y estado. Se actualizan solas.
 
-Se puede volver a ejecutar `configurarPlanilla` sin perder filas (la pestaña KPIs sí se rehace desde cero: no escribir a mano en ella).
+Se puede volver a ejecutar `configurarPlanilla` sin perder filas ni duplicar la alerta (la pestaña KPIs sí se rehace desde cero: no escribir a mano en ella).
+
+**Planilla creada con la versión anterior del script:** pegar el `lead.gs` nuevo, volver a ejecutar `configurarPlanilla` (agrega la columna `posible_duplicado` al final y la alerta) e **Implementar → Gestionar implementaciones → editar → Versión: nueva** para que la Web App use el código nuevo. La URL no cambia.
+
+### El mail de aviso
+
+Arriba de todo trae un link **wa.me** con el mensaje de primer contacto ya escrito (`docs/10 §7.3`): tocarlo desde el celular, cambiar `[tu nombre]` y enviar. Después, en la planilla: `estado = Contactado`, `fecha_contacto` y `responsable`. El resto de las plantillas de respuesta y la rutina semanal están en `docs/10_PULIDO_BLOQUES_D_E.md` §7.
 
 ## 4. Publicar como Web App
 
@@ -120,7 +128,7 @@ La prueba de punta a punta (formulario → Vercel → planilla → mail) es la t
 - `rubro`: mandar el texto largo (`longLabel` de `site.ts`), no el slug, para que la planilla se lea bien.
 - `productos`: array o texto; se guarda como `Pantalones, Camisas`.
 - `telefono`: ya normalizado a `549…` por `/api/lead`.
-- `fecha`, `estado` y las columnas manuales las pone el script; si vienen en el payload se ignoran.
+- `fecha`, `estado`, `posible_duplicado` y las columnas manuales las pone el script; si vienen en el payload se ignoran.
 - Requeridos mínimos en el script: `nombre`, `empresa`, `telefono` (la validación completa es la de `zod` en `/api/lead`).
 - Textos que empiezan con `=`, `+`, `-` o `@` se guardan con `'` adelante, para que no se ejecuten como fórmula.
 - Largo máximo: 1000 caracteres en `comentario`, 500 en `referrer`, 300 en `pagina`, 200 en el resto.

@@ -82,9 +82,10 @@ small, .small { font-size: var(--fs-small); }
   column-gap: var(--gutter);
 }
 
-/* Secciones: fondos blanco / bordó / bordó profundo. Dos blancas seguidas se separan con una línea. */
+/* Secciones: blanco / arena / bordó / bordó profundo (mapa en docs/10 §4). Dos blancas seguidas se separan con una línea. */
 .section { padding-block: var(--section-y); }
 .section--rule { border-top: var(--hairline) solid var(--line); }
+.section--sand { background: var(--sand); }
 .section--bordo, .section--deep, .on-dark {
   color: var(--white);
   --fg: var(--white);

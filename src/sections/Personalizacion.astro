@@ -1,5 +1,5 @@
 ---
-/** 04 §6 — Personalización sobre bordó: foto + bordado / estampado / asesoramiento + CTA. */
+/** 04 §6 — Personalización sobre blanco (docs/10 §4.7): foto + bordado / estampado / asesoramiento + CTA. */
 import { copy } from '../config/copy';
 import { images } from '../config/images';
 import { personalizacionHref } from '../lib/links';
@@ -11,7 +11,7 @@ import Pending from '../components/Pending.astro';
 
 const p = copy.personalizacion;
 ---
-<section class="section section--bordo" id="personalizacion" aria-labelledby="pers-title">
+<section class="section section--rule" id="personalizacion" aria-labelledby="pers-title">
   <div class="container grid pers">
     <div class="pers__media" data-reveal-zoom>
       <ResponsiveImage img={images.personalizacion} sizes="(min-width: 1024px) 45vw, 100vw" />
@@ -31,7 +31,7 @@ const p = copy.personalizacion;
         ))}
       </ol>
       <Pending text={p.minimos} />
-      <div><Button href={personalizacionHref} tone="bordo" arrow>{p.cta}</Button></div>
+      <div><Button href={personalizacionHref} arrow>{p.cta}</Button></div>
     </div>
   </div>
 </section>
@@ -42,10 +42,10 @@ const p = copy.personalizacion;
   .pers__media { aspect-ratio: var(--ratio-photo); border-radius: var(--radius-lg); overflow: hidden; }
   .pers__copy { display: grid; gap: var(--sp-5); justify-items: start; }
   .pers__items { display: grid; gap: var(--sp-4); width: 100%; margin: 0; padding: 0; list-style: none; }
-  .pers__items li { display: grid; grid-template-columns: var(--sp-7) 1fr; gap: var(--sp-3); padding-top: var(--sp-4); border-top: var(--hairline) solid var(--line-inv); }
-  .pers__num { font-family: var(--font-display); font-style: italic; font-size: var(--fs-h3); color: var(--gold-300); }
+  .pers__items li { display: grid; grid-template-columns: var(--sp-7) 1fr; gap: var(--sp-3); padding-top: var(--sp-4); border-top: var(--hairline) solid var(--line); }
+  .pers__num { font-family: var(--font-display); font-style: italic; font-size: var(--fs-h3); color: var(--bordo-700); }
   .pers__title { margin-bottom: var(--sp-1); }
-  .pers__items p { margin: 0; color: var(--bordo-100); }
+  .pers__items p { margin: 0; color: var(--steel); }
   @media (min-width: 1024px) {
     .pers__media { grid-column: 1 / span 6; aspect-ratio: var(--ratio-tile); }
     .pers__copy { grid-column: 8 / -1; }

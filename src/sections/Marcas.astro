@@ -5,8 +5,8 @@ import { copy } from '../config/copy';
 import SectionHeading from '../components/SectionHeading.astro';
 import Pending from '../components/Pending.astro';
 ---
-<section class="section section--bordo" id="marcas" aria-labelledby="marcas-title">
-  <div class="container grid marcas">
+<section class="section section--rule marcas-sec" id="marcas" aria-labelledby="marcas-title">
+  <div class="container marcas">
     <SectionHeading id="marcas-title" class="marcas__head" eyebrow={copy.marcas.eyebrow} title={copy.marcas.title} />
     <div class="marcas__body" data-reveal>
       <ul role="list" class="marcas__list">
@@ -18,29 +18,25 @@ import Pending from '../components/Pending.astro';
 </section>
 
 <style>
-  .marcas { row-gap: var(--sp-6); align-items: center; }
-  .marcas :global(.marcas__head), .marcas__body { grid-column: 1 / -1; }
-  .marcas__body { display: grid; gap: var(--sp-4); justify-items: start; }
-  .marcas__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; margin: 0; padding: 0; list-style: none; border-top: var(--hairline) solid var(--line-inv); border-left: var(--hairline) solid var(--line-inv); }
+  /* Franja liviana sobre blanco (docs/10 §4.4): wordmarks en texto separados por "·". */
+  .marcas-sec { padding-block: var(--sp-7); }
+  .marcas { display: grid; gap: var(--sp-5); align-items: center; }
+  .marcas__body { display: grid; gap: var(--sp-3); justify-items: start; }
+  .marcas__list { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-5); margin: 0; padding: 0; list-style: none; }
   .marcas__brand {
-    display: grid;
-    place-items: center;
-    min-height: calc(var(--sp-8) + var(--sp-6));
-    padding: var(--sp-4);
-    border-right: var(--hairline) solid var(--line-inv);
-    border-bottom: var(--hairline) solid var(--line-inv);
-    font-weight: 700;
-    font-size: var(--fs-h3);
-    letter-spacing: var(--tracking-eyebrow);
+    font-weight: 600;
+    font-size: clamp(.9375rem, .85rem + .4vw, 1.125rem);
+    letter-spacing: .12em;
     text-transform: uppercase;
-    text-align: center;
-    line-height: var(--lh-head);
+    color: var(--steel);
+    white-space: nowrap;
   }
+  /* El separador "·" solo donde las marcas entran en una línea (en mobile quedaría al comienzo de renglón). */
   @media (min-width: 1024px) {
-    .marcas :global(.marcas__head) { grid-column: 1 / span 4; }
-    .marcas__body { grid-column: 6 / -1; }
-  }
-  @media (min-width: 1280px) {
-    .marcas__list { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .marcas__list { column-gap: 0; }
+    .marcas__brand + .marcas__brand::before { content: '·'; margin-inline: var(--sp-4); color: var(--gold-500); }
+    .marcas { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--gutter); }
+    .marcas__body { justify-items: end; }
+    .marcas__list { justify-content: flex-end; }
   }
 </style>

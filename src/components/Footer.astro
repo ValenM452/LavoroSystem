@@ -17,6 +17,7 @@ const legales = [
   { label: f.arrepentimiento, ...externalTarget(site.tiendanube.arrepentimientoUrl), external: true },
   { label: f.defensa, ...externalTarget(site.defensaConsumidorUrl), external: true },
   { label: f.dataFiscal, ...externalTarget(site.dataFiscal), external: true },
+  { label: f.creditos, href: site.paths.creditos, pending: null, external: false },
 ];
 const pendingText = (v: string) => v.replace(/^\[\[PENDIENTE:\s*/, '').replace(/\]\]$/, '');
 ---
@@ -48,10 +49,11 @@ const pendingText = (v: string) => v.replace(/^\[\[PENDIENTE:\s*/, '').replace(/
         <li><a class="link-u" href={site.paths.cotizar}>{f.cotizar}</a></li>
         <li><a class="link-u" href={site.paths.rubrosEmpresas}>{f.rubros}</a></li>
         <li><a class="link-u" href={site.paths.personalizacion}>{f.personalizacion}</a></li>
+        <li><a class="link-u" href={site.paths.marcas}>{f.marcas}</a></li>
       </ul>
     </section>
 
-    <section aria-labelledby="f-contacto">
+    <section class="footer__wide" aria-labelledby="f-contacto">
       <h2 id="f-contacto" class="footer__title">{f.contacto}</h2>
       <ul role="list">
         <li><a class="link-u" href={site.contact.whatsappEmpresas.url}>{f.empresasWa}: {site.contact.whatsappEmpresas.label}</a></li>
@@ -61,7 +63,7 @@ const pendingText = (v: string) => v.replace(/^\[\[PENDIENTE:\s*/, '').replace(/
       </ul>
     </section>
 
-    <section aria-labelledby="f-legales">
+    <section class="footer__wide" aria-labelledby="f-legales">
       <h2 id="f-legales" class="footer__title">{f.legales}</h2>
       <ul role="list">
         {legales.map((l) => (
@@ -98,9 +100,11 @@ const pendingText = (v: string) => v.replace(/^\[\[PENDIENTE:\s*/, '').replace(/
   .footer__legal { margin-top: var(--sp-8); color: var(--bordo-100); font-size: var(--fs-small); }
   .footer__legal p { max-width: none; padding-top: var(--sp-5); border-top: var(--hairline) solid var(--line-inv); }
 
+  /* Mobile: Tienda y Empresas lado a lado; marca, contacto y legales a lo ancho. */
+  .footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .footer__brand, .footer__wide { grid-column: 1 / -1; }
   @media (min-width: 768px) {
-    .footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .footer__brand { grid-column: 1 / -1; }
+    .footer__wide { grid-column: auto; }
   }
   @media (min-width: 1024px) {
     .footer__grid { grid-template-columns: 1.2fr repeat(4, minmax(0, 1fr)); }

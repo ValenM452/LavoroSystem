@@ -1,5 +1,5 @@
 ---
-/** Pasos numerados 01–04: número en serif itálica dorada, en fila desde 1024 px (03 §5, rediseño). */
+/** Pasos numerados 01–04: número en serif itálica (bordó sobre claro, dorado sobre oscuro), en fila desde 1024 px (03 §5, rediseño). */
 import Pending from './Pending.astro';
 
 interface Step { title: string; text: string; pending?: string }
@@ -18,9 +18,9 @@ const { steps } = Astro.props;
 
 <style>
   .process { display: grid; gap: var(--sp-4); margin: 0; padding: 0; list-style: none; counter-reset: step; }
-  .process__step { display: grid; align-content: start; gap: var(--sp-2); padding-top: var(--sp-5); border-top: var(--ring) solid var(--gold-500); }
-  .process__num { font-family: var(--font-display); font-style: italic; font-size: var(--fs-h2); line-height: 1; color: var(--gold-300); }
-  .process__title { margin-top: var(--sp-2); }
+  .process__step { display: grid; align-content: start; gap: var(--sp-2); padding-top: var(--sp-4); border-top: var(--ring) solid var(--gold-500); }
+  .process__num { font-family: var(--font-display); font-style: italic; font-size: var(--fs-h2); line-height: 1; color: var(--em, var(--bordo-700)); }
+  .process__title { margin-top: var(--sp-1); }
   .process__text { margin: 0; color: var(--muted); }
   @media (min-width: 640px) { .process { grid-template-columns: 1fr 1fr; column-gap: var(--gutter); row-gap: var(--sp-7); } }
   @media (min-width: 1024px) { .process { grid-template-columns: repeat(4, minmax(0, 1fr)); } }

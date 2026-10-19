@@ -1,0 +1,66 @@
+---
+/**
+ * Créditos de imágenes (docs/10 §5.5, T15). Se genera desde src/config/images.ts:
+ * solo fotos con `credit` (stock). Las fotos propias no llevan `credit` y no aparecen.
+ * Una misma foto usada en varios lugares se lista una vez con todos sus usos.
+ */
+import Base from '../../layouts/Base.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import { site } from '../../config/site';
+import { copy } from '../../config/copy';
+import { images, type ImageSlot } from '../../config/images';
+
+const u = copy.creditos.usos;
+const slots: [string, ImageSlot][] = [
+  [u.heroHome, images.hero.home],
+  [u.heroEmpresas, images.hero.empresas],
+  [u.empresas, images.empresas],
+  ...site.rubros.map((r) => [u.rubro(r.label), images.rubros[r.slug]] as [string, ImageSlot]),
+  [u.personalizacion, images.personalizacion],
+  [u.local, images.local],
+];
+
+const bySource = new Map<string, { credit: NonNullable<ImageSlot['credit']>; usos: string[] }>();
+for (const [uso, img] of slots) {
+  if (!img.credit || img.pending) continue;
+  const hit = bySource.get(img.credit.source);
+  if (hit) hit.usos.push(uso);
+  else bySource.set(img.credit.source, { credit: img.credit, usos: [uso] });
+}
+const rows = [...bySource.values()];
+const c = copy.creditos;
+---
+<Base title={c.seoTitle} description={c.description}>
+  <section class="section" aria-labelledby="cred-title">
+    <div class="container cred">
+      <SectionHeading as="h1" id="cred-title" eyebrow={copy.legales.eyebrow} title={c.title} lead={c.lead} />
+      <ul role="list" class="cred__list">
+        {rows.map((r) => (
+          <li class="cred__item">
+            <p class="cred__uso">{r.usos.join(' · ')}</p>
+            <dl class="cred__data">
+              <div><dt>{c.autor}</dt><dd>{r.credit.author}</dd></div>
+              <div><dt>{c.licencia}</dt><dd>{r.credit.license}</dd></div>
+            </dl>
+            <p class="cred__src"><a class="link-u" href={r.credit.source} target="_blank" rel="noopener">{c.fuente} ↗</a> · {c.recorte}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .cred { display: grid; gap: var(--sp-7); }
+  .cred :global(.sh__lead) { color: var(--muted); }
+  .cred__list { display: grid; margin: 0; padding: 0; list-style: none; column-gap: var(--sp-8); }
+  .cred__item { display: grid; gap: var(--sp-2); padding-block: var(--sp-5); border-top: var(--hairline) solid var(--line); }
+  .cred__uso { margin: 0; font-family: var(--font-display); font-size: var(--fs-h3); line-height: var(--lh-head); color: var(--bordo-700); }
+  .cred__data { display: flex; flex-wrap: wrap; gap: var(--sp-1) var(--sp-5); margin: 0; font-size: var(--fs-small); }
+  .cred__data div { display: flex; gap: var(--sp-2); }
+  .cred__data dt { color: var(--muted); }
+  .cred__data dd { margin: 0; overflow-wrap: anywhere; }
+  .cred__src { margin: 0; font-size: var(--fs-small); color: var(--muted); }
+  .cred__src a { display: inline-flex; align-items: center; min-height: var(--tap); color: var(--bordo-700); font-weight: 600; }
+  @media (min-width: 1024px) { .cred__list { grid-template-columns: 1fr 1fr; } }
+</style>

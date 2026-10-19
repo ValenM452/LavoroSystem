@@ -1,19 +1,42 @@
 ---
-/** Rediseño: posicionamiento (texto de 04 §3) + 4 hechos verificables. Sin números ni claims nuevos. */
+/**
+ * Hechos verificables (docs/10 §4.2): titular a la izquierda + lista con filete dorado, sin tarjetas.
+ * Home: posicionamiento (04 §3) + copy.confianza. /empresas: "Por qué LAVORO" (04 /empresas).
+ * Sin números ni claims nuevos.
+ */
 import { copy } from '../config/copy';
 import { emphasis } from '../lib/emphasis';
+import Eyebrow from '../components/Eyebrow.astro';
+
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  title?: string;
+  text?: string;
+  items?: readonly { title: string; text?: string }[];
+  tone?: 'sand' | 'white';
+}
+const {
+  id = 'conf',
+  eyebrow,
+  title = copy.declaracion.title,
+  text = copy.declaracion.text,
+  items = copy.confianza.items,
+  tone = 'sand',
+} = Astro.props;
 ---
-<section class="section section--rule conf" aria-labelledby="conf-title">
+<section class:list={['section conf', tone === 'sand' ? 'section--sand' : 'section--rule']} aria-labelledby={`${id}-title`}>
   <div class="container grid conf__grid">
     <div class="conf__intro" data-reveal>
-      <h2 id="conf-title" set:html={emphasis(copy.declaracion.title)} />
-      <p class="muted">{copy.declaracion.text}</p>
+      {eyebrow && <Eyebrow text={eyebrow} />}
+      <h2 id={`${id}-title`} set:html={emphasis(title)} />
+      {text && <p class="muted">{text}</p>}
     </div>
     <ul role="list" class="conf__facts">
-      {copy.confianza.items.map((f) => (
+      {items.map((f) => (
         <li class="conf__fact" data-reveal>
           <strong class="conf__title">{f.title}</strong>
-          <span class="conf__text">{f.text}</span>
+          {f.text && <span class="conf__text">{f.text}</span>}
         </li>
       ))}
     </ul>
@@ -21,21 +44,14 @@ import { emphasis } from '../lib/emphasis';
 </section>
 
 <style>
-  .conf__grid { row-gap: var(--sp-7); align-items: center; }
+  .conf__grid { row-gap: var(--sp-6); align-items: center; }
   .conf__intro, .conf__facts { grid-column: 1 / -1; }
-  .conf__intro { display: grid; gap: var(--sp-4); }
+  .conf__intro { display: grid; gap: var(--sp-4); justify-items: start; }
   .conf__intro p { margin: 0; }
-  .conf__facts { display: grid; gap: var(--sp-4); margin: 0; padding: 0; list-style: none; }
-  .conf__fact {
-    display: grid;
-    gap: var(--sp-1);
-    padding: var(--sp-5);
-    border-radius: var(--radius-lg);
-    background: var(--bordo-050);
-    border-left: var(--accent-bar) solid var(--gold-500);
-  }
-  .conf__title { font-family: var(--font-display); font-weight: 500; font-size: var(--fs-h3); color: var(--bordo-700); line-height: var(--lh-head); }
-  .conf__text { font-size: var(--fs-small); color: var(--steel); }
+  .conf__facts { display: grid; gap: var(--sp-5) var(--gutter); margin: 0; padding: 0; list-style: none; }
+  .conf__fact { display: grid; gap: var(--sp-1); padding-left: var(--sp-4); border-left: var(--ring) solid var(--gold-500); }
+  .conf__title { font-family: var(--font-display); font-weight: 400; font-size: var(--fs-h3); color: var(--bordo-700); line-height: var(--lh-head); }
+  .conf__text { font-size: var(--fs-small); color: var(--muted); }
   @media (min-width: 640px) { .conf__facts { grid-template-columns: 1fr 1fr; } }
   @media (min-width: 1024px) {
     .conf__intro { grid-column: 1 / span 5; }

@@ -9,15 +9,18 @@ const { items, columns = 1 } = Astro.props;
 <ul role="list" class:list={['elist', `elist--${columns}`]}>
   {items.map((it) => (
     <li class="elist__item" data-reveal>
-      <h3 class="elist__title">{it.title}</h3>
-      {(it.text || it.pending) && <p class="elist__text">{it.text} {it.pending && <Pending text={it.pending} />}</p>}
+      <div>
+        <h3 class="elist__title">{it.title}</h3>
+        {(it.text || it.pending) && <p class="elist__text">{it.text} {it.pending && <Pending text={it.pending} />}</p>}
+      </div>
     </li>
   ))}
 </ul>
 
 <style>
   .elist { display: grid; column-gap: var(--gutter); margin: 0; padding: 0; list-style: none; }
-  .elist__item { padding: var(--sp-5); margin-bottom: var(--sp-3); border-radius: var(--radius-lg); background: var(--bordo-050); border-left: var(--accent-bar) solid var(--gold-500); }
+  .elist__item { display: flex; gap: var(--sp-3); padding-block: var(--sp-4); border-top: var(--hairline) solid var(--line); }
+  .elist__item::before { content: ''; flex: none; width: var(--sp-2); height: var(--sp-2); margin-top: .7em; background: var(--gold-500); }
   .elist__title { color: var(--bordo-700); }
   .elist__title + .elist__text { margin-top: var(--sp-2); }
   .elist__text { margin: 0; }

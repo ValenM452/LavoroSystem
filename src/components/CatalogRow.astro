@@ -1,0 +1,49 @@
+---
+/** Fila de categoría del catálogo (docs/10 §4.3): nombre serif + descripción + flecha. Fila entera clicable. */
+import Pending from './Pending.astro';
+
+interface Props {
+  label: string;
+  text: string;
+  href: string;
+  pending?: string | null;
+}
+const { label, text, href, pending = null } = Astro.props;
+const Tag = pending ? 'div' : 'a';
+---
+<Tag class="crow" href={pending ? undefined : href}>
+  <span class="crow__body">
+    <span class="crow__name">{label}</span>
+    <span class="crow__text">{text}</span>
+    {pending && <Pending text={pending} />}
+  </span>
+  <span class="crow__arrow" aria-hidden="true">→</span>
+</Tag>
+
+<style>
+  .crow {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--sp-4);
+    min-height: var(--tap);
+    padding-block: var(--sp-3);
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .crow__body { display: grid; gap: var(--sp-1); justify-items: start; }
+  .crow :global(.pending) { font-size: var(--fs-tag); padding: var(--hairline) var(--sp-1); }
+  .crow__name {
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    line-height: var(--lh-head);
+    background: linear-gradient(currentColor, currentColor) 0 100% / 0 var(--hairline) no-repeat;
+    transition: background-size var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+  }
+  .crow__text { font-size: var(--fs-small); color: var(--steel); }
+  .crow__arrow { font-size: var(--fs-h3); color: var(--bordo-700); transition: transform var(--dur-fast) var(--ease); }
+  a.crow:hover .crow__name, a.crow:focus-visible .crow__name { color: var(--bordo-700); background-size: 100% var(--hairline); }
+  a.crow:hover .crow__arrow { transform: translateX(var(--sp-1)); }
+  @media (min-width: 1024px) { .crow { padding-block: var(--sp-4); } }
+  @media (prefers-reduced-motion: reduce) { a.crow:hover .crow__arrow { transform: none; } }
+</style>

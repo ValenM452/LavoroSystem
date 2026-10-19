@@ -1,8 +1,9 @@
-/* Tokens LAVORO — rediseño (pedido del dueño): bordó como color principal, blanco de base y dorado ocre de acento.
-   Reemplaza la paleta crema/piedra de docs/03 §2. Hex provisionales hasta tener el logo en vector:
-   ajustar --bordo-700 al bordó exacto del logo y el resto de la escala lo acompaña.
-   Contrastes (AA): blanco sobre bordo-700 ≈ 10.6:1 · gold-300 sobre bordo-700 ≈ 6.7:1 ·
-   gold-700 sobre blanco ≈ 6.2:1 · steel sobre blanco ≈ 6.5:1. El dorado claro NUNCA va como texto sobre blanco. */
+/* Tokens LAVORO — paleta oficial (docs/10 §1): bordó de marca, blanco de base, arena de alternancia y dorado de acento.
+   Hex provisionales hasta tener el logo en vector: ajustar --bordo-700 al bordó exacto del logo y recalcular.
+   Contrastes WCAG verificados (docs/10 §1.3):
+     ink/blanco 18.1 · blanco/bordo-700 11.5 · bordo-700/sand 10.1 · ink/gold-300 10.5 · bordo-100/bordo-700 8.5 ·
+     gold-300/bordo-700 6.7 · steel/blanco 6.5 · gold-700/blanco 6.2 · steel/sand 5.7 · gold-700/sand 5.5.
+   gold-500 sobre blanco = 2.4: solo líneas, NUNCA texto. Máx. 2 secciones oscuras seguidas (docs/10 §4). */
 
 :root {
   /* Marca: bordó */
@@ -20,6 +21,7 @@
 
   /* Neutros */
   --white:    #FFFFFF;
+  --sand:     #F6EFE6;    /* fondo alterno cálido (docs/10 §1) */
   --ink:      #1C1416;    /* texto principal (casi negro cálido) */
   --steel:    #5E5E5E;    /* texto secundario sobre blanco */
   --graphite: #2C2C2C;    /* fondo de rellenos de imagen pendientes */
@@ -119,7 +121,6 @@
   --mega-close-delay: 300ms;
   --reveal-shift: 16px;
 
-  --hero-media-h: clamp(280px, 62vw, 640px);
   --local-h: 640px;
   --hero-media-min: 560px;
   --thumb: 64px;

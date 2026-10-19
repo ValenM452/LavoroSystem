@@ -15,11 +15,15 @@ import Button from './Button.astro';
 
   <div class="mega__panel" id="mega-rubros" data-mega-panel hidden>
     <div class="container grid mega__inner">
-      <ul role="list" class="mega__list">
-        {site.rubros.map((r) => (
-          <li><a class="mega__item link-u" href={rubroHref(r.slug)} data-mega-item={r.slug}>{r.label}</a></li>
-        ))}
-      </ul>
+      <div class="mega__nav">
+        <p class="eyebrow">{copy.mega.eyebrow}</p>
+        <ul role="list" class="mega__list">
+          {site.rubros.map((r) => (
+            <li><a class="mega__item link-u" href={rubroHref(r.slug)} data-mega-item={r.slug}>{r.label}</a></li>
+          ))}
+        </ul>
+        <a class="mega__all link-u" href={site.paths.rubrosEmpresas}>{copy.mega.verTodos} <span aria-hidden="true">→</span></a>
+      </div>
       <div class="mega__previews">
         {site.rubros.map((r) => (
           <div class="mega__preview" data-mega-preview={r.slug} hidden>
@@ -63,8 +67,11 @@ import Button from './Button.astro';
     overflow-y: auto;
   }
   .mega__inner { align-items: start; row-gap: var(--sp-5); }
-  .mega__list { grid-column: 1 / span 4; margin: 0; padding: 0; list-style: none; }
-  .mega__list li + li { border-top: var(--hairline) solid var(--line); }
+  /* Dos columnas de 5 (docs/10 §3.3). Flujo por columna: el orden del DOM coincide con las flechas del teclado. */
+  .mega__nav { grid-column: 1 / span 6; display: grid; gap: var(--sp-4); justify-items: start; }
+  .mega__list { display: grid; grid-auto-flow: column; grid-template-rows: repeat(5, auto); column-gap: var(--gutter); width: 100%; margin: 0; padding: 0; list-style: none; }
+  .mega__list li { border-top: var(--hairline) solid var(--line); }
+  .mega__all { display: inline-flex; align-items: center; gap: var(--sp-2); min-height: var(--tap); font-size: var(--fs-small); font-weight: 600; color: var(--bordo-700); }
   .mega__item {
     display: inline-block;
     padding-block: var(--sp-2);
@@ -75,8 +82,8 @@ import Button from './Button.astro';
     letter-spacing: var(--tracking-head);
   }
   .mega__item.is-active { color: var(--bordo-700); font-style: italic; }
-  .mega__previews { grid-column: 6 / -1; }
+  .mega__previews { grid-column: 8 / -1; }
   .mega__preview { display: grid; gap: var(--sp-4); justify-items: start; }
-  .mega__preview :global(.rimg) { width: 100%; max-height: 50vh; border-radius: var(--radius-lg); }
+  .mega__preview :global(.rimg) { width: 100%; max-height: 40vh; border-radius: var(--radius-lg); }
   .mega__phrase { margin: 0; }
 </style>

@@ -6,6 +6,8 @@
 
 ## Mapa de la home
 
+> **Orden, fondos y navegación vigentes: `10_PULIDO_BLOQUES_D_E.md` §3–4.** El copy de cada sección de este documento sigue valiendo.
+
 | # | Sección | Fondo | Objetivo | CTA |
 |---|---|---|---|---|
 | 1 | Header + mega menú | Transparente → paper | Orientar en 1 segundo | Cotizar |

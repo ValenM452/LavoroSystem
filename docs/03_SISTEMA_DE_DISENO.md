@@ -1,5 +1,7 @@
 # 03 — Sistema de diseño
 
+> **Actualizado por `10_PULIDO_BLOQUES_D_E.md` (18/10/2026).** Paleta (§2), tipografía (§3), header y menús (§5) y fondos de sección: valen los de `10` §1–4. Este documento queda como referencia del lenguaje visual (§1, §4, §6, §7).
+
 ## 1. Referencia
 
 Video de referencia: web institucional de **MEF Consultora** (seguridad e higiene). Se toma el **lenguaje visual**, no el contenido ni la paleta.

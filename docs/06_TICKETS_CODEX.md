@@ -78,6 +78,43 @@
 - `sitemap.xml`, `robots.txt`, favicon, imagen OG, 404 con estilo.
 - Reporte final con **todos** los `[[PENDIENTE]]` que siguen en el sitio. Si queda alguno visible, el sitio **no** se publica.
 
+### T12 — Paleta oficial y ritmo de fondos
+**Docs:** 10 §1, §4.
+- Agregar `--sand: #F6EFE6` a `tokens.css` y una utilidad `.section--sand`. Actualizar el comentario de cabecera de `tokens.css` con la tabla de contrastes de `10` §1.3.
+- Aplicar el mapa de fondos de `10` §4: Marcas, Personalización y Proceso dejan el bordó; Rubros pasa a `--bordo-900`.
+**Acepta si:** nunca hay más de 2 secciones oscuras seguidas; contraste AA verificado en cada combinación nueva.
+
+### T13 — Menús
+**Docs:** 10 §3.
+- Header desktop: Tienda ↗ · Empresas · Rubros ▾ · Personalización · Contacto · [Cotizar].
+- Mega menú: eyebrow "Rubros que equipamos", 2 columnas de 5, link final "Ver todos los rubros" → `/empresas#rubros`.
+- Menú mobile con el orden de `10` §3.4 y botones al pie. Footer: "Marcas" en la columna Empresas.
+**Acepta si:** navegable con teclado; `Esc` cierra mega menú y menú mobile devolviendo el foco.
+
+### T14 — Hero mobile, Confianza, Catálogo y orden de secciones
+**Docs:** 10 §4.
+- Hero mobile: foto arriba (4:3), tarjetas de camino compactas. Desktop sin cambios.
+- Confianza: hechos como lista con filete dorado, sin tarjetas.
+- Catálogo: componente de lista editorial (fila entera clicable); conservar `CatalogCard` para cuando haya fotos.
+- Orden de la home y de `/empresas` según `10` §4 y §4.10. Nota "Imágenes ilustrativas de cada rubro." bajo la grilla.
+**Acepta si:** home ≤ 10.000 px de alto en 375 px; primer pantallazo en 375 px con foto + H1 + inicio de las tarjetas.
+
+### T15 — Créditos de imágenes
+**Docs:** 10 §5.5, 09.
+- `/legales/creditos-imagenes` generada desde `src/config/images.ts` (solo slots con `credit`): uso, autor, licencia, link a la fuente, "recortada".
+- Link "Créditos de imágenes" en la columna Legales del footer.
+**Acepta si:** cada foto CC BY usada en el sitio aparece una vez; las propias no aparecen.
+
+### T16 — Formulario en 2 grupos + Apps Script
+**Docs:** 10 §6.2, §7.2; 05 §2–3.
+- `LeadForm`: `<fieldset>` "1. Tus datos" y "2. Tu pedido", atributos `autocomplete` e `inputmode`, botón ancho completo en mobile. **Sin cambiar campos, nombres ni validación.**
+- `lead.gs`: formato condicional de "Nuevo" con más de 24 h; columna `posible_duplicado` (mismo teléfono en 30 días); mail con el link `wa.me` y la plantilla de primer contacto de `10` §7.3 al principio. Actualizar `docs/apps-script/README.md`.
+**Acepta si:** `npm test` pasa; `configurarPlanilla()` se puede volver a correr sobre una Sheet con datos sin borrar nada.
+
+### T17 — Prueba de punta a punta (manual)
+**Docs:** 10 §7.6.
+- Correr los 9 casos con la Sheet real en un preview de Vercel. Anotar resultado de cada uno en el reporte.
+
 ---
 
 ## Fuera de alcance (no programar, anotar si aparece)
