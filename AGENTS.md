@@ -24,6 +24,8 @@ Lectura obligatoria antes de cualquier ticket:
 2. `docs/03_SISTEMA_DE_DISENO.md` — tokens, tipografía, componentes.
 3. El documento específico del ticket (`04`, `05` o `06`).
 
+Planificación (fechas, bloques, qué sale ahora y qué después): `docs/02_PLANNING_POR_BLOQUES.md`. Es la única copia; no duplicarla fuera de `docs/`.
+
 ## 2. Reglas no negociables
 
 1. **No inventar datos comerciales.** Prohibido escribir precios, stock, plazos de entrega o de envío, cantidad de clientes, testimonios, reseñas, logos de clientes, certificaciones, garantías, descuentos o estadísticas. Si falta un dato, usar placeholder visible con este formato: `[[PENDIENTE: descripción]]` y listarlo en el reporte final.
