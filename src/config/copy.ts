@@ -52,6 +52,8 @@ export const copy = {
 
   /** 04 §2 y §"/empresas" — meta de cada página (derivados del H1 y la bajada del hero) */
   seo: {
+    /** Imagen de redes (public/og-image.jpg). La foto es ilustrativa, no es un trabajo de LAVORO. */
+    ogImageAlt: 'La palabra LAVORO detrás del Cerro Fitz Roy al atardecer, con el texto: Ropa de trabajo y uniformes para equipos que no paran.',
     home: {
       title: 'Ropa de trabajo y uniformes para equipos que no paran | LAVORO Chilecito',
       description:

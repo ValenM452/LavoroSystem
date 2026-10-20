@@ -38,6 +38,7 @@ en la propia portada y en `/legales/creditos-imagenes`.
 | Uso | Archivo | Autor | Licencia | Origen |
 |---|---|---|---|---|
 | Portada home (LAVORO detrás de los picos) | `src/assets/img/paisajes/fitzroy-atardecer.jpg` (2400×1399) | Masa Sakano | CC BY-SA 2.0 | https://commons.wikimedia.org/wiki/File:Mount_Fitz_Roy_at_Sunset.jpg |
+| Imagen para WhatsApp y redes (misma composición que la portada) | `public/og-image.jpg` (1200×630) | Masa Sakano | CC BY-SA 2.0 | ver fila anterior |
 | Portada /empresas y bloque Empresas de la home (en duotono) | `paisajes/aconcagua.jpg` (2000×1500) | Mario Roberto Durán Ortiz (Mariordo) | CC BY 3.0 | https://commons.wikimedia.org/wiki/File:Aconcagua_13.JPG |
 
 - **CC BY-SA 2.0 (Fitz Roy):** además del crédito, la versión adaptada (recorte, tratamiento de color) queda bajo

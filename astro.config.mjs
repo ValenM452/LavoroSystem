@@ -20,8 +20,20 @@ function devTokensPage() {
   };
 }
 
+/**
+ * URL pública del sitio (canonical, og:url, og:image). WhatsApp y las redes necesitan la imagen con URL absoluta.
+ * Orden: PUBLIC_SITE_URL (dominio propio) → en Vercel, la URL de producción o la de la rama de la vista previa.
+ */
+function siteUrl() {
+  const env = process.env;
+  if (env.PUBLIC_SITE_URL) return env.PUBLIC_SITE_URL;
+  if (env.VERCEL_ENV === 'production' && env.VERCEL_PROJECT_PRODUCTION_URL) return `https://${env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  const host = env.VERCEL_BRANCH_URL || env.VERCEL_URL;
+  return host ? `https://${host}` : undefined;
+}
+
 export default defineConfig({
-  site: process.env.PUBLIC_SITE_URL || undefined,
+  site: siteUrl(),
   output: 'static',
   adapter: vercel(),
   integrations: [devTokensPage()],
