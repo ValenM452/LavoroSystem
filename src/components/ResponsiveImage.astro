@@ -12,13 +12,17 @@ interface Props {
   priority?: boolean;
   /** El contenedor muestra el [[PENDIENTE]] de la foto en otro lugar. */
   hideTag?: boolean;
+  /** Pisa el `object-position` del registro (p. ej. para alinear capas superpuestas). */
+  position?: string;
+  class?: string;
 }
-const { img, sizes, ratio = 'fill', widths = [480, 800, 1200, 1600], priority = false, hideTag = false } = Astro.props;
+const { img, sizes, ratio = 'fill', widths = [480, 800, 1200, 1600], priority = false, hideTag = false, position, class: className } = Astro.props;
+const objectPosition = position ?? img.position;
 const usable = widths.filter((w) => w <= img.src.width);
 // Mientras la imagen es un relleno se renderiza decorativa (alt vacío).
 const alt = img.pending ? '' : img.alt;
 ---
-<div class:list={['rimg', `rimg--${ratio}`]}>
+<div class:list={['rimg', `rimg--${ratio}`, className]}>
   <Picture
     src={img.src}
     alt={alt}
@@ -28,7 +32,7 @@ const alt = img.pending ? '' : img.alt;
     priority={priority}
     loading={priority ? 'eager' : 'lazy'}
     decoding="async"
-    style={img.position ? `object-position: ${img.position}` : undefined}
+    style={objectPosition ? `object-position: ${objectPosition}` : undefined}
   />
   {img.pending && !hideTag && <Pending text={img.pending} class="rimg__tag" />}
 </div>

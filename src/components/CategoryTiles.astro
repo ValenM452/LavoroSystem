@@ -1,0 +1,88 @@
+---
+/**
+ * Categorías de la tienda (Indumentaria, Calzado, Elementos de seguridad). Cada tarjeta abre su
+ * catálogo en Tiendanube (con UTM, 05 §1). Sin precios ni stock: eso se ve en la tienda.
+ * Mientras la tienda no tenga URL, las tarjetas quedan inactivas y se muestra un solo [[PENDIENTE]].
+ */
+import { site, type CategoryKey } from '../config/site';
+import { copy } from '../config/copy';
+import { tiendaTarget } from '../lib/links';
+import Pending from './Pending.astro';
+
+interface Props {
+  keys: readonly CategoryKey[];
+  /** Campaña UTM (05 §1). */
+  seccion: string;
+}
+const { keys, seccion } = Astro.props;
+const items = keys.map((k) => ({ key: k, label: site.tiendanube.categories[k].label, text: copy.categorias.descripciones[k], target: tiendaTarget(seccion, k) }));
+const pending = items.find((i) => i.target.pending)?.target.pending ?? null;
+---
+<div class="ct">
+  <ul role="list" class:list={['ct__list', `ct__list--${items.length}`]}>
+    {items.map((i) => {
+      const Tag = i.target.pending ? 'div' : 'a';
+      return (
+        <li>
+          <Tag class="ct__item" href={i.target.pending ? undefined : i.target.href} aria-disabled={i.target.pending ? 'true' : undefined} data-track="click_tienda">
+            <span class="ct__name">{i.label}</span>
+            <span class="ct__text">{i.text}</span>
+            <span class="ct__cta">
+              {copy.categoriaCta}
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" /></svg>
+            </span>
+          </Tag>
+        </li>
+      );
+    })}
+  </ul>
+  {pending && <p class="ct__note"><Pending text={pending} /></p>}
+</div>
+
+<style>
+  .ct { display: grid; gap: var(--sp-4); }
+  .ct__list { display: grid; gap: var(--sp-3); margin: 0; padding: 0; }
+  .ct__item {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    align-content: space-between;
+    gap: var(--sp-3);
+    height: 100%;
+    min-height: 13rem;
+    padding: var(--sp-6) var(--sp-5) var(--sp-5);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--graf-900);
+    color: var(--white);
+    text-decoration: none;
+    --focus-outer: var(--white);
+  }
+  /* Al pasar el mouse, la tarjeta se cubre de bordó metalizado. */
+  .ct__item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--metal-bordo);
+    background-size: 220% 100%;
+    background-position: 100% 0;
+    opacity: 0;
+    transition: opacity var(--dur-menu) var(--ease), background-position 900ms var(--ease);
+  }
+  a.ct__item:hover::before, a.ct__item:focus-visible::before { opacity: 1; background-position: 0 0; }
+  .ct__name { font-family: var(--font-display); font-size: var(--fs-h2); font-weight: var(--weight-display); line-height: var(--lh-tight); }
+  .ct__text { max-width: 34ch; color: var(--graf-300); }
+  .ct__cta { display: inline-flex; align-items: center; gap: var(--sp-2); justify-self: start; min-height: var(--tap); font-weight: 700; color: var(--gold-300); }
+  a.ct__item:hover .ct__text { color: var(--bordo-100); }
+  div.ct__item { cursor: not-allowed; }
+  div.ct__item .ct__cta { color: var(--graf-300); }
+  .ct__note { margin: 0; }
+
+  @media (min-width: 768px) {
+    .ct__list--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .ct__list--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ct__item { min-height: 17rem; padding: var(--sp-7) var(--sp-6) var(--sp-6); }
+  }
+  @media (prefers-reduced-motion: reduce) { .ct__item::before { transition: none; } }
+</style>

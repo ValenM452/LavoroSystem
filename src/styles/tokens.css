@@ -1,32 +1,39 @@
-/* Tokens LAVORO — paleta oficial (docs/10 §1): bordó de marca, blanco de base, arena de alternancia y dorado de acento.
-   Hex provisionales hasta tener el logo en vector: ajustar --bordo-700 al bordó exacto del logo y recalcular.
-   Contrastes WCAG verificados (docs/10 §1.3):
-     ink/blanco 18.1 · blanco/bordo-700 11.5 · bordo-700/sand 10.1 · ink/gold-300 10.5 · bordo-100/bordo-700 8.5 ·
-     gold-300/bordo-700 6.7 · steel/blanco 6.5 · gold-700/blanco 6.2 · steel/sand 5.7 · gold-700/sand 5.5.
-   gold-500 sobre blanco = 2.4: solo líneas, NUNCA texto. Máx. 2 secciones oscuras seguidas (docs/10 §4). */
+/* Tokens LAVORO — rediseño 20/10/2026: grafito y bordó metalizado predominan; blanco y dorado complementan.
+   Contrastes WCAG verificados (sobre el bordó, contra el punto más claro del brillo, #9A3550):
+     blanco/brillo 7.0 · bordo-100/brillo 5.3 · gold-300/brillo 4.8 · blanco/bordo-700 10.5 · bordo-700/blanco 10.5 · bordo-700/sand 9.5 ·
+     ink/sand 14.7 · steel/blanco 7.1 · steel/sand 6.4 · graf-300/graf-900 6.7 · graf-300/graf-800 6.0 ·
+     gold-300/graf-900 11.1 · gold-500/graf-900 8.9 · ink/gold-500 8.9 · gold-700/blanco 6.2 · blanco/graf-900 16.3.
+   gold-500 sobre el brillo bordó = 3.8: solo fondos de botón o líneas. gold-500 sobre blanco: solo líneas, nunca texto. */
 
 :root {
-  /* Marca: bordó */
-  --bordo-950: #2A0B11;   /* footer */
-  --bordo-900: #3E1119;   /* bloques profundos, barra superior */
-  --bordo-700: #6B1C2A;   /* color principal: CTA, paneles */
-  --bordo-500: #8E2A3B;   /* hover */
-  --bordo-100: #EBD9DC;   /* texto secundario sobre bordó */
-  --bordo-050: #FBF6F7;   /* superficie de tarjetas sobre blanco */
+  /* Marca: bordó metalizado (vino profundo con brillo) */
+  --bordo-950: #33070F;
+  --bordo-900: #4A0C1B;   /* bordó profundo (degradés de foto) */
+  --bordo-700: #7B1630;   /* color base: texto bordó sobre claro y bordó plano */
+  --bordo-500: #962440;   /* hover plano */
+  --bordo-100: #F2D9DE;   /* texto secundario sobre bordó */
+  --bordo-050: #FBF3F4;   /* superficie suave sobre blanco */
 
-  /* Acento: dorado ocre */
-  --gold-300: #E2C27A;    /* acento sobre bordó (texto, números, líneas) */
-  --gold-500: #C9A24A;    /* líneas y detalles decorativos */
-  --gold-700: #7A5C17;    /* acento como texto sobre blanco (eyebrows) */
+  /* Grafito: fondos oscuros */
+  --graf-950: #17181B;    /* footer */
+  --graf-900: #1E2024;    /* secciones oscuras */
+  --graf-800: #26292E;    /* tarjetas sobre oscuro */
+  --graf-700: #33373D;
+  --graf-300: #A3A6AC;    /* texto secundario sobre oscuro */
+
+  /* Acento: dorado */
+  --gold-300: #F3D27C;    /* texto dorado sobre oscuro y bordó */
+  --gold-500: #E9B949;    /* botón principal sobre oscuro, líneas */
+  --gold-700: #7A5C17;    /* dorado como texto sobre blanco */
 
   /* Neutros */
   --white:    #FFFFFF;
-  --sand:     #F6EFE6;    /* fondo alterno cálido (docs/10 §1) */
-  --ink:      #1C1416;    /* texto principal (casi negro cálido) */
-  --steel:    #5E5E5E;    /* texto secundario sobre blanco */
-  --graphite: #2C2C2C;    /* fondo de rellenos de imagen pendientes */
-  --line:     rgba(42, 11, 17, .12);
-  --line-inv: rgba(255, 255, 255, .2);
+  --sand:     #F3F3F1;    /* fondo claro alterno ("nieve") */
+  --ink:      #1E2024;    /* texto principal sobre claro */
+  --steel:    #55585E;    /* texto secundario sobre claro */
+  --graphite: #2C2C2C;    /* relleno de imágenes pendientes */
+  --line:     rgba(30, 32, 36, .12);
+  --line-inv: rgba(255, 255, 255, .14);
 
   /* Semánticos */
   --bg: var(--white);
@@ -36,30 +43,46 @@
   --accent-hover: var(--bordo-500);
   --on-accent: var(--white);
   --eyebrow: var(--gold-700);
-  --focus: #C9A227;       /* anillo de foco (doble, ver --focus-outer) */
+  --focus: var(--gold-500);  /* anillo de foco (doble, ver --focus-outer) */
+
+  /* Bordó metalizado. Panel: brillo diagonal + reflejo arriba a la izquierda + grano fino (como pintura
+     metalizada). Botón: reflejo arriba. El punto más claro (#9A3550) mantiene AA con blanco, bordo-100 y gold-300. */
+  --metal-flake: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --metal-bordo: linear-gradient(115deg, #3E0915 0%, #6A1228 24%, #8A2540 42%, #9A3550 50%, #8A2540 58%, #6A1228 76%, #3E0915 100%);
+  --metal-bordo-panel:
+    var(--metal-flake),
+    radial-gradient(90% 70% at 12% 0%, rgba(255, 196, 210, .14), transparent 60%),
+    linear-gradient(125deg, #3E0915 0%, #6A1228 30%, #8A2540 50%, #6A1228 70%, #3E0915 100%);
+  --metal-bordo-btn: linear-gradient(180deg, #9A3550 0%, #7B1630 48%, #63102A 100%);
+  --metal-shine: inset 0 1px 0 rgba(255, 255, 255, .22), inset 0 -1px 0 rgba(0, 0, 0, .25);
 
   /* Overlay para texto sobre foto (AA) */
-  --overlay-photo: linear-gradient(to top, rgba(28, 8, 12, .78), rgba(28, 8, 12, .1) 65%);
+  --overlay-photo: linear-gradient(to top, rgba(23, 24, 27, .88), rgba(23, 24, 27, .15) 65%);
 
-  /* Tipografía */
-  --font-display: 'Source Serif 4 Variable', 'Source Serif 4', Georgia, 'Times New Roman', serif;
-  --font-sans: 'Geist Variable', 'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* Tipografía: Tektur (titulares; técnica, de cortes en ángulo) + Hanken Grotesk (texto). */
+  --font-display: 'Tektur Variable', 'Tektur', 'Arial Black', system-ui, sans-serif;
+  --font-sans: 'Hanken Grotesk Variable', 'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --stretch-display: 100%;
+  --stretch-head: 100%;
+  --weight-display: 800;
+  --weight-head: 700;
 
-  --fs-display: clamp(2.4rem, 1.5rem + 3.6vw, 4.6rem);
-  --fs-h2:      clamp(1.9rem, 1.4rem + 2vw, 3.1rem);
-  --fs-h3:      clamp(1.25rem, 1.1rem + .6vw, 1.6rem);
+  --fs-mega:    clamp(2.6rem, 1.6rem + 4.4vw, 6.25rem);   /* títulos de página */
+  --fs-display: clamp(2.3rem, 1.5rem + 3.6vw, 4.75rem);
+  --fs-h2:      clamp(1.9rem, 1.4rem + 2.2vw, 3.25rem);
+  --fs-h3:      clamp(1.2rem, 1.08rem + .5vw, 1.5rem);
   --fs-body:    clamp(1rem, .96rem + .2vw, 1.0625rem);
   --fs-lead:    clamp(1.0625rem, 1rem + .3vw, 1.25rem);
   --fs-small:   .875rem;
-  --fs-eyebrow: .78rem;
-  --lh-tight: 1.06;
-  --lh-head:  1.14;
-  --lh-body:  1.6;
-  --tracking-head: -0.015em;
-  --tracking-eyebrow: .16em;
+  --fs-eyebrow: .9375rem;
+  --lh-tight: 1;
+  --lh-head:  1.06;
+  --lh-body:  1.55;
+  --tracking-head: -0.01em;
+  --tracking-eyebrow: .02em;
 
   /* Espaciado y grilla */
-  --container: 1280px;
+  --container: 1320px;
   --gutter: clamp(16px, 4vw, 40px);
   --section-y: clamp(56px, 7vw, 104px);
   --measure: 60ch;
@@ -67,13 +90,14 @@
 
   /* Radios y sombra (una sola, suave, para tarjetas y header al hacer scroll) */
   --radius: 4px;
-  --radius-lg: 10px;
+  --radius-lg: 14px;
   --radius-pill: 999px;
-  --shadow: 0 1px 2px rgba(42, 11, 17, .06), 0 10px 28px rgba(42, 11, 17, .08);
+  --shadow: 0 1px 2px rgba(23, 24, 27, .08), 0 12px 30px rgba(23, 24, 27, .14);
 
   /* Componentes */
   --tap: 44px;
   --header-h: 64px;
+  --dock-h: 64px;         /* barra flotante inferior en celular */
 
   /* Movimiento */
   --ease: cubic-bezier(.2,.7,.2,1);
@@ -137,6 +161,6 @@
 @media (min-width: 1024px) {
   :root {
     --cols: 12;
-    --header-h: 76px;
+    --header-h: 80px;
   }
 }

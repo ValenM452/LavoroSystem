@@ -1,29 +1,18 @@
 ---
+/** Home (rediseño 20/10): portada (LAVORO detrás del Fitz Roy), rubros, tienda, empresas y local. */
 import Base from '../layouts/Base.astro';
 import { copy } from '../config/copy';
-import Hero from '../sections/Hero.astro';
-import Confianza from '../sections/Confianza.astro';
-import Catalogo from '../sections/Catalogo.astro';
-import Marcas from '../sections/Marcas.astro';
-import EmpresasHome from '../sections/EmpresasHome.astro';
-import Proceso from '../sections/Proceso.astro';
-import RubrosGrid from '../sections/RubrosGrid.astro';
-import Personalizacion from '../sections/Personalizacion.astro';
-import Cotizar from '../sections/Cotizar.astro';
-import Local from '../sections/Local.astro';
-import Cierre from '../sections/Cierre.astro';
+import Portada from '../sections/Portada.astro';
+import RubrosIndex from '../sections/RubrosIndex.astro';
+import TiendaHome from '../sections/TiendaHome.astro';
+import EmpresasBanda from '../sections/EmpresasBanda.astro';
+import LocalBanda from '../sections/LocalBanda.astro';
 ---
 
-<Base title={copy.seo.home.title} description={copy.seo.home.description}>
-  <Hero />
-  <Confianza />
-  <Catalogo />
-  <Marcas />
-  <EmpresasHome />
-  <RubrosGrid />
-  <Personalizacion />
-  <Proceso />
-  <Cotizar id="contacto" />
-  <Local />
-  <Cierre />
+<Base title={copy.seo.home.title} description={copy.seo.home.description} bleed>
+  <Portada />
+  <RubrosIndex />
+  <TiendaHome />
+  <EmpresasBanda />
+  <LocalBanda />
 </Base>

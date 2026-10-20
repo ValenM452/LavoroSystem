@@ -36,16 +36,17 @@ a { color: inherit; text-underline-offset: .2em; }
 /* Tipografía */
 h1, h2, h3, .display, .h2, .h3 {
   font-family: var(--font-display);
-  font-weight: 400;
+  font-stretch: var(--stretch-head);
+  font-weight: var(--weight-head);
   letter-spacing: var(--tracking-head);
-  font-optical-sizing: auto;
   text-wrap: balance;
 }
+h1, .display { font-weight: var(--weight-display); }
 h1, .display { font-size: var(--fs-display); line-height: var(--lh-tight); }
 h2, .h2 { font-size: var(--fs-h2); line-height: var(--lh-head); }
 h3, .h3 { font-size: var(--fs-h3); line-height: var(--lh-head); }
-/* La palabra destacada va en itálica y en bordó (dorado sobre fondos bordó). */
-h1 em, h2 em, h3 em, .display em, .h2 em, .h3 em { font-style: italic; color: var(--em, var(--bordo-700)); }
+/* Rediseño: sin palabra destacada en los titulares (el `*…*` de los textos se renderiza neutro). */
+h1 em, h2 em, h3 em, .display em, .h2 em, .h3 em { font-style: normal; color: inherit; }
 p { max-width: var(--measure); text-wrap: pretty; }
 small, .small { font-size: var(--fs-small); }
 .muted { color: var(--muted); }
@@ -58,15 +59,8 @@ small, .small { font-size: var(--fs-small); }
   font-family: var(--font-sans);
   font-size: var(--fs-eyebrow);
   font-weight: 600;
-  text-transform: uppercase;
   letter-spacing: var(--tracking-eyebrow);
   color: var(--eyebrow);
-}
-.eyebrow::before {
-  content: "";
-  width: var(--eyebrow-line);
-  height: var(--ring);
-  background: var(--gold-500);
 }
 
 /* Contenedor y grilla */
@@ -89,14 +83,14 @@ small, .small { font-size: var(--fs-small); }
 .section--bordo, .section--deep, .on-dark {
   color: var(--white);
   --fg: var(--white);
-  --muted: var(--bordo-100);
+  --muted: var(--graf-300);
   --eyebrow: var(--gold-300);
   --em: var(--gold-300);
   --line: var(--line-inv);
   --focus-outer: var(--white);
 }
-.section--bordo { background: var(--bordo-700); }
-.section--deep { background: var(--bordo-900); }
+.section--bordo { background: var(--bordo-900); background-image: var(--metal-bordo-panel); --muted: var(--bordo-100); }
+.section--deep { background: var(--graf-900); }
 
 /* Botones (píldora, mínimo táctil 44 px) */
 .btn {
@@ -110,21 +104,21 @@ small, .small { font-size: var(--fs-small); }
   border: var(--hairline) solid transparent;
   font-family: var(--font-sans);
   font-size: var(--fs-btn);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.2;
   text-decoration: none;
   transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
 }
-.btn--primary { background: var(--accent); color: var(--on-accent); }
-.btn--primary:hover { background: var(--accent-hover); }
+.btn--primary { background: var(--accent); background-image: var(--metal-bordo-btn); color: var(--on-accent); box-shadow: var(--metal-shine); }
+.btn--primary:hover { filter: brightness(1.14); }
 .btn--secondary { background: transparent; color: var(--accent); border-color: var(--accent); }
-.btn--secondary:hover { background: var(--accent); color: var(--on-accent); }
+.btn--secondary:hover { background: var(--accent); background-image: var(--metal-bordo-btn); color: var(--on-accent); }
 
-/* Sobre bordó o foto: primario dorado, secundario contorno blanco. */
-.btn--on-dark.btn--primary, .btn--on-bordo.btn--primary { background: var(--gold-300); color: var(--bordo-950); }
-.btn--on-dark.btn--primary:hover, .btn--on-bordo.btn--primary:hover { background: var(--white); }
-.btn--on-dark.btn--secondary, .btn--on-bordo.btn--secondary { color: var(--white); border-color: var(--white); }
-.btn--on-dark.btn--secondary:hover, .btn--on-bordo.btn--secondary:hover { background: var(--white); color: var(--bordo-900); }
+/* Sobre grafito, bordó o foto: primario dorado, secundario contorno blanco. */
+.btn--on-dark.btn--primary, .btn--on-bordo.btn--primary { background: var(--gold-500); background-image: none; color: var(--graf-900); box-shadow: none; }
+.btn--on-dark.btn--primary:hover, .btn--on-bordo.btn--primary:hover { background: var(--gold-300); filter: none; }
+.btn--on-dark.btn--secondary, .btn--on-bordo.btn--secondary { color: var(--white); border-color: currentColor; }
+.btn--on-dark.btn--secondary:hover, .btn--on-bordo.btn--secondary:hover { background: var(--white); background-image: none; color: var(--graf-900); }
 .btn__icon { width: 1.125em; height: 1.125em; flex: none; fill: currentColor; }
 
 /* Subrayado que crece de izquierda a derecha (03 §6) */
@@ -202,3 +196,12 @@ small, .small { font-size: var(--fs-small); }
 
 /* Bloqueo de scroll del body con el menú de celular abierto (T02) */
 html:has(dialog[open]) { overflow: hidden; }
+
+/* Rediseño 20/10: header fijo flotante y barra inferior en celular. Las páginas con portada a sangre
+   (`<Base bleed>`) arrancan detrás del header; el resto deja el espacio arriba. */
+main { padding-top: calc(var(--header-h) + var(--sp-5)); }
+.is-bleed main { padding-top: 0; }
+@media (max-width: 1023.98px) {
+  body { padding-bottom: calc(var(--dock-h) + var(--sp-5) + env(safe-area-inset-bottom, 0px)); }
+}
+html { scroll-padding-top: calc(var(--header-h) + var(--sp-4)); }

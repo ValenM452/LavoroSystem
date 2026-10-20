@@ -29,6 +29,9 @@ export function externalTarget(url: string): Target {
   return isPending(url) ? { href: '#', pending: pendingText(url) } : { href: url, pending: null };
 }
 
+/** Página del rubro (rediseño: un sector por rubro). */
+export const rubroPage = (slug: string) => `/rubros/${slug}`;
+
 /** Link a /empresas precargando el rubro (04 §1, T05). */
 export const rubroHref = (slug: string) => `${site.paths.empresas}?rubro=${slug}#cotizar`;
 
@@ -36,3 +39,10 @@ export const rubroHref = (slug: string) => `${site.paths.empresas}?rubro=${slug}
 export const personalizacionHref = `${site.paths.empresas}?personalizacion=1#cotizar`;
 
 export const pendingLabel = (value: string) => pendingText(value);
+
+/** WhatsApp con el mensaje armado según el botón que lo abre. */
+export type WhatsappLine = 'empresas' | 'local';
+export function whatsappLink(line: WhatsappLine, text: string): string {
+  const { number } = line === 'empresas' ? site.contact.whatsappEmpresas : site.contact.whatsappLocal;
+  return `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
+}

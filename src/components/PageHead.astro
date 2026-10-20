@@ -1,0 +1,32 @@
+---
+/** Encabezado de página interna sin foto (rediseño 20/10): grafito, curvas de nivel y título grande. */
+import Topo from './Topo.astro';
+
+interface Props {
+  id: string;
+  title: string;
+  lead?: string;
+}
+const { id, title, lead } = Astro.props;
+---
+<section class="pg on-dark" aria-labelledby={id}>
+  <Topo variant={2} />
+  <div class="container pg__inner">
+    <h1 id={id} class="pg__title">{title}</h1>
+    <div class="pg__side">
+      {lead && <p class="pg__lead">{lead}</p>}
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .pg { position: relative; isolation: isolate; overflow: hidden; background: var(--graf-900); }
+  .pg__inner { display: grid; gap: var(--sp-5); padding-top: calc(var(--header-h) + var(--sp-8)); padding-bottom: var(--sp-7); }
+  .pg__title { margin: 0; font-size: var(--fs-mega); line-height: var(--lh-tight); }
+  .pg__side { display: grid; gap: var(--sp-4); justify-items: start; }
+  .pg__lead { margin: 0; font-size: var(--fs-lead); color: var(--graf-300); }
+  @media (min-width: 1024px) {
+    .pg__inner { grid-template-columns: 1fr minmax(0, 30rem); align-items: end; column-gap: var(--sp-8); }
+  }
+</style>

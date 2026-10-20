@@ -1,0 +1,27 @@
+---
+/** /tienda (rediseño 20/10): las tres categorías (cada una abre su catálogo en Tiendanube) + marcas. */
+import Base from '../layouts/Base.astro';
+import type { CategoryKey } from '../config/site';
+import { copy } from '../config/copy';
+import { tiendaTarget } from '../lib/links';
+import PageHead from '../components/PageHead.astro';
+import CategoryTiles from '../components/CategoryTiles.astro';
+import Button from '../components/Button.astro';
+import Marcas from '../sections/Marcas.astro';
+
+const keys = ['indumentaria', 'calzado', 'elementosDeSeguridad'] as const satisfies readonly CategoryKey[];
+const t = copy.tiendaPage;
+const all = tiendaTarget('tienda');
+---
+
+<Base title={t.seoTitle} description={t.description} bleed>
+  <PageHead id="tp-title" title={t.title} lead={t.lead}>
+    <Button href={all.href} pending={all.pending} tone="dark" track="click_tienda">{copy.categorias.verTienda}</Button>
+  </PageHead>
+  <section class="section section--sand" aria-label={t.title}>
+    <div class="container">
+      <CategoryTiles keys={keys} seccion="tienda" />
+    </div>
+  </section>
+  <Marcas />
+</Base>

@@ -1,0 +1,139 @@
+---
+/**
+ * Índice de rubros (rediseño 20/10): la pieza que distingue la home.
+ * Lista de nombres grandes; al pasar el mouse o el foco, la foto del costado cambia.
+ * Cada rubro lleva a su página (/rubros/<slug>). En celular: filas con miniatura.
+ */
+import { site } from '../config/site';
+import { copy } from '../config/copy';
+import { images } from '../config/images';
+import { rubroPage } from '../lib/links';
+import ResponsiveImage from '../components/ResponsiveImage.astro';
+import Topo from '../components/Topo.astro';
+
+const c = copy.rubrosIndex;
+const first = site.rubros[0].slug;
+---
+<section class="ri on-dark" id="rubros" aria-labelledby="ri-title" data-ri>
+  <Topo />
+  <div class="container ri__grid">
+    <div class="ri__head">
+      <h2 id="ri-title" class="ri__title">{c.title}</h2>
+      <p class="ri__lead">{c.lead}</p>
+    </div>
+
+    <ol role="list" class="ri__list">
+      {site.rubros.map((r) => (
+        <li>
+          <a class="ri__item" href={rubroPage(r.slug)} data-ri-item={r.slug} aria-describedby={`ri-frase-${r.slug}`}>
+            <span class="ri__thumb" aria-hidden="true">
+              <ResponsiveImage img={images.rubros[r.slug]} ratio="square" sizes="64px" widths={[160]} />
+            </span>
+            <span class="ri__name">{r.label}</span>
+            <svg class="ri__arrow" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" /></svg>
+          </a>
+        </li>
+      ))}
+    </ol>
+
+    <div class="ri__stage" aria-hidden="true">
+      {site.rubros.map((r) => (
+        <figure class="ri__panel" data-ri-panel={r.slug} data-active={r.slug === first ? '' : undefined}>
+          <ResponsiveImage img={images.rubros[r.slug]} ratio="tile" sizes="(min-width: 1024px) 34vw, 0px" widths={[480, 800, 1200]} />
+        </figure>
+      ))}
+      {site.rubros.map((r) => <p class="ri__frase" data-ri-frase={r.slug} data-active={r.slug === first ? '' : undefined}>{copy.mega.frases[r.slug]}</p>)}
+      <p class="ri__nota">{c.nota}</p>
+    </div>
+
+    {site.rubros.map((r) => <p class="sr-only" id={`ri-frase-${r.slug}`}>{copy.mega.frases[r.slug]}</p>)}
+  </div>
+</section>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-ri]');
+  if (root) {
+    const panels = [...root.querySelectorAll<HTMLElement>('[data-ri-panel]')];
+    const frases = [...root.querySelectorAll<HTMLElement>('[data-ri-frase]')];
+    const items = [...root.querySelectorAll<HTMLAnchorElement>('[data-ri-item]')];
+    const show = (slug: string) => {
+      panels.forEach((p) => p.toggleAttribute('data-active', p.dataset.riPanel === slug));
+      frases.forEach((p) => p.toggleAttribute('data-active', p.dataset.riFrase === slug));
+      items.forEach((a) => a.classList.toggle('is-active', a.dataset.riItem === slug));
+    };
+    items.forEach((a) => {
+      const slug = a.dataset.riItem ?? '';
+      a.addEventListener('mouseenter', () => show(slug));
+      a.addEventListener('focus', () => show(slug));
+    });
+    show(items[0]?.dataset.riItem ?? '');
+  }
+</script>
+
+<style>
+  .ri { position: relative; isolation: isolate; overflow: hidden; background: var(--graf-900); padding-block: var(--section-y); }
+  .ri__grid { display: grid; gap: var(--sp-6); }
+  .ri__head { display: grid; gap: var(--sp-3); }
+  .ri__title { margin: 0; font-size: var(--fs-display); font-weight: var(--weight-display); line-height: var(--lh-tight); }
+  .ri__lead { margin: 0; color: var(--graf-300); }
+
+  .ri__list { margin: 0; padding: 0; border-top: var(--hairline) solid var(--line-inv); }
+  .ri__list li { border-bottom: var(--hairline) solid var(--line-inv); }
+  .ri__item {
+    display: grid;
+    grid-template-columns: var(--thumb) 1fr auto;
+    align-items: center;
+    gap: var(--sp-4);
+    min-height: var(--tap);
+    padding-block: var(--sp-3);
+    color: var(--white);
+    text-decoration: none;
+    --focus-outer: var(--white);
+  }
+  .ri__thumb { width: var(--thumb); height: var(--thumb); border-radius: var(--radius); overflow: hidden; }
+  .ri__name {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 1.1rem + 2.2vw, 2.2rem);
+    font-weight: var(--weight-display);
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .ri__arrow { color: var(--gold-500); }
+  .ri__stage { display: none; }
+
+  @media (min-width: 1024px) {
+    .ri__grid { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); column-gap: var(--sp-8); row-gap: var(--sp-7); align-items: start; }
+    .ri__head { grid-column: 1 / -1; grid-template-columns: 1fr minmax(0, 28rem); align-items: end; column-gap: var(--sp-8); }
+    .ri__list { border-top: 0; }
+    .ri__list li { border-bottom: 0; }
+    .ri__item { grid-template-columns: 1fr auto; padding-block: 0; }
+    .ri__thumb { display: none; }
+    .ri__name {
+      font-size: clamp(2.6rem, .9rem + 3.6vw, 4.8rem);
+      line-height: 1.04;
+      color: rgba(255, 255, 255, .3);
+      transition: color var(--dur-fast) var(--ease);
+    }
+    .ri__arrow { opacity: 0; transition: opacity var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease); transform: translateX(-8px); }
+    .ri__item.is-active .ri__name, .ri__item:focus-visible .ri__name { color: var(--white); }
+    .ri__item.is-active .ri__arrow { opacity: 1; transform: none; }
+
+    .ri__stage { display: grid; position: sticky; top: calc(var(--header-h) + var(--sp-5)); gap: var(--sp-3); }
+    .ri__panel {
+      grid-area: 1 / 1;
+      margin: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity 400ms var(--ease);
+      /* Borde superior en forma de cordillera, como la portada. */
+      clip-path: polygon(0 12%, 8% 6%, 15% 10%, 26% 2%, 34% 8%, 44% 0, 55% 9%, 63% 5%, 74% 12%, 84% 4%, 92% 9%, 100% 5%, 100% 100%, 0 100%);
+    }
+    .ri__panel[data-active] { opacity: 1; }
+    .ri__frase { grid-area: 2 / 1; margin: 0; min-height: 3.2em; font-size: var(--fs-lead); color: var(--white); opacity: 0; transition: opacity 400ms var(--ease); }
+    .ri__frase[data-active] { opacity: 1; }
+    .ri__nota { grid-row: 3; margin: 0; font-size: var(--fs-small); color: var(--graf-300); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ri__arrow { transform: none !important; }
+  }
+</style>

@@ -1,0 +1,101 @@
+---
+/**
+ * Página por rubro (rediseño 20/10): foto, para qué sirve, categorías de la tienda que aplican
+ * (site.rubroCategorias), cotización precargada con el rubro y acceso a los otros rubros.
+ */
+import type { GetStaticPaths } from 'astro';
+import Base from '../../layouts/Base.astro';
+import { site, type CategoryKey, type RubroSlug } from '../../config/site';
+import { copy } from '../../config/copy';
+import { images } from '../../config/images';
+import { rubroHref, rubroPage, whatsappLink } from '../../lib/links';
+import PhotoHero from '../../components/PhotoHero.astro';
+import CategoryTiles from '../../components/CategoryTiles.astro';
+import Button from '../../components/Button.astro';
+import Topo from '../../components/Topo.astro';
+
+export const getStaticPaths = (() => site.rubros.map((r) => ({ params: { slug: r.slug } }))) satisfies GetStaticPaths;
+
+const slug = Astro.params.slug as RubroSlug;
+const rubro = site.rubros.find((r) => r.slug === slug)!;
+const frase = copy.mega.frases[slug];
+const cats = site.rubroCategorias[slug] as readonly CategoryKey[];
+const otros = site.rubros.filter((r) => r.slug !== slug);
+const t = copy.rubroPage;
+const wa = whatsappLink('empresas', copy.wa.rubro(rubro.longLabel));
+---
+
+<Base title={t.seoTitle(rubro.label)} description={frase} bleed>
+  <PhotoHero img={images.rubros[slug]} id="rh-title" title={rubro.label} lead={frase} back={{ href: site.paths.rubros, label: t.volver }} nota={t.ilustrativa}>
+    <Button href={rubroHref(slug)} tone="dark">{t.cotizar(rubro.label)}</Button>
+    <Button href={wa} variant="whatsapp" tone="dark" track="click_whatsapp" external>{copy.nav.whatsapp}</Button>
+  </PhotoHero>
+
+  <section class="section section--sand" aria-labelledby="rc-title">
+    <div class="container rc">
+      <div class="rc__head">
+        <h2 id="rc-title">{t.categoriasTitle}</h2>
+        <p class="rc__lead">{t.categoriasLead}</p>
+      </div>
+      <CategoryTiles keys={cats} seccion={`rubro_${slug}`} />
+    </div>
+  </section>
+
+  <section class="section section--bordo" aria-labelledby="re-title">
+    <div class="container re">
+      <h2 id="re-title">{t.empresaTitle}</h2>
+      <div class="re__body">
+        <p>{t.empresaText}</p>
+        <div class="re__ctas">
+          <Button href={rubroHref(slug)} tone="bordo">{t.cotizar(rubro.label)}</Button>
+          <Button href={site.paths.empresas} variant="secondary" tone="bordo">{copy.accesos.empresas.cta}</Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="ro on-dark" aria-labelledby="ro-title">
+    <Topo variant={1} />
+    <div class="container">
+      <h2 id="ro-title" class="ro__title">{t.otros}</h2>
+      <ul role="list" class="ro__list">
+        {otros.map((r) => <li><a class="ro__item" href={rubroPage(r.slug)}>{r.label}</a></li>)}
+      </ul>
+    </div>
+  </nav>
+</Base>
+
+<style>
+  .rc { display: grid; gap: var(--sp-6); }
+  .rc__head { display: grid; gap: var(--sp-3); }
+  .rc__head h2 { margin: 0; }
+  .rc__lead { margin: 0; color: var(--steel); }
+
+  .re { display: grid; gap: var(--sp-5); }
+  .re h2 { margin: 0; max-width: 14ch; }
+  .re__body { display: grid; gap: var(--sp-5); align-content: end; }
+  .re__body p { margin: 0; color: var(--bordo-100); }
+  .re__ctas { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+
+  .ro { position: relative; isolation: isolate; overflow: hidden; background: var(--graf-900); padding-block: var(--section-y) calc(var(--section-y) + 48px); }
+  .ro__title { margin: 0 0 var(--sp-5); font-size: var(--fs-h2); }
+  .ro__list { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin: 0; padding: 0; }
+  .ro__item {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    padding-inline: var(--sp-5);
+    border-radius: var(--radius-pill);
+    box-shadow: inset 0 0 0 var(--hairline) rgba(255, 255, 255, .3);
+    font-family: var(--font-display);
+    font-weight: var(--weight-head);
+    text-decoration: none;
+    transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+  }
+  .ro__item:hover { background: var(--gold-500); color: var(--graf-900); box-shadow: none; }
+
+  @media (min-width: 1024px) {
+    .rc__head { grid-template-columns: 1fr minmax(0, 28rem); align-items: end; column-gap: var(--sp-8); }
+    .re { grid-template-columns: 1fr 1fr; column-gap: var(--sp-8); }
+  }
+</style>

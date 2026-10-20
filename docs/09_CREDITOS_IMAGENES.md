@@ -27,10 +27,23 @@ Descartadas en la revisión: una de petroleras (marca "nps" visible en la bomba)
 
 | Uso | Archivo | Autor | Licencia | Origen |
 |---|---|---|---|---|
-| Hero home (misma foto que Construcción) | `src/assets/img/hero/home.jpg` | Daniel Mekis (Boudoirphotographyguide) | CC BY 4.0 | ver Construcción |
-| Hero /empresas (misma foto que Minería) | `hero/empresas.jpg` | Peabody Energy, Inc. | CC BY 3.0 | ver Minería |
 | Personalización (recorte: solo máquinas) | `personalizacion/bordado.jpg` | USAID Pakistan | Dominio público | https://commons.wikimedia.org/wiki/File:Industrial_embroidery_machine.jpg |
 | Local (paisaje de la zona, no es el local) | `local/chilecito.jpg` | Elvis Boaventura | CC BY 3.0 | https://commons.wikimedia.org/wiki/File:Cuesta_Miranda_(Ruta_40_-_La_Rioja)_-_panoramio.jpg |
+
+## Rediseño 20/10/2026 (portadas de montaña)
+
+Paisajes ilustrativos, elegidos por el dueño: no son Chilecito ni trabajos de LAVORO. El crédito se muestra
+en la propia portada y en `/legales/creditos-imagenes`.
+
+| Uso | Archivo | Autor | Licencia | Origen |
+|---|---|---|---|---|
+| Portada home (LAVORO detrás de los picos) | `src/assets/img/paisajes/fitzroy-atardecer.jpg` (2400×1399) | Masa Sakano | CC BY-SA 2.0 | https://commons.wikimedia.org/wiki/File:Mount_Fitz_Roy_at_Sunset.jpg |
+| Portada /empresas y bloque Empresas de la home (en duotono) | `paisajes/aconcagua.jpg` (2000×1500) | Mario Roberto Durán Ortiz (Mariordo) | CC BY 3.0 | https://commons.wikimedia.org/wiki/File:Aconcagua_13.JPG |
+
+- **CC BY-SA 2.0 (Fitz Roy):** además del crédito, la versión adaptada (recorte, tratamiento de color) queda bajo
+  la misma licencia. No afecta al resto del sitio.
+- El perfil de los picos está trazado en `src/config/ridge.ts`. Si se cambia la foto de portada, hay que volver a trazarlo.
+- Las fotos anteriores de las portadas (`hero/home.jpg` y `hero/empresas.jpg`, copias de Construcción y Minería) se eliminaron.
 
 Descartadas en el rediseño: hero con logos del metro de Moscú en chalecos y banderas; fotos de producto
 de Commons (logos de DeWalt, Caterpillar, Keen y baja calidad). El catálogo usa tarjetas tipográficas

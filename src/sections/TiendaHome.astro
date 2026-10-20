@@ -1,0 +1,30 @@
+---
+/** Home (rediseño 20/10): las tres categorías de la tienda; cada una abre su catálogo en Tiendanube. */
+import { site } from '../config/site';
+import { copy } from '../config/copy';
+import CategoryTiles from '../components/CategoryTiles.astro';
+
+const keys = ['indumentaria', 'calzado', 'elementosDeSeguridad'] as const;
+const t = copy.tiendaHome;
+---
+<section class="section section--sand" id="catalogo" aria-labelledby="th-title">
+  <div class="container th">
+    <div class="th__head">
+      <h2 id="th-title">{t.title}</h2>
+      <p class="th__lead">{t.lead}</p>
+      <a class="th__all link-u" href={site.paths.tienda}>{t.verTodo}</a>
+    </div>
+    <CategoryTiles keys={keys} seccion="home_tienda" />
+  </div>
+</section>
+
+<style>
+  .th { display: grid; gap: var(--sp-6); }
+  .th__head { display: grid; gap: var(--sp-3); justify-items: start; }
+  .th__head h2 { margin: 0; }
+  .th__lead { margin: 0; color: var(--steel); }
+  .th__all { display: inline-flex; align-items: center; min-height: var(--tap); font-weight: 600; color: var(--bordo-700); }
+  @media (min-width: 1024px) {
+    .th__head { grid-template-columns: 1fr minmax(0, 26rem) auto; align-items: end; column-gap: var(--sp-7); }
+  }
+</style>

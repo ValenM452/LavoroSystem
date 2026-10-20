@@ -4,7 +4,15 @@
  * Todo valor `[[PENDIENTE: ...]]` debe reemplazarse antes de publicar (T11).
  */
 
-const PENDIENTE_URL_TIENDA = '[[PENDIENTE: URL tienda]]';
+/** URL raíz de la tienda en Tiendanube (sin barra final). Dato del dueño, 20/10/2026. */
+const TIENDA_URL = 'https://lavoro8.mitiendanube.com';
+/** Catálogo completo de la tienda: destino de una categoría mientras no esté creada en Tiendanube. */
+const CATALOGO_URL = `${TIENDA_URL}/productos/`;
+/**
+ * URL de una categoría. `creada: false` → abre el catálogo completo (la categoría todavía da 404 en la tienda).
+ * Al crearla en el panel de Tiendanube con ese slug, poner `creada: true`.
+ */
+const categoriaUrl = (slug: string, creada: boolean) => (creada ? `${TIENDA_URL}/${slug}/` : CATALOGO_URL);
 
 const waLink = (number: string, text: string) =>
   `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
@@ -14,7 +22,7 @@ export const site = {
   altName: 'Lavoro Uniformes',
   since: 2011,
   sinceLabel: 'Desde 2011',
-  domain: '[[PENDIENTE: dominio]]', // propuesto: lavoro.com.ar
+  domain: '[[PENDIENTE: dominio]]', // propuesto: lavoro.com.ar (la tienda hoy usa lavoro8.mitiendanube.com)
   locality: 'Chilecito, La Rioja, Argentina',
 
   contact: {
@@ -49,19 +57,17 @@ export const site = {
   brands: ['Pampero', 'Ombú', 'Gaucho', '21 de Septiembre'],
   brandsPending: '[[PENDIENTE: lista completa]]',
 
-  /** Tienda en Tiendanube. Slugs según data/tiendanube/categorias.md. */
+  /**
+   * Tienda en Tiendanube: tres categorías (decisión del dueño, 20/10/2026). Ver data/tiendanube/categorias.md.
+   * Al 20/10/2026 la tienda no tiene categorías creadas (verificado: /indumentaria/ etc. dan 404), así que
+   * las tres abren el catálogo completo hasta que se creen. [[PENDIENTE: crear las 3 categorías en Tiendanube]]
+   */
   tiendanube: {
-    baseUrl: PENDIENTE_URL_TIENDA,
+    baseUrl: TIENDA_URL,
     categories: {
-      pantalones:           { label: 'Pantalones',             slug: 'pantalones',             url: PENDIENTE_URL_TIENDA },
-      camisas:              { label: 'Camisas',                slug: 'camisas',                url: PENDIENTE_URL_TIENDA },
-      calzadoDeSeguridad:   { label: 'Calzado de seguridad',   slug: 'calzado-de-seguridad',   url: PENDIENTE_URL_TIENDA },
-      overoles:             { label: 'Overoles',               slug: 'overoles',               url: PENDIENTE_URL_TIENDA },
-      elementosDeSeguridad: { label: 'Elementos de seguridad', slug: 'elementos-de-seguridad', url: PENDIENTE_URL_TIENDA },
-      salud:                { label: 'Salud',                  slug: 'salud',                  url: PENDIENTE_URL_TIENDA },
-      gastronomia:          { label: 'Gastronomía',            slug: 'gastronomia',            url: PENDIENTE_URL_TIENDA },
-      colegios:             { label: 'Colegios',               slug: 'colegios',               url: PENDIENTE_URL_TIENDA },
-      promociones:          { label: 'Promociones',            slug: 'promociones',            url: PENDIENTE_URL_TIENDA },
+      indumentaria:         { label: 'Indumentaria',           slug: 'indumentaria',           url: categoriaUrl('indumentaria', false) },
+      calzado:              { label: 'Calzado',                slug: 'calzado',                url: categoriaUrl('calzado', false) },
+      elementosDeSeguridad: { label: 'Elementos de seguridad', slug: 'elementos-de-seguridad', url: categoriaUrl('elementos-de-seguridad', false) },
     },
     arrepentimientoUrl: '[[PENDIENTE: URL botón de arrepentimiento]]',
   },
@@ -88,16 +94,35 @@ export const site = {
   ],
   rubroOtro: { slug: 'otro', label: 'Otro', longLabel: 'Otras empresas' },
 
+  /**
+   * Categorías de la tienda que se muestran en la página de cada rubro (/rubros/<slug>).
+   * Derivadas de la frase de cada rubro (copy.mega.frases) y de 01 §1. Validar con el dueño.
+   */
+  rubroCategorias: {
+    mineria:         ['indumentaria', 'calzado', 'elementosDeSeguridad'],
+    petroleras:      ['indumentaria', 'calzado', 'elementosDeSeguridad'],
+    'campos-fincas': ['indumentaria', 'calzado'],
+    bodegas:         ['indumentaria', 'calzado'],
+    construccion:    ['indumentaria', 'calzado', 'elementosDeSeguridad'],
+    talleres:        ['indumentaria', 'calzado'],
+    salud:           ['indumentaria'],
+    gastronomia:     ['indumentaria'],
+    colegios:        ['indumentaria'],
+    municipios:      ['indumentaria', 'calzado', 'elementosDeSeguridad'],
+  },
+
   /** Rutas internas. */
   paths: {
     home: '/',
     empresas: '/empresas',
     cotizar: '/empresas#cotizar',
-    contacto: '/#contacto',
-    catalogo: '/#catalogo',
-    personalizacion: '/#personalizacion',
-    marcas: '/#marcas',
-    rubrosEmpresas: '/empresas#rubros',
+    tienda: '/tienda',
+    contacto: '/contacto',
+    catalogo: '/tienda',
+    personalizacion: '/empresas#personalizacion',
+    marcas: '/tienda#marcas',
+    rubros: '/#rubros',
+    rubrosEmpresas: '/#rubros',
     terminos: '/legales/terminos',
     privacidad: '/legales/privacidad',
     cambios: '/legales/cambios-y-devoluciones',

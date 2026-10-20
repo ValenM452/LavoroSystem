@@ -1,5 +1,12 @@
 # 03 — Sistema de diseño
 
+> **Rediseño 20/10/2026 (vale por encima de este documento y de `10` en paleta y tipografía):**
+> grafito (`--graf-*`) y bordó vivo (`--bordo-700: #9C1C33`) predominan, blanco y dorado (`--gold-500: #E9B949`) complementan.
+> Tipografía: **Tektur** (titulares) + **Hanken Grotesk** (texto). Sin palabra en itálica en los titulares ni etiquetas en mayúsculas.
+> Firma visual: portada con LAVORO detrás de los picos del Fitz Roy (`sections/Portada.astro`, `config/ridge.ts`),
+> curvas de nivel doradas en fondos oscuros (`components/Topo.astro`) y silueta de la cordillera en el footer.
+> Tokens y contrastes verificados: `src/styles/tokens.css`.
+>
 > **Actualizado por `10_PULIDO_BLOQUES_D_E.md` (18/10/2026).** Paleta (§2), tipografía (§3), header y menús (§5) y fondos de sección: valen los de `10` §1–4. Este documento queda como referencia del lenguaje visual (§1, §4, §6, §7).
 
 ## 1. Referencia

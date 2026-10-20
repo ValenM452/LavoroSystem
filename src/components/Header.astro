@@ -1,47 +1,40 @@
 ---
+/**
+ * Header flotante (rediseño 20/10): una barra-píldora separada del borde, fija arriba.
+ * Desktop: Tienda · Rubros (mega menú) · Empresas · Contacto + Cotizar.
+ * Celular: logo + WhatsApp; la navegación vive en la barra inferior (MobileDock).
+ */
 import { site } from '../config/site';
 import { copy } from '../config/copy';
-import { tiendaTarget } from '../lib/links';
 import Logo from './Logo.astro';
 import Button from './Button.astro';
 import MegaMenu from './MegaMenu.astro';
 import MobileMenu from './MobileMenu.astro';
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
-const tienda = tiendaTarget('nav');
-const c = site.contact;
+const current = (href: string) => (path === href ? 'page' : undefined);
 ---
-<div class="topbar on-dark" data-seccion="topbar">
-  <div class="container topbar__inner">
-    <p class="topbar__text">{copy.topbar.left}</p>
-    <ul role="list" class="topbar__links">
-      <li><a class="link-u" href={c.whatsappEmpresas.url}>{copy.topbar.empresas} {c.whatsappEmpresas.label}</a></li>
-      <li><a class="link-u" href={c.whatsappLocal.url}>{copy.topbar.local} {c.whatsappLocal.label}</a></li>
-    </ul>
-  </div>
-</div>
 <div class="sentinel" data-header-sentinel aria-hidden="true"></div>
 <header class="header" data-header>
-  <div class="container header__bar">
-    <a class="header__logo" href={site.paths.home} aria-label={copy.a11y.logoLabel}><Logo /></a>
+  <div class="header__wrap">
+    <div class="header__bar">
+      <a class="header__logo" href={site.paths.home} aria-label={copy.a11y.logoLabel}><Logo /></a>
 
-    <nav class="header__nav" aria-label={copy.a11y.principal}>
-      <ul role="list">
-        <li>
-          <a class:list={['header__link', tienda.pending && 'is-pending']} href={tienda.href} aria-disabled={tienda.pending ? 'true' : undefined} data-pending={tienda.pending ?? undefined} title={tienda.pending ? `[[PENDIENTE: ${tienda.pending}]]` : undefined}>{copy.nav.tienda} <span aria-hidden="true">↗</span></a>
-        </li>
-        <li><a class="header__link" href={site.paths.empresas} aria-current={path === site.paths.empresas ? 'page' : undefined}>{copy.nav.empresas}</a></li>
-        <li><MegaMenu /></li>
-        <li><a class="header__link" href={site.paths.personalizacion}>{copy.nav.personalizacion}</a></li>
-        <li><a class="header__link" href={site.paths.contacto}>{copy.nav.contacto}</a></li>
-      </ul>
-    </nav>
+      <nav class="header__nav" aria-label={copy.a11y.principal}>
+        <ul role="list">
+          <li><a class="header__link" href={site.paths.tienda} aria-current={current(site.paths.tienda)}>{copy.nav.tienda}</a></li>
+          <li><MegaMenu /></li>
+          <li><a class="header__link" href={site.paths.empresas} aria-current={current(site.paths.empresas)}>{copy.nav.empresas}</a></li>
+          <li><a class="header__link" href={site.paths.contacto} aria-current={current(site.paths.contacto)}>{copy.nav.contacto}</a></li>
+        </ul>
+      </nav>
 
-    <div class="header__actions">
-      <Button class="header__cta" href={site.paths.cotizar}>{copy.nav.cotizar}</Button>
-      <button type="button" class="header__burger" aria-expanded="false" aria-haspopup="dialog" data-mobile-open aria-label={copy.nav.abrirMenu}>
-        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M3 7h18M3 12h18M3 17h18" stroke="currentColor" stroke-width="1.5" fill="none" /></svg>
-      </button>
+      <div class="header__actions">
+        <a class="header__wa" href={site.contact.whatsappLocal.url} data-track="click_whatsapp" aria-label={`WhatsApp ${copy.nav.local} ${site.contact.whatsappLocal.label}`}>
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12.04 2a9.9 9.9 0 0 0-8.46 15.04L2 22l5.1-1.54A9.93 9.93 0 1 0 12.04 2Zm0 1.8a8.13 8.13 0 1 1-4.2 15.1l-.3-.18-3.02.91.92-2.95-.2-.31A8.12 8.12 0 0 1 12.04 3.8Zm-3.2 3.7c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.07 3.3 5.1 4.5 2.52 1 3.03.8 3.57.75.55-.05 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.27-.47-2.42-1.5-.9-.8-1.5-1.78-1.67-2.08-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.65-1.62-.9-2.2-.23-.55-.47-.5-.67-.5Z"/></svg>
+        </a>
+        <Button class="header__cta" href={site.paths.cotizar} tone="dark">{copy.nav.cotizar}</Button>
+      </div>
     </div>
   </div>
 </header>
@@ -53,76 +46,70 @@ const c = site.contact;
 </script>
 
 <style>
-  .topbar { display: none; background: var(--bordo-900); color: var(--white); font-size: var(--fs-small); }
-  .topbar__inner { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-5); min-height: var(--topbar-h); }
-  .topbar__text { margin: 0; color: var(--bordo-100); }
-  .topbar__links { display: flex; gap: var(--sp-5); margin: 0; }
-  .topbar__links a { display: inline-flex; align-items: center; min-height: var(--topbar-h); text-decoration: none; }
-  @media (min-width: 768px) { .topbar { display: block; } }
-
   .sentinel { position: absolute; top: 0; left: 0; width: var(--hairline); height: var(--sp-7); pointer-events: none; }
 
   .header {
-    position: sticky;
-    top: 0;
+    position: fixed;
+    inset: 0 0 auto;
     z-index: var(--z-header);
-    height: var(--header-h);
-    background: var(--white);
-    color: var(--ink);
-    border-bottom: var(--hairline) solid var(--line);
-    transition: box-shadow var(--dur-menu) var(--ease);
+    padding: var(--sp-3) var(--sp-3) 0;
+    pointer-events: none;
   }
-  .header.is-solid { box-shadow: var(--shadow); border-bottom-color: transparent; }
+  .header__wrap { max-width: calc(var(--container) + 2 * var(--gutter)); margin-inline: auto; }
+  .header__bar {
+    position: relative;
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-4);
+    height: calc(var(--header-h) - var(--sp-3));
+    padding-inline: var(--sp-4) var(--sp-2);
+    border-radius: var(--radius-pill);
+    background: rgba(23, 24, 27, .55);
+    color: var(--white);
+    -webkit-backdrop-filter: saturate(1.3) blur(16px);
+    backdrop-filter: saturate(1.3) blur(16px);
+    box-shadow: 0 0 0 var(--hairline) var(--line-inv);
+    --focus-outer: var(--white);
+    transition: box-shadow var(--dur-menu) var(--ease), background-color var(--dur-menu) var(--ease);
+  }
+  .header.is-solid .header__bar, .header.has-mega .header__bar { background: rgba(23, 24, 27, .92); box-shadow: 0 0 0 var(--hairline) var(--line-inv), var(--shadow); }
 
-  .header__bar { display: flex; align-items: center; gap: var(--sp-5); height: 100%; }
-  .header__logo { text-decoration: none; display: inline-flex; align-items: center; min-height: var(--tap); color: var(--bordo-700); }
+  .header__logo { text-decoration: none; display: inline-flex; align-items: center; min-height: var(--tap); color: var(--white); }
   .header__actions { display: flex; align-items: center; gap: var(--sp-2); margin-left: auto; }
-  .header__burger {
+  .header__wa {
     display: grid;
     place-items: center;
     width: var(--tap);
     height: var(--tap);
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: var(--bordo-700);
+    border-radius: 50%;
+    color: var(--gold-300);
   }
+  .header__wa:hover { background: rgba(255, 255, 255, .1); }
+  .header__actions :global(.header__cta) { display: none; }
 
   .header__nav { display: none; }
-  .header__nav ul { display: flex; align-items: center; gap: var(--sp-5); margin: 0; padding: 0; list-style: none; }
-  .header__link {
-    position: relative;
+  .header__nav ul { display: flex; align-items: center; gap: var(--sp-1); margin: 0; padding: 0; list-style: none; }
+  .header__link, .header__nav :global(.mega__trigger) {
     display: inline-flex;
     align-items: center;
     gap: var(--sp-1);
     min-height: var(--tap);
-    font-size: var(--fs-small);
+    padding-inline: var(--sp-4);
+    border-radius: var(--radius-pill);
+    font-size: var(--fs-btn);
     font-weight: 500;
     text-decoration: none;
-    transition: color var(--dur-fast) var(--ease);
+    transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
   }
-  .header__link::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: var(--sp-2);
-    height: var(--ring);
-    background: var(--gold-500);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform var(--dur-fast) var(--ease);
-  }
-  .header__link:hover, .header__link[aria-current='page'] { color: var(--bordo-700); }
-  .header__link:hover::after, .header__link[aria-current='page']::after { transform: scaleX(1); }
-  .header__link.is-pending { text-decoration: underline dashed; text-underline-offset: var(--sp-1); }
+  .header__link:hover, .header__nav :global(.mega__trigger:hover), .header__nav :global(.mega__trigger[aria-expanded='true']) { background: rgba(255, 255, 255, .1); color: var(--white); }
+  .header__link[aria-current='page'] { background: var(--bordo-700); background-image: var(--metal-bordo-btn); box-shadow: var(--metal-shine); color: var(--white); }
 
   @media (min-width: 1024px) {
+    .header { padding: var(--sp-4) var(--gutter) 0; }
+    .header__bar { height: calc(var(--header-h) - var(--sp-4)); padding-inline: var(--sp-5) var(--sp-2); }
     .header__nav { display: block; margin-inline: auto; }
     .header__actions { margin-left: 0; }
-    .header__burger { display: none; }
-  }
-  @media (min-width: 1200px) {
-    .header__nav ul { gap: var(--sp-6); }
+    .header__actions :global(.header__cta) { display: inline-flex; }
   }
 </style>

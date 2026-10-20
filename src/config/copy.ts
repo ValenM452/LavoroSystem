@@ -67,6 +67,7 @@ export const copy = {
       description:
         'Indumentaria de trabajo, calzado de seguridad y uniformes para empresas e instituciones. Bordado y estampado con tu marca.',
     },
+    heroCredito: 'Aconcagua, Mendoza. Foto: Mario Roberto Durán Ortiz, CC BY 3.0. Imagen ilustrativa.',
     hero: {
       eyebrow: 'Empresas e instituciones',
       title: 'Indumentaria de trabajo para *todo tu equipo*.',
@@ -159,6 +160,67 @@ export const copy = {
     b2b: { label: 'Para empresas', title: 'Pedí una cotización', text: 'Equipamos a todo tu personal, con tu marca.' },
   },
 
+  /**
+   * Rediseño 20/10: home corta. Portada + dos puertas, índice de rubros, accesos a tienda y local.
+   * Textos redactados con datos de 01 y 04 (sin precios, plazos, stock ni números).
+   */
+  portada: {
+    kicker: `Indumentaria, calzado de seguridad y uniformes. ${site.sinceLabel} en Chilecito, La Rioja.`,
+    credito: 'Cerro Fitz Roy, Patagonia. Foto: Masa Sakano, CC BY-SA 2.0. Imagen ilustrativa.',
+    title: 'Ropa de trabajo y uniformes para equipos que no paran.',
+    lead: 'Indumentaria, calzado de seguridad y uniformes en Chilecito. Para quien trabaja y para empresas que equipan a todo su personal.',
+    puertas: {
+      tienda: { title: 'Comprar para mí', text: 'Ropa de trabajo, calzado y uniformes en la tienda online.' },
+      empresa: { title: 'Equipar a mi empresa', text: 'Cotización para todo tu personal, con tu marca.' },
+    },
+  },
+  rubrosIndex: {
+    title: '¿En qué trabajás?',
+    lead: 'Elegí tu rubro y te mostramos qué se usa y cómo cotizarlo.',
+    ver: (r: string) => `Ver ${r}`,
+    nota: 'Imágenes ilustrativas de cada rubro.',
+  },
+  tiendaHome: {
+    title: 'Tienda online',
+    lead: 'Elegí una categoría. Precios, talles, colores y stock se ven en la tienda.',
+    verTodo: 'Ver todas las categorías',
+  },
+  accesos: {
+    empresas: { title: 'Para empresas', text: 'Bordado y estampado con tu marca, y asesoramiento según la tarea de cada rubro.', cta: 'Ir a empresas' },
+    local: { title: 'Local en Chilecito', text: 'Para ver y probar las prendas antes de comprar.', cta: 'Ver contacto y local' },
+  },
+
+  /** Página por rubro (/rubros/<slug>). */
+  rubroPage: {
+    seoTitle: (r: string) => `Ropa de trabajo para ${r} | LAVORO Chilecito`,
+    volver: 'Todos los rubros',
+    cotizar: (r: string) => `Cotizar para ${r}`,
+    categoriasTitle: 'Qué podés ver en la tienda',
+    categoriasLead: 'Cada categoría abre la tienda online con precios, talles y colores.',
+    empresaTitle: '¿Equipás a un equipo completo?',
+    empresaText: 'Contanos cuántas personas son y qué necesitan. Te armamos la propuesta con tu marca bordada o estampada.',
+    otros: 'Otros rubros',
+    ilustrativa: 'Imagen ilustrativa.',
+  },
+
+  /** Página /tienda (accesos a Tiendanube). */
+  tiendaPage: {
+    seoTitle: 'Tienda de ropa de trabajo | LAVORO Chilecito',
+    description: 'Pantalones, camisas, calzado de seguridad, overoles, elementos de seguridad y uniformes. Comprá en la tienda online de LAVORO.',
+    title: 'Tienda',
+    lead: 'Elegí una categoría y seguí la compra en la tienda online, con precios, talles, colores y stock.',
+  },
+
+  /** Página /contacto. */
+  contactoPage: {
+    seoTitle: 'Contacto y local en Chilecito | LAVORO',
+    description: 'WhatsApp para empresas y para el local de LAVORO en Chilecito, La Rioja.',
+    title: 'Contacto',
+    lead: 'Escribinos al WhatsApp que corresponda y te respondemos por ahí.',
+    empresas: { title: 'Empresas y cotizaciones', text: 'Pedidos para equipos, uniformes y personalización.' },
+    local: { title: 'Local', text: 'Consultas por productos, talles y compras en el local.' },
+  },
+
   /** Rediseño: franja de confianza. Solo hechos de 01 y de "Por qué LAVORO" (04 /empresas). */
   confianza: {
     items: [
@@ -184,14 +246,9 @@ export const copy = {
     verCategoria: 'Ver en la tienda',
     ilustrativa: 'Imagen ilustrativa',
     descripciones: {
-      pantalones: 'Pantalones cargo y de grafa.',
-      camisas: 'Camisas de trabajo y de grafa.',
-      calzadoDeSeguridad: 'Botines, borcegos y zapatos de seguridad.',
-      overoles: 'Overoles para taller, campo y planta.',
+      indumentaria: 'Pantalones cargo, camisas, overoles, ropa de grafa y uniformes.',
+      calzado: 'Botines, borcegos y zapatos de seguridad.',
       elementosDeSeguridad: 'Elementos e indumentaria de seguridad.',
-      salud: 'Uniformes hospitalarios y para consultorios.',
-      gastronomia: 'Uniformes gastronómicos.',
-      colegios: 'Uniformes escolares.',
     },
   },
 
@@ -324,6 +381,8 @@ export const copy = {
     horarios: 'Horarios',
     waLabel: 'WhatsApp local',
     comoLlegar: 'Cómo llegar',
+    /** Mientras no esté el link de Google Maps. */
+    pedirUbicacion: 'Pedir la ubicación por WhatsApp',
     escribir: 'Escribir al local',
     cargarMapa: 'Ver mapa interactivo',
   },
@@ -335,6 +394,18 @@ export const copy = {
     lead: 'Equipá a tu equipo o encontrá tu ropa de trabajo con quien conoce el oficio.',
     cta: 'Hablar con LAVORO',
   },
+
+  /** Mensajes de WhatsApp precargados según el botón (para que el local sepa desde dónde escriben). */
+  wa: {
+    rubro: (r: string) => `Hola LAVORO, quiero cotizar ropa de trabajo para ${r.toLowerCase()}.`,
+    empresas: 'Hola LAVORO, quiero pedir una cotización para mi empresa.',
+    local: 'Hola LAVORO, quiero hacer una consulta en el local.',
+    ubicacion: 'Hola LAVORO, ¿me pasan la ubicación del local en Chilecito?',
+  },
+  /** Botón de cada categoría: abre su catálogo en Tiendanube. */
+  categoriaCta: 'Ver catálogo',
+
+  dock: { tienda: 'Tienda', rubros: 'Rubros', cotizar: 'Cotizar', menu: 'Menú', etiqueta: 'Accesos rápidos' },
 
   a11y: {
     skip: 'Saltar al contenido',

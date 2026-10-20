@@ -4,10 +4,11 @@ import { copy } from '../config/copy';
 import { externalTarget, isPending, tiendaTarget } from '../lib/links';
 import Logo from './Logo.astro';
 import Pending from './Pending.astro';
+import RidgeEdge from './RidgeEdge.astro';
 
 const f = copy.footer;
 const tiendaRoot = tiendaTarget('footer');
-const categorias = (['pantalones', 'camisas', 'calzadoDeSeguridad', 'overoles', 'elementosDeSeguridad', 'salud', 'gastronomia', 'colegios'] as const).map(
+const categorias = (['indumentaria', 'calzado', 'elementosDeSeguridad'] as const).map(
   (key) => ({ label: site.tiendanube.categories[key].label, target: tiendaTarget('footer', key) }),
 );
 const legales = [
@@ -22,6 +23,7 @@ const legales = [
 const pendingText = (v: string) => v.replace(/^\[\[PENDIENTE:\s*/, '').replace(/\]\]$/, '');
 ---
 <footer class="footer on-dark">
+  <RidgeEdge />
   <div class="container footer__grid">
     <div class="footer__brand">
       <a href={site.paths.home} class="footer__logo" aria-label={copy.a11y.logoLabel}><Logo /></a>
@@ -38,7 +40,7 @@ const pendingText = (v: string) => v.replace(/^\[\[PENDIENTE:\s*/, '').replace(/
         ))}
         <li>{tiendaRoot.pending
           ? <span class="is-pending" data-pending={tiendaRoot.pending}>{f.verTienda}</span>
-          : <a class="link-u" href={tiendaRoot.href}>{f.verTienda} →</a>}</li>
+          : <a class="link-u" href={tiendaRoot.href}>{f.verTienda}</a>}</li>
         {tiendaRoot.pending && <li><Pending text={tiendaRoot.pending} /></li>}
       </ul>
     </section>
@@ -81,23 +83,25 @@ const pendingText = (v: string) => v.replace(/^\[\[PENDIENTE:\s*/, '').replace(/
 </footer>
 
 <style>
-  .footer { background: var(--bordo-950); color: var(--white); padding-block: var(--sp-8) var(--sp-5); border-top: var(--accent-bar) solid var(--gold-500); }
+  .footer { position: relative; background: var(--graf-950); color: var(--white); padding-block: var(--sp-7) var(--sp-5); }
+  .footer :global(.ridge-edge) { color: var(--graf-950); }
   .footer__grid { display: grid; gap: var(--sp-7) var(--gutter); }
-  .footer__brand p { margin-top: var(--sp-3); color: var(--bordo-100); }
+  .footer__brand p { margin-top: var(--sp-3); color: var(--graf-300); }
+  .footer__brand :global(.logo) { font-size: 2rem; }
   .footer__logo { text-decoration: none; display: inline-flex; align-items: center; min-height: var(--tap); }
   .footer__title {
     margin-bottom: var(--sp-4);
     font-family: var(--font-sans);
     font-size: var(--fs-eyebrow);
-    font-weight: 500;
+    font-weight: 600;
     letter-spacing: var(--tracking-eyebrow);
-    text-transform: uppercase;
     color: var(--gold-300);
   }
   .footer ul { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--sp-1); }
-  .footer li { color: var(--white); }
+  .footer li { color: var(--graf-300); }
+  .footer li a:hover { color: var(--white); }
   .footer li a, .footer li > span { display: inline-flex; align-items: center; flex-wrap: wrap; gap: var(--sp-2); min-height: var(--tap); }
-  .footer__legal { margin-top: var(--sp-8); color: var(--bordo-100); font-size: var(--fs-small); }
+  .footer__legal { margin-top: var(--sp-8); color: var(--graf-300); font-size: var(--fs-small); }
   .footer__legal p { max-width: none; padding-top: var(--sp-5); border-top: var(--hairline) solid var(--line-inv); }
 
   /* Mobile: Tienda y Empresas lado a lado; marca, contacto y legales a lo ancho. */

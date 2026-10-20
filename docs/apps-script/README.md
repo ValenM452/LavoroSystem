@@ -104,6 +104,15 @@ Tiene que responder `{"ok":false,"error":"unauthorized"}` y **no** crear filas. 
 
 La prueba de punta a punta (formulario → Vercel → planilla → mail) es la tarea **E3**, cuando esté el endpoint `/api/lead`.
 
+**En la compu, sin la planilla (receptor local):**
+
+`scripts/webhook-local.mjs` imita este script con el mismo contrato, para probar el formulario sin Google.
+
+1. Crear `.env.development` con `LEAD_WEBHOOK_URL=http://127.0.0.1:4500/exec` y un `LEAD_WEBHOOK_SECRET` (ver `.env.example`).
+2. Correr `npm run webhook:local` y, en otra terminal, `npm run dev`.
+3. Mandar una cotización desde `http://localhost:4321/empresas#cotizar`.
+4. Verla en la planilla local: `http://127.0.0.1:4500`. Se guarda en `data/leads-local/leads.csv` (no se versiona) y no envía mail.
+
 ---
 
 ## Referencia técnica (para `/api/lead`)

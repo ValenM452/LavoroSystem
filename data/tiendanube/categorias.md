@@ -3,46 +3,32 @@
 > Fuente: `docs/04_LANDING_ESPECIFICACION.md` §4 (8 tiles) + "Promociones" (`docs/02` C2, solo existe en la tienda).
 > Discrepancia detectada: `02` C2 dice "Seguridad" y "Uniformes salud"; la landing dice "Elementos de seguridad" y "Salud". Se usan los nombres de la landing. **El dueño confirma.**
 
-## Árbol
+## Árbol (decisión del dueño, 20/10/2026)
 
-Todas son categorías de primer nivel (sin subcategorías en el MVP).
+Tres categorías de primer nivel. La landing (home, /tienda, footer y páginas de rubro) muestra solo estas tres
+y cada botón abre su catálogo en Tiendanube.
 
-| Orden | Nombre (en la tienda) | Slug / URL | Tile en la landing | URL completa |
-|---|---|---|---|---|
-| 1 | Pantalones | `pantalones` | Sí | `[[PENDIENTE: URL tienda]]/pantalones` |
-| 2 | Camisas | `camisas` | Sí | `[[PENDIENTE: URL tienda]]/camisas` |
-| 3 | Calzado de seguridad | `calzado-de-seguridad` | Sí | `[[PENDIENTE: URL tienda]]/calzado-de-seguridad` |
-| 4 | Overoles | `overoles` | Sí | `[[PENDIENTE: URL tienda]]/overoles` |
-| 5 | Elementos de seguridad | `elementos-de-seguridad` | Sí | `[[PENDIENTE: URL tienda]]/elementos-de-seguridad` |
-| 6 | Salud | `salud` | Sí | `[[PENDIENTE: URL tienda]]/salud` |
-| 7 | Gastronomía | `gastronomia` | Sí | `[[PENDIENTE: URL tienda]]/gastronomia` |
-| 8 | Colegios | `colegios` | Sí | `[[PENDIENTE: URL tienda]]/colegios` |
-| 9 | Promociones | `promociones` | No (solo tienda) | `[[PENDIENTE: URL tienda]]/promociones` |
+| Orden | Nombre (en la tienda) | Slug / URL | URL completa |
+|---|---|---|---|
+| 1 | Indumentaria | `indumentaria` | `https://lavoro8.mitiendanube.com/indumentaria/` |
+| 2 | Calzado | `calzado` | `https://lavoro8.mitiendanube.com/calzado/` |
+| 3 | Elementos de seguridad | `elementos-de-seguridad` | `https://lavoro8.mitiendanube.com/elementos-de-seguridad/` |
+
+**Estado al 20/10/2026:** la tienda (`https://lavoro8.mitiendanube.com`) responde, pero ninguna de las tres categorías está
+creada (las tres URLs dan 404). Mientras tanto, los botones de la landing abren el catálogo completo (`/productos/`).
+Al crear cada categoría con ese nombre y ese slug, poner `creada: true` en `src/config/site.ts`.
 
 Notas:
-- Los slugs no llevan tildes ni "ñ". [[VERIFICAR EN PANEL]]: Tiendanube suele generar la URL de categoría desde el nombre; confirmar el formato real (¿`/pantalones/` o `/categorias/pantalones/`?) y corregir la columna "URL completa".
-- "Promociones" lista productos con precio promocional. **No se define ningún descuento acá.** [[PENDIENTE: criterio de qué entra en Promociones]]
-- Un producto puede estar en más de una categoría [[VERIFICAR EN PANEL]] (ej. un pantalón en "Pantalones" y "Colegios").
+- Qué entra en cada una (de 01 §1): **Indumentaria** = pantalones cargo, camisas, overoles, ropa de grafa y uniformes
+  (escolares, salud, gastronómicos); **Calzado** = botines, borcegos y zapatos de seguridad; **Elementos de seguridad** =
+  elementos e indumentaria de seguridad.
+- Si hacen falta subcategorías (p. ej. Pantalones o Uniformes dentro de Indumentaria), se crean en Tiendanube; la landing
+  no cambia. [[PENDIENTE: subcategorías, si el dueño las quiere]]
+- Los slugs no llevan tildes ni "ñ". [[VERIFICAR EN PANEL]] el formato real de la URL de categoría (¿`/indumentaria/` o
+  `/categorias/indumentaria/`?) y ajustar `categoriaUrl` en `src/config/site.ts`.
+- "Promociones" y las categorías por rubro (Salud, Gastronomía, Colegios) quedaron fuera de la landing por pedido del dueño.
 
-## Snippet para `src/config/site.ts` (pegar cuando exista T01)
+## En `src/config/site.ts`
 
-`src/config/site.ts` todavía no existe (depende de T01). Cuando se cree, `tiendanube.categories` debe quedar así:
-
-```ts
-tiendanube: {
-  baseUrl: '[[PENDIENTE: URL tienda]]',
-  categories: {
-    pantalones:               { label: 'Pantalones',             slug: 'pantalones',             url: '[[PENDIENTE: URL tienda]]' },
-    camisas:                  { label: 'Camisas',                slug: 'camisas',                url: '[[PENDIENTE: URL tienda]]' },
-    calzadoDeSeguridad:       { label: 'Calzado de seguridad',   slug: 'calzado-de-seguridad',   url: '[[PENDIENTE: URL tienda]]' },
-    overoles:                 { label: 'Overoles',               slug: 'overoles',               url: '[[PENDIENTE: URL tienda]]' },
-    elementosDeSeguridad:     { label: 'Elementos de seguridad', slug: 'elementos-de-seguridad', url: '[[PENDIENTE: URL tienda]]' },
-    salud:                    { label: 'Salud',                  slug: 'salud',                  url: '[[PENDIENTE: URL tienda]]' },
-    gastronomia:              { label: 'Gastronomía',            slug: 'gastronomia',            url: '[[PENDIENTE: URL tienda]]' },
-    colegios:                 { label: 'Colegios',               slug: 'colegios',               url: '[[PENDIENTE: URL tienda]]' },
-    promociones:              { label: 'Promociones',            slug: 'promociones',            url: '[[PENDIENTE: URL tienda]]' },
-  },
-},
-```
-
-Cuando se conozca el dominio, `url` pasa a `${baseUrl}/${slug}` (ajustar al formato real de Tiendanube).
+`TIENDA_URL` = `https://lavoro8.mitiendanube.com` (cambiar si se conecta un dominio propio). Cada categoría tiene
+`creada: true|false`: con `true` abre `${TIENDA_URL}/<slug>/`; con `false`, el catálogo completo.

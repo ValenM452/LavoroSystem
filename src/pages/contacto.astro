@@ -1,0 +1,55 @@
+---
+/** /contacto (rediseño 20/10): los dos WhatsApp (empresas y local), email y el local en Chilecito. */
+import Base from '../layouts/Base.astro';
+import { site } from '../config/site';
+import { copy } from '../config/copy';
+import { whatsappLink } from '../lib/links';
+import PageHead from '../components/PageHead.astro';
+import Button from '../components/Button.astro';
+import Local from '../sections/Local.astro';
+
+const t = copy.contactoPage;
+const c = site.contact;
+const canales = [
+  { ...t.empresas, label: c.whatsappEmpresas.label, href: whatsappLink('empresas', copy.wa.empresas), tone: 'bordo' as const, extra: { href: site.paths.cotizar, label: copy.nav.cotizarEmpresas } },
+  { ...t.local, label: c.whatsappLocal.label, href: whatsappLink('local', copy.wa.local), tone: 'light' as const, extra: null },
+];
+---
+
+<Base title={t.seoTitle} description={t.description} bleed>
+  <PageHead id="cp-title" title={t.title} lead={t.lead} />
+  <section class="section section--sand" aria-label={t.title}>
+    <div class="container cp">
+      <ul role="list" class="cp__list">
+        {canales.map((k) => (
+          <li class:list={['cp__card', `cp__card--${k.tone}`]}>
+            <h2 class="cp__name">{k.title}</h2>
+            <p class="cp__text">{k.text}</p>
+            <p class="cp__num">{k.label}</p>
+            <div class="cp__ctas">
+              <Button href={k.href} variant="whatsapp" tone={k.tone === 'bordo' ? 'bordo' : 'light'} track="click_whatsapp" external>WhatsApp</Button>
+              {k.extra && <Button href={k.extra.href} variant="secondary" tone="bordo">{k.extra.label}</Button>}
+            </div>
+          </li>
+        ))}
+      </ul>
+      <p class="cp__mail">{copy.form.datosEmail}: <a class="link-u" href={`mailto:${c.email}`}>{c.email}</a></p>
+    </div>
+  </section>
+  <Local />
+</Base>
+
+<style>
+  .cp { display: grid; gap: var(--sp-5); }
+  .cp__list { display: grid; gap: var(--sp-3); margin: 0; padding: 0; }
+  .cp__card { display: grid; gap: var(--sp-3); align-content: start; padding: var(--sp-6) var(--sp-5); border-radius: var(--radius-lg); }
+  .cp__card--bordo { background: var(--bordo-900); background-image: var(--metal-bordo-panel); color: var(--white); --focus-outer: var(--white); }
+  .cp__card--light { background: var(--white); box-shadow: 0 0 0 var(--hairline) var(--line); }
+  .cp__name { margin: 0; font-size: var(--fs-h2); }
+  .cp__text { margin: 0; opacity: .85; }
+  .cp__num { margin: 0; font-family: var(--font-display); font-size: var(--fs-h3); font-weight: var(--weight-head); font-variant-numeric: tabular-nums; }
+  .cp__ctas { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-2); }
+  .cp__mail { margin: 0; }
+  @media (min-width: 768px) { .cp__list { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1024px) { .cp__card { padding: var(--sp-7) var(--sp-6); } }
+</style>

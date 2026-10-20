@@ -1,0 +1,37 @@
+---
+/**
+ * Textura de curvas de nivel (rediseño 20/10) para fondos oscuros: anillos deformados alrededor
+ * de tres "cumbres". Se genera en el build (sin JS en el cliente). Decorativa.
+ */
+interface Props {
+  /** Cambia la ubicación de las cumbres para que dos secciones no repitan el mismo dibujo. */
+  variant?: 0 | 1 | 2;
+}
+const { variant = 0 } = Astro.props;
+
+const layouts = [
+  [[1250, 260, 13], [300, 700, 9], [820, -60, 7]],
+  [[300, 220, 12], [1300, 760, 10], [900, 1000, 6]],
+  [[1450, 820, 12], [200, 120, 9], [760, 420, 5]],
+] as const;
+
+let d = '';
+layouts[variant].forEach(([cx, cy, rings], p) => {
+  for (let i = 1; i <= rings; i++) {
+    const r = i * 38;
+    const pts: string[] = [];
+    for (let a = 0; a <= 96; a++) {
+      const t = (a / 96) * Math.PI * 2;
+      const rr = r * (1 + 0.18 * Math.sin(3 * t + p + i * 0.3) + 0.1 * Math.sin(5 * t + i * 0.7 + variant));
+      pts.push(`${(cx + rr * Math.cos(t) * 1.35).toFixed(0)} ${(cy + rr * Math.sin(t)).toFixed(0)}`);
+    }
+    d += `M${pts.join('L')}Z`;
+  }
+});
+---
+<svg class="topo" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><path d={d} /></svg>
+
+<style>
+  .topo { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; pointer-events: none; }
+  .topo path { fill: none; stroke: var(--gold-500); stroke-opacity: .09; stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+</style>

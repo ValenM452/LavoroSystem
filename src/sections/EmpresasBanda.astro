@@ -1,0 +1,63 @@
+---
+/**
+ * Home (rediseño 20/10): bloque B2B en bordó vivo + Aconcagua nevado en duotono.
+ * Textos de 04 (/empresas y §7). Los botones llevan al formulario y al WhatsApp de empresas.
+ */
+import { site } from '../config/site';
+import { copy } from '../config/copy';
+import { images } from '../config/images';
+import { whatsappLink } from '../lib/links';
+import ResponsiveImage from '../components/ResponsiveImage.astro';
+import Button from '../components/Button.astro';
+import Pending from '../components/Pending.astro';
+
+const e = copy.empresasHome;
+const img = images.hero.empresas;
+---
+<section class="eb" id="empresas" aria-labelledby="eb-title">
+  <div class="eb__body">
+    <h2 id="eb-title" class="eb__title">{e.title.replace(/\*/g, '')}</h2>
+    <p class="eb__text">{e.text}</p>
+    <ol role="list" class="eb__steps">
+      {copy.proceso.steps.map((s, i) => (
+        <li>
+          <span class="eb__n" aria-hidden="true">{i + 1}</span>
+          <span><strong>{s.title}</strong> <span class="eb__s">{s.text}</span>{'pending' in s && s.pending && <> <Pending text={s.pending} /></>}</span>
+        </li>
+      ))}
+    </ol>
+    <div class="eb__ctas">
+      <Button href={site.paths.cotizar} tone="bordo">{e.cta}</Button>
+      <Button href={whatsappLink('empresas', copy.wa.empresas)} variant="whatsapp" tone="bordo" track="click_whatsapp" external>{copy.nav.whatsapp}</Button>
+    </div>
+    <a class="eb__more link-u" href={site.paths.empresas}>{e.more}</a>
+  </div>
+  <div class="eb__media">
+    <ResponsiveImage img={img} sizes="(min-width: 1024px) 50vw, 100vw" widths={[640, 960, 1280, 1600]} />
+    <p class="eb__credit">Aconcagua, Mendoza. Foto: {img.credit?.author}, {img.credit?.license}. Imagen ilustrativa.</p>
+  </div>
+</section>
+
+<style>
+  .eb { display: grid; background: var(--bordo-900); background-image: var(--metal-bordo-panel); color: var(--white); --focus-outer: var(--white); }
+  .eb__body { display: grid; gap: var(--sp-5); align-content: center; padding: var(--section-y) var(--gutter); }
+  .eb__title { margin: 0; max-width: 14ch; font-size: var(--fs-display); line-height: var(--lh-tight); }
+  .eb__text { margin: 0; color: var(--bordo-100); }
+  .eb__steps { margin: 0; padding: 0; border-top: var(--hairline) solid rgba(255, 255, 255, .22); }
+  .eb__steps li { display: grid; grid-template-columns: 32px 1fr; gap: var(--sp-3); align-items: start; padding-block: var(--sp-3); border-bottom: var(--hairline) solid rgba(255, 255, 255, .22); }
+  .eb__n { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--gold-500); color: var(--graf-900); font-weight: 700; font-size: var(--fs-small); }
+  .eb__s { color: var(--bordo-100); }
+  .eb__steps :global(.pending) { font-size: .75rem; }
+  .eb__ctas { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+  .eb__more { justify-self: start; display: inline-flex; align-items: center; min-height: var(--tap); font-weight: 600; color: var(--gold-300); }
+  .eb__media { position: relative; min-height: 320px; overflow: hidden; }
+  .eb__media :global(.rimg) { position: absolute; inset: 0; }
+  .eb__media :global(img) { filter: grayscale(1) contrast(1.15) brightness(1.05); }
+  .eb__media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(160deg, rgba(156, 28, 51, .25), rgba(79, 12, 26, .78)); mix-blend-mode: multiply; pointer-events: none; }
+  .eb__credit { position: absolute; right: var(--sp-3); bottom: var(--sp-2); z-index: 1; margin: 0; font-size: .7rem; color: rgba(255, 255, 255, .75); }
+  @media (min-width: 1024px) {
+    .eb { grid-template-columns: 1fr 1fr; }
+    .eb__body { padding-left: max(var(--gutter), calc((100vw - var(--container)) / 2)); padding-right: var(--sp-8); }
+    .eb__media { min-height: auto; }
+  }
+</style>

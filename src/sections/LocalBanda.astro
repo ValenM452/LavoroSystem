@@ -1,0 +1,53 @@
+---
+/** Home (rediseño 20/10): cierre en grafito con los dos WhatsApp y el acceso a contacto y local. */
+import { site } from '../config/site';
+import { copy } from '../config/copy';
+import { whatsappLink, isPending, pendingLabel } from '../lib/links';
+import Button from '../components/Button.astro';
+import Pending from '../components/Pending.astro';
+import Topo from '../components/Topo.astro';
+
+const c = site.contact;
+const lineas = [
+  { title: copy.contactoPage.empresas.title, text: copy.contactoPage.empresas.text, label: c.whatsappEmpresas.label, href: whatsappLink('empresas', copy.wa.empresas), primary: true },
+  { title: copy.contactoPage.local.title, text: copy.contactoPage.local.text, label: c.whatsappLocal.label, href: whatsappLink('local', copy.wa.local), primary: false },
+];
+---
+<section class="lb on-dark" aria-labelledby="lb-title">
+  <Topo variant={1} />
+  <div class="container lb__grid">
+    <div class="lb__head">
+      <h2 id="lb-title" class="lb__title">{copy.local.title.replace(/\*/g, '')}</h2>
+      <p class="lb__text">{copy.accesos.local.text} {isPending(c.address) ? <Pending text={pendingLabel(c.address)} /> : c.address}</p>
+      <a class="lb__more link-u" href={site.paths.contacto}>{copy.accesos.local.cta}</a>
+    </div>
+    <ul role="list" class="lb__cards">
+      {lineas.map((l) => (
+        <li class="lb__card">
+          <h3 class="lb__name">{l.title}</h3>
+          <p class="lb__desc">{l.text}</p>
+          <p class="lb__num">{l.label}</p>
+          <Button href={l.href} variant="whatsapp" tone="dark" track="click_whatsapp" external class={l.primary ? '' : 'lb__alt'}>WhatsApp</Button>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .lb { position: relative; isolation: isolate; overflow: hidden; background: var(--graf-900); padding-block: var(--section-y) calc(var(--section-y) + 48px); }
+  .lb__grid { display: grid; gap: var(--sp-6); }
+  .lb__head { display: grid; gap: var(--sp-3); justify-items: start; }
+  .lb__title { margin: 0; font-size: var(--fs-h2); }
+  .lb__text { margin: 0; color: var(--graf-300); }
+  .lb__more { display: inline-flex; align-items: center; min-height: var(--tap); font-weight: 600; color: var(--gold-300); }
+  .lb__cards { display: grid; gap: var(--sp-3); margin: 0; padding: 0; }
+  .lb__card { display: grid; gap: var(--sp-2); justify-items: start; padding: var(--sp-5); border-radius: var(--radius-lg); background: var(--graf-800); box-shadow: 0 0 0 var(--hairline) var(--line-inv); }
+  .lb__name { margin: 0; font-size: var(--fs-h3); }
+  .lb__desc { margin: 0; font-size: var(--fs-small); color: var(--graf-300); }
+  .lb__num { margin: 0; font-size: 1.25rem; font-weight: 700; color: var(--gold-300); font-variant-numeric: tabular-nums; }
+  .lb__card :global(.lb__alt) { background: transparent; color: var(--white); border-color: var(--white); }
+  .lb__card :global(.lb__alt:hover) { background: var(--white); color: var(--graf-900); }
+  @media (min-width: 768px) { .lb__cards { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1024px) { .lb__grid { grid-template-columns: 1fr 1.3fr; align-items: center; column-gap: var(--sp-8); } }
+</style>

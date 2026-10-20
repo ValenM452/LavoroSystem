@@ -1,0 +1,12 @@
+---
+/** Silueta de los picos de la portada (config/ridge.ts) como borde superior de un bloque oscuro. */
+import { RIDGE } from '../config/ridge';
+
+interface Props { class?: string }
+const { class: className } = Astro.props;
+---
+<svg class:list={['ridge-edge', className]} viewBox={`0 ${RIDGE.peak.y - 20} ${RIDGE.width} ${1100 - RIDGE.peak.y}`} preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d={RIDGE.path} /></svg>
+
+<style>
+  .ridge-edge { position: absolute; left: 0; right: 0; bottom: calc(100% - 1px); display: block; width: 100%; height: clamp(48px, 8vw, 128px); fill: currentColor; pointer-events: none; }
+</style>

@@ -1,0 +1,65 @@
+---
+/**
+ * Portada de página interna (rediseño 20/10): foto a sangre detrás del header flotante,
+ * degradé a grafito y título grande. Usada en /empresas y en cada /rubros/<slug>.
+ * Botones en el slot por defecto.
+ */
+import type { ImageSlot } from '../config/images';
+import ResponsiveImage from './ResponsiveImage.astro';
+
+interface Props {
+  img: ImageSlot;
+  title: string;
+  lead?: string;
+  id: string;
+  back?: { href: string; label: string };
+  /** Texto chico al pie (crédito / "Imagen ilustrativa."). */
+  nota?: string;
+  /** La foto en escala de grises teñida de bordó (paisajes con cielo azul). */
+  duotone?: boolean;
+}
+const { img, title, lead, id, back, nota, duotone = false } = Astro.props;
+---
+<section class:list={['ph', duotone && 'ph--duo']} aria-labelledby={id}>
+  <div class="ph__media">
+    <ResponsiveImage img={img} sizes="100vw" widths={[640, 960, 1280, 1600, 2000]} priority />
+  </div>
+  <div class="container ph__inner">
+    {back && <a class="ph__back link-u" href={back.href}>{back.label}</a>}
+    <h1 id={id} class="ph__title">{title}</h1>
+    {lead && <p class="ph__lead">{lead}</p>}
+    <div class="ph__ctas"><slot /></div>
+    {nota && <p class="ph__nota">{nota}</p>}
+  </div>
+</section>
+
+<style>
+  .ph { position: relative; isolation: isolate; background: var(--graf-900); color: var(--white); --focus-outer: var(--white); }
+  .ph__media { position: absolute; inset: 0; z-index: -1; }
+  .ph__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom, rgba(79, 12, 26, .45) 0%, rgba(79, 12, 26, 0) 35%),
+      linear-gradient(to top, var(--graf-900) 0%, rgba(30, 32, 36, .82) 30%, rgba(30, 32, 36, .2) 75%);
+  }
+  .ph--duo .ph__media :global(img) { filter: grayscale(1) contrast(1.15) brightness(1.05); }
+  .ph--duo .ph__media::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(160deg, rgba(156, 28, 51, .2), rgba(79, 12, 26, .7)); mix-blend-mode: multiply; }
+  .ph--duo .ph__media::after { z-index: 2; }
+  .ph__inner {
+    display: grid;
+    gap: var(--sp-4);
+    justify-items: start;
+    align-content: end;
+    min-height: min(82svh, 780px);
+    padding-top: calc(var(--header-h) + var(--sp-8));
+    padding-bottom: var(--sp-7);
+  }
+  .ph__back { display: inline-flex; align-items: center; min-height: var(--tap); font-weight: 600; color: var(--gold-300); }
+  .ph__title { margin: 0; max-width: 16ch; font-size: var(--fs-mega); line-height: var(--lh-tight); }
+  .ph__lead { margin: 0; max-width: 44ch; font-size: var(--fs-lead); color: rgba(255, 255, 255, .9); }
+  .ph__ctas { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-2); }
+  .ph__ctas:empty { display: none; }
+  .ph__nota { margin: 0; font-size: .75rem; color: rgba(255, 255, 255, .65); }
+</style>

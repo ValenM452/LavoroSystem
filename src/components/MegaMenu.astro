@@ -3,7 +3,7 @@
 import { site } from '../config/site';
 import { copy } from '../config/copy';
 import { images } from '../config/images';
-import { rubroHref } from '../lib/links';
+import { rubroPage } from '../lib/links';
 import ResponsiveImage from './ResponsiveImage.astro';
 import Button from './Button.astro';
 ---
@@ -19,17 +19,17 @@ import Button from './Button.astro';
         <p class="eyebrow">{copy.mega.eyebrow}</p>
         <ul role="list" class="mega__list">
           {site.rubros.map((r) => (
-            <li><a class="mega__item link-u" href={rubroHref(r.slug)} data-mega-item={r.slug}>{r.label}</a></li>
+            <li><a class="mega__item link-u" href={rubroPage(r.slug)} data-mega-item={r.slug}>{r.label}</a></li>
           ))}
         </ul>
-        <a class="mega__all link-u" href={site.paths.rubrosEmpresas}>{copy.mega.verTodos} <span aria-hidden="true">→</span></a>
+        <a class="mega__all link-u" href={site.paths.rubrosEmpresas}>{copy.mega.verTodos}</a>
       </div>
       <div class="mega__previews">
         {site.rubros.map((r) => (
           <div class="mega__preview" data-mega-preview={r.slug} hidden>
             <ResponsiveImage img={images.rubros[r.slug]} ratio="photo" sizes="(min-width: 1024px) 50vw, 0px" widths={[480, 800, 1200]} />
             <p class="mega__phrase">{copy.mega.frases[r.slug]}</p>
-            <Button href={rubroHref(r.slug)} variant="secondary" arrow>{copy.mega.cotizarPara(r.label)}</Button>
+            <Button href={rubroPage(r.slug)} tone="dark">{copy.rubrosIndex.ver(r.label)}</Button>
           </div>
         ))}
       </div>
@@ -46,24 +46,25 @@ import Button from './Button.astro';
     padding: 0;
     border: 0;
     background-color: transparent;
-    font-size: var(--fs-small);
+    font-size: var(--fs-btn);
     font-weight: 500;
     color: inherit;
   }
-  .mega__trigger:hover, .mega__trigger[aria-expanded='true'] { color: var(--bordo-700); }
   .mega__chevron { transition: transform var(--dur-fast) var(--ease); }
   .mega__trigger[aria-expanded='true'] .mega__chevron { transform: rotate(180deg); }
 
   .mega__panel {
     position: absolute;
     inset-inline: 0;
-    top: 100%;
-    background: var(--white);
-    color: var(--ink);
-    border-top: var(--hairline) solid var(--line);
-    box-shadow: var(--shadow);
+    top: calc(100% + var(--sp-2));
+    background: var(--graf-900);
+    color: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 0 0 var(--hairline) var(--line-inv), var(--shadow);
+    --line: var(--line-inv);
+    --focus-outer: var(--white);
     padding-block: var(--sp-6);
-    max-height: calc(100dvh - var(--header-h));
+    max-height: calc(100dvh - var(--header-h) - var(--sp-6));
     overflow-y: auto;
   }
   .mega__inner { align-items: start; row-gap: var(--sp-5); }
@@ -71,19 +72,20 @@ import Button from './Button.astro';
   .mega__nav { grid-column: 1 / span 6; display: grid; gap: var(--sp-4); justify-items: start; }
   .mega__list { display: grid; grid-auto-flow: column; grid-template-rows: repeat(5, auto); column-gap: var(--gutter); width: 100%; margin: 0; padding: 0; list-style: none; }
   .mega__list li { border-top: var(--hairline) solid var(--line); }
-  .mega__all { display: inline-flex; align-items: center; gap: var(--sp-2); min-height: var(--tap); font-size: var(--fs-small); font-weight: 600; color: var(--bordo-700); }
+  .mega__all { display: inline-flex; align-items: center; gap: var(--sp-2); min-height: var(--tap); font-size: var(--fs-small); font-weight: 600; color: var(--gold-300); }
   .mega__item {
     display: inline-block;
     padding-block: var(--sp-2);
     min-height: var(--tap);
     font-family: var(--font-display);
     font-size: var(--fs-h3);
-    font-weight: 300;
+    font-weight: var(--weight-head);
     letter-spacing: var(--tracking-head);
+    color: var(--graf-300);
   }
-  .mega__item.is-active { color: var(--bordo-700); font-style: italic; }
+  .mega__item.is-active { color: var(--white); }
   .mega__previews { grid-column: 8 / -1; }
   .mega__preview { display: grid; gap: var(--sp-4); justify-items: start; }
   .mega__preview :global(.rimg) { width: 100%; max-height: 40vh; border-radius: var(--radius-lg); }
-  .mega__phrase { margin: 0; }
+  .mega__phrase { margin: 0; color: var(--graf-300); }
 </style>

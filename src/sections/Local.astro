@@ -6,7 +6,7 @@
 import { site } from '../config/site';
 import { copy } from '../config/copy';
 import { images } from '../config/images';
-import { externalTarget, isPending, pendingLabel } from '../lib/links';
+import { externalTarget, isPending, pendingLabel, whatsappLink } from '../lib/links';
 import ResponsiveImage from '../components/ResponsiveImage.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import Button from '../components/Button.astro';
@@ -30,7 +30,11 @@ const embedReady = !isPending(c.mapsEmbedUrl);
       </ul>
       <div class="local__ctas">
         <Button href={c.whatsappLocal.url} variant="whatsapp" track="click_whatsapp">{copy.local.escribir}</Button>
-        <Button href={maps.href} pending={maps.pending} variant="secondary" external>{copy.local.comoLlegar}</Button>
+        {maps.pending ? (
+          <Button href={whatsappLink('local', copy.wa.ubicacion)} variant="secondary" track="click_whatsapp" external>{copy.local.pedirUbicacion}</Button>
+        ) : (
+          <Button href={maps.href} variant="secondary" external>{copy.local.comoLlegar}</Button>
+        )}
         {embedReady && <button type="button" class="btn btn--secondary" data-map-load={c.mapsEmbedUrl}>{copy.local.cargarMapa}</button>}
       </div>
     </div>

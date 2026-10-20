@@ -1,0 +1,167 @@
+---
+/**
+ * Portada de la home (rediseño 20/10): la palabra LAVORO queda detrás del Cerro Fitz Roy.
+ * Capas: foto → LAVORO (SVG) → la misma foto recortada por el perfil de los picos (máscara) → degradé.
+ * Las tres capas comparten el mismo encuadre (cover, anclado arriba y al centro), así que el
+ * perfil coincide en cualquier pantalla. Un script mínimo ajusta tamaño y posición de la palabra
+ * al área visible para que el pico la atraviese igual en celular, tablet y computadora.
+ */
+import { site } from '../config/site';
+import { copy } from '../config/copy';
+import { images } from '../config/images';
+import { RIDGE } from '../config/ridge';
+import ResponsiveImage from '../components/ResponsiveImage.astro';
+
+const p = copy.portada;
+const img = images.hero.home;
+const puertas = [
+  { href: site.paths.tienda, tone: 'light', ...p.puertas.tienda, track: 'click_tienda' },
+  { href: site.paths.empresas, tone: 'bordo', ...p.puertas.empresa, track: 'click_empresas' },
+];
+const maskSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="${RIDGE.width}" height="${RIDGE.height}" viewBox="0 0 ${RIDGE.width} ${RIDGE.height}"><path d="${RIDGE.path}"/></svg>`;
+const mask = `url("data:image/svg+xml,${encodeURIComponent(maskSvg)}")`;
+const sizes = 'max(100vw, 172svh)';
+const widths = [960, 1440, 1920, 2400];
+---
+<section class="portada" aria-labelledby="portada-title" data-portada>
+  <div class="portada__art" aria-hidden="true" data-portada-art>
+    <ResponsiveImage img={img} sizes={sizes} widths={widths} position="50% 0%" priority hideTag />
+    <svg class="portada__wm" viewBox={`0 0 ${RIDGE.width} ${RIDGE.height}`} preserveAspectRatio="xMidYMin slice" focusable="false">
+      <text data-wm x="110" y="560" font-size="500" textLength="2180" lengthAdjust="spacing" data-peak-y={RIDGE.peak.y}>LAVORO</text>
+    </svg>
+    <div class="portada__front" style={`--mask: ${mask}`}>
+      <ResponsiveImage img={img} sizes={sizes} widths={widths} position="50% 0%" priority hideTag />
+    </div>
+    <div class="portada__shade"></div>
+  </div>
+  <script is:inline>
+    (() => {
+      const art = document.querySelector('[data-portada-art]');
+      const text = art && art.querySelector('[data-wm]');
+      if (!text) return;
+      const W = 2400, H = 1399, peakY = Number(text.dataset.peakY) || 288;
+      const ctx = document.createElement('canvas').getContext('2d');
+      const fit = () => {
+        const box = art.getBoundingClientRect();
+        if (!box.width || !box.height) return;
+        const scale = Math.max(box.width / W, box.height / H);
+        const visW = box.width / scale;
+        const x0 = (W - visW) / 2;
+        const visH = box.height / scale;
+        const cs = getComputedStyle(text);
+        ctx.font = `${cs.fontWeight} 100px ${cs.fontFamily}`;
+        const m = ctx.measureText('LAVORO');
+        const perEm = m.width / 100 || 4.2;
+        const capPerEm = (m.actualBoundingBoxAscent || 72) / 100;
+        // Ocupa el ancho visible con margen, salvo en pantallas bajas: ahí manda el alto (máx. 30 %).
+        const fs = Math.min((visW * 0.91) / perEm, (visH * 0.3) / capPerEm);
+        const length = fs * perEm;
+        const margin = (visW - length) / 2;
+        const cap = fs * capPerEm;
+        const header = (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 64) + 20;
+        const top = Math.max(peakY - cap * 0.3, header / scale);
+        text.setAttribute('x', (x0 + margin).toFixed(1));
+        text.setAttribute('y', (top + cap).toFixed(1));
+        text.setAttribute('font-size', fs.toFixed(1));
+        text.setAttribute('textLength', length.toFixed(1));
+      };
+      fit();
+      let raf = 0;
+      addEventListener('resize', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(fit); });
+      document.fonts && document.fonts.ready.then(fit);
+    })();
+  </script>
+
+  <div class="portada__inner container">
+    <div class="portada__copy">
+      <p class="portada__since">{p.kicker}</p>
+      <h1 id="portada-title" class="portada__title">{p.title}</h1>
+    </div>
+    <ul role="list" class="portada__puertas">
+      {puertas.map((d) => (
+        <li>
+          <a class:list={['puerta', `puerta--${d.tone}`]} href={d.href} data-track={d.track}>
+            <span class="puerta__body">
+              <span class="puerta__title">{d.title}</span>
+              <span class="puerta__text">{d.text}</span>
+            </span>
+            <svg class="puerta__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" /></svg>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+  <p class="portada__credit">{p.credito}</p>
+</section>
+
+<style>
+  .portada { position: relative; isolation: isolate; display: grid; background: var(--graf-900); color: var(--white); }
+  .portada__art { position: absolute; inset: 0 0 auto; z-index: -1; height: max(100svh, 560px); overflow: hidden; }
+  .portada__art :global(.rimg) { position: absolute; inset: 0; background: var(--bordo-900); }
+  .portada__wm { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .portada__wm text { font-family: var(--font-display); font-weight: var(--weight-display); fill: var(--white); }
+  .portada__front {
+    position: absolute;
+    inset: 0;
+    -webkit-mask: var(--mask) 50% 0% / cover no-repeat;
+    mask: var(--mask) 50% 0% / cover no-repeat;
+  }
+  .portada__shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom, rgba(79, 12, 26, .5) 0%, rgba(79, 12, 26, 0) 32%),
+      linear-gradient(to bottom, rgba(30, 32, 36, 0) 36%, rgba(30, 32, 36, .8) 60%, var(--graf-900) 84%);
+  }
+
+  .portada__inner { display: grid; gap: var(--sp-5); padding-top: max(46svh, 300px); padding-bottom: var(--sp-5); }
+  .portada__copy { display: grid; gap: var(--sp-3); }
+  .portada__since { margin: 0; font-size: var(--fs-small); font-weight: 600; color: var(--gold-300); }
+  .portada__title { margin: 0; max-width: 17ch; font-size: clamp(2rem, 1.3rem + 3vw, 4.25rem); line-height: var(--lh-tight); }
+
+  .portada__puertas { display: grid; gap: var(--sp-2); margin: 0; padding: 0; }
+  .puerta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-4);
+    min-height: 64px;
+    padding: var(--sp-3) var(--sp-3) var(--sp-3) var(--sp-5);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    transition: background-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+  }
+  .puerta__body { display: grid; gap: var(--sp-1); }
+  .puerta__title { font-family: var(--font-display); font-weight: var(--weight-head); font-size: clamp(1.15rem, 1rem + .6vw, 1.5rem); line-height: var(--lh-head); }
+  .puerta__text { display: none; font-size: var(--fs-small); opacity: .85; }
+  .puerta__icon { flex: none; width: 40px; height: 40px; padding: 10px; border-radius: 50%; }
+  .puerta--light { background: var(--white); color: var(--ink); }
+  .puerta--light .puerta__icon { background: var(--bordo-700); background-image: var(--metal-bordo-btn); box-shadow: var(--metal-shine); color: var(--white); }
+  .puerta--light:hover { background: var(--sand); }
+  .puerta--bordo { background: var(--bordo-900); background-image: var(--metal-bordo-panel); box-shadow: var(--metal-shine); color: var(--white); --focus-outer: var(--white); }
+  .puerta--bordo .puerta__icon { background: var(--gold-500); color: var(--graf-900); }
+  .puerta--bordo:hover { filter: brightness(1.15); }
+  .portada__credit { margin: 0; padding: 0 var(--gutter) var(--sp-4); font-size: .7rem; color: rgba(255, 255, 255, .6); }
+
+  @media (min-width: 768px) {
+    .portada__puertas { grid-template-columns: 1fr 1fr; }
+    .puerta__text { display: block; }
+  }
+  @media (min-width: 1024px) {
+    .portada { min-height: max(100svh, 560px); }
+    .portada__inner {
+      align-content: end;
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+      align-items: end;
+      column-gap: var(--sp-8);
+      padding-top: 0;
+      padding-bottom: var(--sp-7);
+    }
+    .portada__puertas { grid-template-columns: 1fr; }
+    .puerta { min-height: 88px; padding: var(--sp-4) var(--sp-4) var(--sp-4) var(--sp-6); }
+    .puerta__icon { width: 48px; height: 48px; padding: 13px; }
+    .puerta:hover { transform: translateY(-2px); }
+    .portada__credit { position: absolute; right: var(--gutter); bottom: var(--sp-2); padding: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) { .puerta:hover { transform: none; } }
+</style>

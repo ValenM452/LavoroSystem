@@ -2,7 +2,10 @@
 /** /empresas (04 "/empresas", orden de docs/10 §4.10): reutiliza componentes y secciones de la home. */
 import Base from '../layouts/Base.astro';
 import { copy } from '../config/copy';
-import Hero from '../sections/Hero.astro';
+import { images } from '../config/images';
+import { whatsappLink } from '../lib/links';
+import PhotoHero from '../components/PhotoHero.astro';
+import Button from '../components/Button.astro';
 import ListaEditorial from '../sections/ListaEditorial.astro';
 import Confianza from '../sections/Confianza.astro';
 import RubrosGrid from '../sections/RubrosGrid.astro';
@@ -14,8 +17,11 @@ import Cierre from '../sections/Cierre.astro';
 const e = copy.empresas;
 ---
 
-<Base title={e.seo.title} description={e.seo.description}>
-  <Hero variant="empresas" />
+<Base title={e.seo.title} description={e.seo.description} bleed>
+  <PhotoHero img={images.hero.empresas} id="emp-title" title={e.hero.title.replace(/\*/g, '')} lead={copy.empresasHome.text} nota={copy.empresas.heroCredito} duotone>
+    <Button href="#cotizar" tone="dark">{e.hero.cta}</Button>
+    <Button href={whatsappLink('empresas', copy.wa.empresas)} variant="whatsapp" tone="dark" track="click_whatsapp" external>{e.hero.wa}</Button>
+  </PhotoHero>
   <ListaEditorial id="cotizamos" eyebrow={copy.proceso.eyebrow} title={e.cotizamos.title} items={e.cotizamos.items} tone="sand" />
   <RubrosGrid />
   <Personalizacion />

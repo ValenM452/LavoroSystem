@@ -2,14 +2,13 @@
 /** Menú de celular a pantalla completa: <dialog> modal. Lógica en src/lib/nav.ts. */
 import { site } from '../config/site';
 import { copy } from '../config/copy';
-import { rubroHref, tiendaTarget } from '../lib/links';
+import { rubroPage } from '../lib/links';
 import Logo from './Logo.astro';
 import Button from './Button.astro';
-import Pending from './Pending.astro';
 
-const tienda = tiendaTarget('menu_celular');
 const link = (href: string, label: string) => ({ href, label });
 const simple = [
+  link(site.paths.tienda, copy.nav.tienda),
   link(site.paths.empresas, copy.nav.empresas),
 ];
 const after = [
@@ -27,19 +26,12 @@ const after = [
 
   <nav class="mm__nav" aria-label={copy.a11y.principal}>
     <ul role="list">
-      <li>
-        {tienda.pending ? (
-          <span class="mm__link is-pending">{copy.nav.tienda} ↗ <Pending text={tienda.pending} /></span>
-        ) : (
-          <a class="mm__link" href={tienda.href}>{copy.nav.tienda} ↗</a>
-        )}
-      </li>
       {simple.map((l) => <li><a class="mm__link" href={l.href}>{l.label}</a></li>)}
       <li>
         <details class="mm__details">
           <summary class="mm__link">{copy.nav.rubros}</summary>
           <ul role="list" class="mm__sub">
-            {site.rubros.map((r) => <li><a href={rubroHref(r.slug)}>{r.label}</a></li>)}
+            {site.rubros.map((r) => <li><a href={rubroPage(r.slug)}>{r.label}</a></li>)}
           </ul>
         </details>
       </li>
@@ -48,8 +40,8 @@ const after = [
   </nav>
 
   <div class="mm__ctas">
-    <Button href={site.paths.cotizar} tone="bordo" arrow>{copy.nav.cotizarEmpresas}</Button>
-    <Button href={site.contact.whatsappEmpresas.url} variant="whatsapp" tone="bordo" track="click_whatsapp">{copy.nav.whatsapp}</Button>
+    <Button href={site.paths.cotizar} tone="dark">{copy.nav.cotizarEmpresas}</Button>
+    <Button href={site.contact.whatsappEmpresas.url} variant="whatsapp" tone="dark" track="click_whatsapp">{copy.nav.whatsapp}</Button>
     <p class="mm__local">{copy.nav.local} <a class="link-u" href={site.contact.whatsappLocal.url} data-track="click_whatsapp">{site.contact.whatsappLocal.label}</a></p>
   </div>
 </dialog>
@@ -64,7 +56,7 @@ const after = [
     margin: 0;
     padding: 0 var(--gutter) var(--sp-6);
     border: 0;
-    background: var(--bordo-900);
+    background: var(--graf-900);
     color: var(--white);
     overflow-y: auto;
     z-index: var(--z-menu);
@@ -99,8 +91,8 @@ const after = [
     min-height: var(--tap);
     padding-block: var(--sp-3);
     font-family: var(--font-display);
-    font-size: 1.75rem;
-    font-weight: 300;
+    font-size: 1.6rem;
+    font-weight: var(--weight-head);
     line-height: var(--lh-head);
     letter-spacing: var(--tracking-head);
     text-decoration: none;
@@ -114,7 +106,7 @@ const after = [
   .mm__sub a { display: flex; align-items: center; min-height: var(--tap); text-decoration: none; }
   .mm__ctas { display: grid; gap: var(--sp-3); padding-top: var(--sp-5); }
   .mm__ctas :global(.btn) { width: 100%; }
-  .mm__local { margin: 0; font-size: var(--fs-small); color: var(--bordo-100); font-variant-numeric: tabular-nums; }
+  .mm__local { margin: 0; font-size: var(--fs-small); color: var(--graf-300); font-variant-numeric: tabular-nums; }
   .mm__local a { display: inline-flex; align-items: center; min-height: var(--tap); color: var(--white); }
-  .mm::backdrop { background: var(--bordo-900); }
+  .mm::backdrop { background: var(--graf-900); }
 </style>

@@ -39,8 +39,8 @@
 ## C2 — Categorías
 
 1. Productos → Categorías [[VERIFICAR EN PANEL]].
-2. Crear las 9 categorías de `data/tiendanube/categorias.md` en ese orden, con ese nombre y ese slug.
-3. Anotar la URL real de cada una y reemplazar `[[PENDIENTE: URL tienda]]` en `categorias.md` y luego en `src/config/site.ts`.
+2. Crear las 3 categorías de `data/tiendanube/categorias.md` (Indumentaria, Calzado, Elementos de seguridad) en ese orden, con ese nombre y ese slug.
+3. Anotar la URL real de la tienda y completar `TIENDA_URL` en `src/config/site.ts` (las categorías se arman solas).
 4. Ordenar en el menú de la tienda [[VERIFICAR EN PANEL]].
 
 ## C3 — Carga de productos

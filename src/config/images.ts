@@ -4,7 +4,7 @@
  * Si la foto es ambiental, completar `alt` con una descripción neutra.
  * Fotos de stock: nunca presentarlas como clientes o trabajos de LAVORO (AGENTS §2.4).
  */
-import { site, type CategoryKey, type RubroSlug } from './site';
+import { site, type RubroSlug } from './site';
 
 export interface ImageSlot {
   src: ImageMetadata;
@@ -56,14 +56,6 @@ const rubroFotos: Record<RubroSlug, { alt: string; position?: string; credit: No
   municipios: { alt: 'Cuadrilla trabajando en la pavimentación de una calle', position: '25% 60%', credit: { author: 'mardoqueo sagastume', license: 'CC BY 3.0', source: 'https://commons.wikimedia.org/wiki/File:Unnamed_Road,_Guatemala_-_panoramio_(19).jpg' } },
 };
 
-type CategoriaTile = Exclude<CategoryKey, 'promociones'>;
-
-const categorias = Object.fromEntries(
-  (Object.entries(site.tiendanube.categories) as [CategoryKey, { label: string; slug: string }][])
-    .filter(([key]) => key !== 'promociones')
-    .map(([key, c]) => [key, slot(`categorias/${c.slug}`, `foto categoría: ${c.label}`)]),
-) as Record<CategoriaTile, ImageSlot>;
-
 const rubros = Object.fromEntries(
   site.rubros.map((r) => {
     const f = rubroFotos[r.slug];
@@ -72,12 +64,22 @@ const rubros = Object.fromEntries(
 ) as Record<RubroSlug, ImageSlot>;
 
 export const images = {
-  /** Hero: stock ambiental (mismas fuentes que construcción y minería). Reemplazar por fotos propias cuando existan. */
+  /**
+   * Portadas (rediseño 20/10): paisajes de montaña de Wikimedia Commons. Ilustrativas: no son
+   * Chilecito ni trabajos de LAVORO. La de inicio tiene su perfil trazado en config/ridge.ts.
+   */
   hero: {
-    home: slot('hero/home', null, rubroFotos.construccion.alt, '72% 55%', rubroFotos.construccion.credit),
-    empresas: slot('hero/empresas', null, rubroFotos.mineria.alt, '62% 50%', rubroFotos.mineria.credit),
+    home: slot('paisajes/fitzroy-atardecer', null, 'Cerro Fitz Roy al atardecer, en la Patagonia', '54% 40%', {
+      author: 'Masa Sakano',
+      license: 'CC BY-SA 2.0',
+      source: 'https://commons.wikimedia.org/wiki/File:Mount_Fitz_Roy_at_Sunset.jpg',
+    }),
+    empresas: slot('paisajes/aconcagua', null, 'Cerro Aconcagua nevado, en Mendoza', '50% 45%', {
+      author: 'Mario Roberto Durán Ortiz (Mariordo)',
+      license: 'CC BY 3.0',
+      source: 'https://commons.wikimedia.org/wiki/File:Aconcagua_13.JPG',
+    }),
   },
-  categorias,
   rubros,
   /** Bloque Empresas de la home. */
   empresas: rubros.talleres,

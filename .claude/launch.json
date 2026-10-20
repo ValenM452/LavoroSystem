@@ -4,8 +4,20 @@
     {
       "name": "lavoro-dev-tracking",
       "runtimeExecutable": "bash",
-      "runtimeArgs": ["-c", "PUBLIC_GA4_ID=G-TEST000000 PUBLIC_META_PIXEL_ID=000000000000000 npx astro dev --port 4321"],
+      "runtimeArgs": [
+        "-c",
+        "PUBLIC_GA4_ID=G-TEST000000 PUBLIC_META_PIXEL_ID=000000000000000 npx astro dev --port 4321"
+      ],
       "port": 4321
+    },
+    {
+      "name": "webhook-local",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "webhook:local"
+      ],
+      "port": 4500
     }
   ]
 }
